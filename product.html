@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Detalle del producto - King Ice Gold">
+    <title>Producto | King Ice Gold</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-links">
+                <a href="#">Servicio al cliente</a>
+            </div>
+            <div class="top-bar-message">
+                🔒 Envíos asegurados contra robo y extravío
+            </div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <a href="index.html" class="logo">KING <span>ICE</span> GOLD</a>
+
+            <nav class="nav-main">
+                <a href="collection.html">Colección</a>
+                <a href="about.html">Sobre Nosotros</a>
+            </nav>
+
+            <div class="header-icons">
+                <a href="cart.html" class="header-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-count" style="display: none;">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Categories Nav -->
+    <nav class="nav-categories">
+        <div class="container">
+            <ul id="categoriesNav"></ul>
+        </div>
+    </nav>
+
+    <!-- Product Page -->
+    <main class="product-page">
+        <div class="container">
+            <!-- Breadcrumb -->
+            <div class="product-breadcrumb mb-lg">
+                <a href="index.html">Inicio</a> /
+                <a href="collection.html" id="categoryLink">Colección</a> /
+                <span id="productBreadcrumb">Producto</span>
+            </div>
+
+            <div class="product-layout">
+                <!-- Gallery -->
+                <div class="product-gallery">
+                    <div class="product-main-image">
+                        <img id="mainImage" src="" alt="Producto">
+                    </div>
+                    <div class="product-thumbnails" id="thumbnails">
+                        <!-- Thumbnails dinámicos -->
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="product-info">
+                    <p class="text-muted text-uppercase" style="font-size: 0.8rem; letter-spacing: 0.1em;"
+                        id="productCategory">CATEGORÍA</p>
+                    <h1 class="product-title" id="productTitle">Nombre del Producto</h1>
+
+                    <div class="product-price-range" id="productPrice">
+                        <span class="current">$0.00</span>
+                    </div>
+
+                    <!-- Options -->
+                    <div class="product-options" id="productOptions">
+                        <!-- Opciones dinámicas -->
+                    </div>
+
+                    <!-- Quantity -->
+                    <div class="quantity-selector">
+                        <button class="quantity-btn" id="quantityMinus">−</button>
+                        <input type="number" class="quantity-input" id="quantity" value="1" min="1" max="10">
+                        <button class="quantity-btn" id="quantityPlus">+</button>
+                    </div>
+
+                    <!-- Add to Cart -->
+                    <button class="btn btn-dark btn-lg btn-block" id="addToCart">
+                        AÑADIR AL CARRITO
+                    </button>
+
+                    <!-- Features -->
+                    <div class="product-features">
+                        <div class="product-feature">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            <span>Tu paquete viaja asegurado contra robo o extravío.</span>
+                        </div>
+                        <div class="product-feature">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="m9 12 2 2 4-4"></path>
+                            </svg>
+                            <span>Incluye Certificado de Autenticidad.</span>
+                        </div>
+                        <div class="product-feature">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect width="16" height="13" x="6" y="4" rx="2"></rect>
+                                <path d="m22 7-7.1 3.78c-.57.3-1.23.3-1.8 0L6 7"></path>
+                                <path d="M2 8v11c0 1.1.9 2 2 2h14"></path>
+                            </svg>
+                            <span>Entrega Garantizada en 4 a 5 días hábiles.</span>
+                        </div>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mt-xl">
+                        <h4 style="font-family: var(--font-body); font-weight: 500; margin-bottom: var(--spacing-sm);">
+                            Descripción</h4>
+                        <p class="text-muted" id="productDescription" style="font-size: 0.9rem;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>King Ice Gold</h4>
+                    <p style="color: var(--color-text-muted); font-size: 0.85rem;">
+                        Joyería de alta calidad con envíos asegurados a todo México.
+                    </p>
+                </div>
+                <div class="footer-section">
+                    <h4>Colección</h4>
+                    <ul id="footerCategories"></ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Ayuda</h4>
+                    <ul>
+                        <li><a href="#">Preguntas frecuentes</a></li>
+                        <li><a href="#">Envíos y entregas</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li><a href="mailto:contacto@kingicegold.com">contacto@kingicegold.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    <span id="adminAccess">© 2026 King Ice Gold.</span> Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/525512345678?text=Hola,%20me%20interesa%20una%20joya" target="_blank" class="whatsapp-btn"
+        id="whatsappBtn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+    </a>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-close" id="mobileMenuClose">&times;</div>
+        <nav id="mobileMenuNav"></nav>
+    </div>
+
+    <script src="js/storage.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        let currentProduct = null;
+        let selectedOptions = {};
+        let quantity = 1;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadProduct();
+            setupEventListeners();
+        });
+
+        function loadProduct() {
+            const params = new URLSearchParams(window.location.search);
+            const productId = params.get('id');
+
+            if (!productId) {
+                window.location.href = 'collection.html';
+                return;
+            }
+
+            currentProduct = KIG.Products.getById(productId);
+
+            if (!currentProduct) {
+                window.location.href = 'collection.html';
+                return;
+            }
+
+            renderProduct();
+            updateWhatsAppLink();
+        }
+
+        function renderProduct() {
+            // Imagen principal
+            const defaultImage = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="600" height="600" viewBox="0 0 600 600"%3E%3Crect fill="%231a1a1a" width="600" height="600"/%3E%3Ctext fill="%23666" font-family="sans-serif" font-size="24" text-anchor="middle" x="300" y="305"%3ESin imagen%3C/text%3E%3C/svg%3E';
+            const mainImage = document.getElementById('mainImage');
+            mainImage.src = currentProduct.images[0] || defaultImage;
+            mainImage.alt = currentProduct.name;
+
+            // Thumbnails
+            const thumbnails = document.getElementById('thumbnails');
+            if (currentProduct.images.length > 1) {
+                thumbnails.innerHTML = currentProduct.images.map((img, i) => `
+          <div class="product-thumbnail ${i === 0 ? 'active' : ''}" data-index="${i}">
+            <img src="${img}" alt="${currentProduct.name} ${i + 1}">
+          </div>
+        `).join('');
+
+                thumbnails.querySelectorAll('.product-thumbnail').forEach(thumb => {
+                    thumb.addEventListener('click', () => {
+                        document.querySelectorAll('.product-thumbnail').forEach(t => t.classList.remove('active'));
+                        thumb.classList.add('active');
+                        mainImage.src = currentProduct.images[thumb.dataset.index];
+                    });
+                });
+            }
+
+            // Info básica
+            document.getElementById('productTitle').textContent = currentProduct.name;
+            document.getElementById('productDescription').textContent = currentProduct.description || 'Joyería de alta calidad.';
+            document.getElementById('productPrice').innerHTML = `
+        <span class="current">${KIG.formatPrice(currentProduct.basePrice)} MXN</span>
+      `;
+
+            // Categoría
+            const category = KIG.Collections.getBySlug(currentProduct.category);
+            if (category) {
+                document.getElementById('productCategory').textContent = category.name.toUpperCase();
+                document.getElementById('categoryLink').textContent = category.name;
+                document.getElementById('categoryLink').href = `collection.html?category=${category.slug}`;
+            }
+            document.getElementById('productBreadcrumb').textContent = currentProduct.name;
+
+            // Título de la página
+            document.title = `${currentProduct.name} | King Ice Gold`;
+
+            // Opciones
+            renderOptions();
+        }
+
+        function renderOptions() {
+            const container = document.getElementById('productOptions');
+            const options = currentProduct.options || {};
+
+            if (Object.keys(options).length === 0) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = Object.entries(options).map(([key, values]) => {
+                const label = key.charAt(0).toUpperCase() + key.slice(1);
+                return `
+          <div class="product-option">
+            <label class="product-option-label">Selecciona ${label.toLowerCase()}:</label>
+            <div class="option-buttons" data-option="${key}">
+              ${values.map((val, i) => `
+                <button class="option-btn ${i === 0 ? 'selected' : ''}" data-value="${val}">${val}</button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+            }).join('');
+
+            // Inicializar opciones seleccionadas
+            Object.keys(options).forEach(key => {
+                selectedOptions[key] = options[key][0];
+            });
+
+            // Event listeners para opciones
+            container.querySelectorAll('.option-buttons').forEach(group => {
+                group.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('option-btn')) {
+                        group.querySelectorAll('.option-btn').forEach(btn => btn.classList.remove('selected'));
+                        e.target.classList.add('selected');
+                        selectedOptions[group.dataset.option] = e.target.dataset.value;
+                    }
+                });
+            });
+        }
+
+        function setupEventListeners() {
+            // Cantidad
+            const quantityInput = document.getElementById('quantity');
+            const minusBtn = document.getElementById('quantityMinus');
+            const plusBtn = document.getElementById('quantityPlus');
+
+            minusBtn.addEventListener('click', () => {
+                if (quantity > 1) {
+                    quantity--;
+                    quantityInput.value = quantity;
+                }
+            });
+
+            plusBtn.addEventListener('click', () => {
+                if (quantity < 10) {
+                    quantity++;
+                    quantityInput.value = quantity;
+                }
+            });
+
+            quantityInput.addEventListener('change', () => {
+                quantity = Math.max(1, Math.min(10, parseInt(quantityInput.value) || 1));
+                quantityInput.value = quantity;
+            });
+
+            // Agregar al carrito
+            document.getElementById('addToCart').addEventListener('click', addToCart);
+        }
+
+        function addToCart() {
+            if (!currentProduct) return;
+
+            KIG.Cart.add(currentProduct.id, selectedOptions, quantity);
+
+            showToast('¡Producto agregado al carrito!', 'success');
+
+            // Animar botón
+            const btn = document.getElementById('addToCart');
+            btn.textContent = '✓ AGREGADO';
+            btn.style.backgroundColor = 'var(--color-success)';
+
+            setTimeout(() => {
+                btn.textContent = 'AÑADIR AL CARRITO';
+                btn.style.backgroundColor = '';
+            }, 2000);
+        }
+
+        function updateWhatsAppLink() {
+            const btn = document.getElementById('whatsappBtn');
+            const message = encodeURIComponent(`Hola, me interesa el producto: ${currentProduct.name}`);
+            btn.href = `https://wa.me/525512345678?text=${message}`;
+        }
+    </script>
+</body>
+
+</html>

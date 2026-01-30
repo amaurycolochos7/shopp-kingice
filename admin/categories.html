@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Categorías | King Ice Gold Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <div class="admin-sidebar-logo">
+                    KING ICE GOLD
+                    <span>Panel de Administración</span>
+                </div>
+            </div>
+
+            <nav class="admin-nav">
+                <div class="admin-nav-section">
+                    <p class="admin-nav-title">Principal</p>
+                    <a href="dashboard.html" class="admin-nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Dashboard
+                    </a>
+                </div>
+
+                <div class="admin-nav-section">
+                    <p class="admin-nav-title">Catálogo</p>
+                    <a href="products.html" class="admin-nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                            </path>
+                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                        </svg>
+                        Productos
+                    </a>
+                    <a href="categories.html" class="admin-nav-link active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                        Categorías
+                    </a>
+                </div>
+
+                <div class="admin-nav-section">
+                    <p class="admin-nav-title">Ventas</p>
+                    <a href="orders.html" class="admin-nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                            <path d="M3 6h18"></path>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        Pedidos
+                    </a>
+                </div>
+            </nav>
+
+            <div class="admin-sidebar-footer">
+                <a href="#" class="admin-logout" id="logoutBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Cerrar sesión
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 class="admin-header-title">Categorías</h1>
+                <div class="admin-header-actions">
+                    <button class="admin-btn admin-btn-primary" id="addCategoryBtn">
+                        + Nueva Categoría
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- Categories Table -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Todas las Categorías (<span id="categoryCount">0</span>)</h2>
+                    </div>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">Orden</th>
+                                <th>Nombre</th>
+                                <th>Slug</th>
+                                <th>Productos</th>
+                                <th>Estado</th>
+                                <th style="width: 120px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="categoriesTable">
+                            <!-- Contenido dinámico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Crear/Editar Categoría -->
+    <div class="admin-modal-overlay" id="categoryModal">
+        <div class="admin-modal" style="max-width: 500px;">
+            <div class="admin-modal-header">
+                <h3 class="admin-modal-title" id="modalTitle">Nueva Categoría</h3>
+                <span class="admin-modal-close" id="closeModal">&times;</span>
+            </div>
+            <div class="admin-modal-body">
+                <form id="categoryForm">
+                    <input type="hidden" id="categoryId">
+
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Nombre de la categoría *</label>
+                        <input type="text" class="admin-form-input" id="categoryName" required
+                            placeholder="Ej: Cadenas">
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Slug (URL amigable)</label>
+                        <input type="text" class="admin-form-input" id="categorySlug"
+                            placeholder="Se genera automáticamente">
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Orden de aparición</label>
+                        <input type="number" class="admin-form-input" id="categoryOrder" min="1" value="1">
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="categoryActive" checked>
+                            <span style="color: var(--admin-text);">Categoría activa (visible en la tienda)</span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="admin-modal-footer">
+                <button type="button" class="admin-btn admin-btn-secondary" id="cancelBtn">Cancelar</button>
+                <button type="submit" form="categoryForm" class="admin-btn admin-btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/storage.js"></script>
+    <script>
+        let editingCategory = null;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!KIG.Auth.isLoggedIn()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            loadCategories();
+            setupEventListeners();
+            setupLogout();
+            checkUrlAction();
+        });
+
+        function checkUrlAction() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('action') === 'new') {
+                openModal();
+            }
+        }
+
+        function loadCategories() {
+            const categories = KIG.Collections.getAll().sort((a, b) => a.order - b.order);
+            const products = KIG.Products.getAll();
+
+            const tbody = document.getElementById('categoriesTable');
+            document.getElementById('categoryCount').textContent = categories.length;
+
+            if (categories.length === 0) {
+                tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 40px; color: var(--admin-text-muted);">
+              No hay categorías. <a href="#" onclick="openModal(); return false;" style="color: var(--color-primary);">Crear una nueva</a>
+            </td>
+          </tr>
+        `;
+                return;
+            }
+
+            tbody.innerHTML = categories.map(category => {
+                const productCount = products.filter(p => p.category === category.slug).length;
+                return `
+          <tr>
+            <td style="text-align: center;">${category.order}</td>
+            <td><strong>${category.name}</strong></td>
+            <td style="color: var(--admin-text-muted);">${category.slug}</td>
+            <td>${productCount} productos</td>
+            <td>
+              <span class="badge ${category.active !== false ? 'badge-paid' : 'badge-cancelled'}">
+                ${category.active !== false ? 'Activa' : 'Inactiva'}
+              </span>
+            </td>
+            <td>
+              <button class="admin-btn admin-btn-icon" onclick="editCategory('${category.id}')" title="Editar">✏️</button>
+              <button class="admin-btn admin-btn-icon" onclick="deleteCategory('${category.id}')" title="Eliminar">🗑️</button>
+            </td>
+          </tr>
+        `;
+            }).join('');
+        }
+
+        function setupEventListeners() {
+            // Abrir modal
+            document.getElementById('addCategoryBtn').addEventListener('click', () => openModal());
+
+            // Cerrar modal
+            document.getElementById('closeModal').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            document.getElementById('categoryModal').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) closeModal();
+            });
+
+            // Generar slug automáticamente
+            document.getElementById('categoryName').addEventListener('input', (e) => {
+                if (!editingCategory) {
+                    const slug = e.target.value.toLowerCase()
+                        .replace(/[áàäâ]/g, 'a')
+                        .replace(/[éèëê]/g, 'e')
+                        .replace(/[íìïî]/g, 'i')
+                        .replace(/[óòöô]/g, 'o')
+                        .replace(/[úùüû]/g, 'u')
+                        .replace(/ñ/g, 'n')
+                        .replace(/[^a-z0-9]+/g, '-')
+                        .replace(/^-|-$/g, '');
+                    document.getElementById('categorySlug').value = slug;
+                }
+            });
+
+            // Formulario
+            document.getElementById('categoryForm').addEventListener('submit', saveCategory);
+        }
+
+        function openModal(category = null) {
+            editingCategory = category;
+
+            const modal = document.getElementById('categoryModal');
+            const form = document.getElementById('categoryForm');
+
+            document.getElementById('modalTitle').textContent = category ? 'Editar Categoría' : 'Nueva Categoría';
+            form.reset();
+
+            if (category) {
+                document.getElementById('categoryId').value = category.id;
+                document.getElementById('categoryName').value = category.name;
+                document.getElementById('categorySlug').value = category.slug;
+                document.getElementById('categoryOrder').value = category.order;
+                document.getElementById('categoryActive').checked = category.active !== false;
+            } else {
+                // Orden por defecto: siguiente al último
+                const categories = KIG.Collections.getAll();
+                document.getElementById('categoryOrder').value = categories.length + 1;
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('categoryModal').classList.remove('active');
+            editingCategory = null;
+        }
+
+        function saveCategory(e) {
+            e.preventDefault();
+
+            const categoryData = {
+                name: document.getElementById('categoryName').value,
+                slug: document.getElementById('categorySlug').value || document.getElementById('categoryName').value.toLowerCase().replace(/\s+/g, '-'),
+                order: parseInt(document.getElementById('categoryOrder').value) || 1,
+                active: document.getElementById('categoryActive').checked
+            };
+
+            const categoryId = document.getElementById('categoryId').value;
+
+            if (categoryId) {
+                KIG.Collections.update(categoryId, categoryData);
+            } else {
+                KIG.Collections.create(categoryData);
+            }
+
+            closeModal();
+            loadCategories();
+        }
+
+        function editCategory(id) {
+            const category = KIG.Collections.getById(id);
+            if (category) {
+                openModal(category);
+            }
+        }
+
+        function deleteCategory(id) {
+            const products = KIG.Products.getAll();
+            const category = KIG.Collections.getById(id);
+            const productCount = products.filter(p => p.category === category.slug).length;
+
+            if (productCount > 0) {
+                alert(`No se puede eliminar esta categoría porque tiene ${productCount} productos asociados. Primero elimina o reasigna los productos.`);
+                return;
+            }
+
+            if (confirm('¿Eliminar esta categoría? Esta acción no se puede deshacer.')) {
+                KIG.Collections.delete(id);
+                loadCategories();
+            }
+        }
+
+        function setupLogout() {
+            document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                if (confirm('¿Cerrar sesión?')) {
+                    KIG.Auth.logout();
+                    window.location.href = 'login.html';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

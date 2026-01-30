@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Productos | King Ice Gold Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/admin.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <div class="admin-sidebar-logo">
+                    KING ICE GOLD
+                    <span>Panel de Administración</span>
+                </div>
+            </div>
+
+            <nav class="admin-nav">
+                <div class="admin-nav-section">
+                    <p class="admin-nav-title">Principal</p>
+                    <a href="dashboard.html" class="admin-nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        Dashboard
+                    </a>
+                </div>
+
+                <div class="admin-nav-section">
+                    <p class="admin-nav-title">Catálogo</p>
+                    <a href="products.html" class="admin-nav-link active">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z">
+                            </path>
+                            <line x1="7" y1="7" x2="7.01" y2="7"></line>
+                        </svg>
+                        Productos
+                    </a>
+                    <a href="categories.html" class="admin-nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="8" y1="6" x2="21" y2="6"></line>
+                            <line x1="8" y1="12" x2="21" y2="12"></line>
+                            <line x1="8" y1="18" x2="21" y2="18"></line>
+                            <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                            <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                            <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                        </svg>
+                        Categorías
+                    </a>
+                </div>
+
+                <div class="admin-nav-section">
+                    <p class="admin-nav-title">Ventas</p>
+                    <a href="orders.html" class="admin-nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                            <path d="M3 6h18"></path>
+                            <path d="M16 10a4 4 0 0 1-8 0"></path>
+                        </svg>
+                        Pedidos
+                    </a>
+                </div>
+            </nav>
+
+            <div class="admin-sidebar-footer">
+                <a href="#" class="admin-logout" id="logoutBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Cerrar sesión
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <header class="admin-header">
+                <h1 class="admin-header-title">Productos</h1>
+                <div class="admin-header-actions">
+                    <button class="admin-btn admin-btn-primary" id="addProductBtn">
+                        + Nuevo Producto
+                    </button>
+                </div>
+            </header>
+
+            <div class="admin-content">
+                <!-- Products Table -->
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-title">Todos los Productos (<span id="productCount">0</span>)</h2>
+                        <select class="admin-form-select" style="width: 200px;" id="categoryFilter">
+                            <option value="all">Todas las categorías</option>
+                        </select>
+                    </div>
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 60px;">Imagen</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio Base</th>
+                                <th>Estado</th>
+                                <th style="width: 120px;">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTable">
+                            <!-- Contenido dinámico -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Crear/Editar Producto -->
+    <div class="admin-modal-overlay" id="productModal">
+        <div class="admin-modal" style="max-width: 700px;">
+            <div class="admin-modal-header">
+                <h3 class="admin-modal-title" id="modalTitle">Nuevo Producto</h3>
+                <span class="admin-modal-close" id="closeModal">&times;</span>
+            </div>
+            <div class="admin-modal-body">
+                <form id="productForm">
+                    <input type="hidden" id="productId">
+
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Nombre del producto *</label>
+                            <input type="text" class="admin-form-input" id="productName" required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Categoría *</label>
+                            <select class="admin-form-input admin-form-select" id="productCategory" required>
+                                <!-- Opciones dinámicas -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-row">
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Precio base (MXN) *</label>
+                            <input type="number" class="admin-form-input" id="productPrice" min="0" step="0.01"
+                                required>
+                        </div>
+                        <div class="admin-form-group">
+                            <label class="admin-form-label">Estado</label>
+                            <select class="admin-form-input admin-form-select" id="productActive">
+                                <option value="true">Activo</option>
+                                <option value="false">Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Descripción</label>
+                        <textarea class="admin-form-input admin-form-textarea" id="productDescription"
+                            rows="3"></textarea>
+                    </div>
+
+                    <!-- Image Upload -->
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Imágenes</label>
+                        <div class="admin-image-upload" id="imageUploadArea">
+                            <input type="file" id="imageInput" accept="image/*" multiple>
+                            <div class="admin-image-upload-icon">📷</div>
+                            <p class="admin-image-upload-text">
+                                Arrastra imágenes aquí o <span>haz clic para seleccionar</span>
+                            </p>
+                        </div>
+                        <div class="admin-image-preview" id="imagePreview"></div>
+                    </div>
+
+                    <!-- Options -->
+                    <div class="admin-form-group">
+                        <label class="admin-form-label">Opciones del producto (ej: tallas, colores)</label>
+                        <div id="optionsContainer">
+                            <!-- Opciones dinámicas -->
+                        </div>
+                        <button type="button" class="admin-btn admin-btn-secondary mt-md" id="addOptionBtn">
+                            + Agregar opción
+                        </button>
+                    </div>
+
+                    <div class="admin-form-group">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="productFeatured">
+                            <span style="color: var(--admin-text);">Producto destacado (aparece en la página
+                                principal)</span>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="admin-modal-footer">
+                <button type="button" class="admin-btn admin-btn-secondary" id="cancelBtn">Cancelar</button>
+                <button type="submit" form="productForm" class="admin-btn admin-btn-primary">Guardar Producto</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/storage.js"></script>
+    <script>
+        let editingProduct = null;
+        let productImages = [];
+
+        document.addEventListener('DOMContentLoaded', function () {
+            if (!KIG.Auth.isLoggedIn()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            loadProducts();
+            loadCategoryFilters();
+            setupEventListeners();
+            setupLogout();
+            checkUrlAction();
+        });
+
+        function checkUrlAction() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('action') === 'new') {
+                openModal();
+            }
+        }
+
+        function loadProducts(categoryFilter = 'all') {
+            let products = KIG.Products.getAll();
+
+            if (categoryFilter !== 'all') {
+                products = products.filter(p => p.category === categoryFilter);
+            }
+
+            const tbody = document.getElementById('productsTable');
+            const defaultImage = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50"%3E%3Crect fill="%231a1a1a" width="50" height="50"/%3E%3C/svg%3E';
+
+            document.getElementById('productCount').textContent = products.length;
+
+            if (products.length === 0) {
+                tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 40px; color: var(--admin-text-muted);">
+              No hay productos. <a href="#" onclick="openModal(); return false;" style="color: var(--color-primary);">Crear uno nuevo</a>
+            </td>
+          </tr>
+        `;
+                return;
+            }
+
+            tbody.innerHTML = products.map(product => {
+                const category = KIG.Collections.getBySlug(product.category);
+                return `
+          <tr>
+            <td>
+              <img src="${product.images[0] || defaultImage}" alt="" class="admin-table-image">
+            </td>
+            <td>
+              <strong>${product.name}</strong>
+            </td>
+            <td>${category ? category.name : product.category}</td>
+            <td>${KIG.formatPrice(product.basePrice)}</td>
+            <td>
+              <span class="badge ${product.active ? 'badge-paid' : 'badge-cancelled'}">
+                ${product.active ? 'Activo' : 'Inactivo'}
+              </span>
+            </td>
+            <td>
+              <button class="admin-btn admin-btn-icon" onclick="editProduct('${product.id}')" title="Editar">✏️</button>
+              <button class="admin-btn admin-btn-icon" onclick="deleteProduct('${product.id}')" title="Eliminar">🗑️</button>
+            </td>
+          </tr>
+        `;
+            }).join('');
+        }
+
+        function loadCategoryFilters() {
+            const select = document.getElementById('categoryFilter');
+            const categories = KIG.Collections.getAll();
+
+            select.innerHTML = `
+        <option value="all">Todas las categorías</option>
+        ${categories.map(c => `<option value="${c.slug}">${c.name}</option>`).join('')}
+      `;
+
+            // También para el modal
+            const categorySelect = document.getElementById('productCategory');
+            categorySelect.innerHTML = categories.map(c =>
+                `<option value="${c.slug}">${c.name}</option>`
+            ).join('');
+        }
+
+        function setupEventListeners() {
+            // Abrir modal
+            document.getElementById('addProductBtn').addEventListener('click', () => openModal());
+
+            // Cerrar modal
+            document.getElementById('closeModal').addEventListener('click', closeModal);
+            document.getElementById('cancelBtn').addEventListener('click', closeModal);
+            document.getElementById('productModal').addEventListener('click', (e) => {
+                if (e.target === e.currentTarget) closeModal();
+            });
+
+            // Filtro de categoría
+            document.getElementById('categoryFilter').addEventListener('change', (e) => {
+                loadProducts(e.target.value);
+            });
+
+            // Formulario
+            document.getElementById('productForm').addEventListener('submit', saveProduct);
+
+            // Imagen upload
+            const imageInput = document.getElementById('imageInput');
+            const uploadArea = document.getElementById('imageUploadArea');
+
+            uploadArea.addEventListener('click', () => imageInput.click());
+            imageInput.addEventListener('change', handleImageSelect);
+
+            uploadArea.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = 'var(--color-primary)';
+            });
+            uploadArea.addEventListener('dragleave', () => {
+                uploadArea.style.borderColor = '';
+            });
+            uploadArea.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadArea.style.borderColor = '';
+                handleImageFiles(e.dataTransfer.files);
+            });
+
+            // Agregar opción
+            document.getElementById('addOptionBtn').addEventListener('click', addOptionRow);
+        }
+
+        function openModal(product = null) {
+            editingProduct = product;
+            productImages = [];
+
+            const modal = document.getElementById('productModal');
+            const form = document.getElementById('productForm');
+
+            document.getElementById('modalTitle').textContent = product ? 'Editar Producto' : 'Nuevo Producto';
+            form.reset();
+            document.getElementById('optionsContainer').innerHTML = '';
+            document.getElementById('imagePreview').innerHTML = '';
+
+            if (product) {
+                document.getElementById('productId').value = product.id;
+                document.getElementById('productName').value = product.name;
+                document.getElementById('productCategory').value = product.category;
+                document.getElementById('productPrice').value = product.basePrice;
+                document.getElementById('productDescription').value = product.description || '';
+                document.getElementById('productActive').value = product.active.toString();
+                document.getElementById('productFeatured').checked = product.featured || false;
+
+                // Cargar imágenes existentes
+                productImages = [...(product.images || [])];
+                renderImagePreviews();
+
+                // Cargar opciones
+                if (product.options) {
+                    Object.entries(product.options).forEach(([key, values]) => {
+                        addOptionRow(key, values.join(', '));
+                    });
+                }
+            }
+
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('active');
+            editingProduct = null;
+            productImages = [];
+        }
+
+        function handleImageSelect(e) {
+            handleImageFiles(e.target.files);
+        }
+
+        function handleImageFiles(files) {
+            Array.from(files).forEach(file => {
+                if (!file.type.startsWith('image/')) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    // Comprimir imagen
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const maxSize = 800;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > maxSize || height > maxSize) {
+                            if (width > height) {
+                                height = (height / width) * maxSize;
+                                width = maxSize;
+                            } else {
+                                width = (width / height) * maxSize;
+                                height = maxSize;
+                            }
+                        }
+
+                        canvas.width = width;
+                        canvas.height = height;
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+
+                        const base64 = canvas.toDataURL('image/jpeg', 0.7);
+                        productImages.push(base64);
+                        renderImagePreviews();
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function renderImagePreviews() {
+            const container = document.getElementById('imagePreview');
+            container.innerHTML = productImages.map((img, i) => `
+        <div class="admin-image-preview-item">
+          <img src="${img}" alt="Preview ${i}">
+          <button type="button" class="admin-image-preview-remove" onclick="removeImage(${i})">×</button>
+        </div>
+      `).join('');
+        }
+
+        function removeImage(index) {
+            productImages.splice(index, 1);
+            renderImagePreviews();
+        }
+
+        function addOptionRow(name = '', values = '') {
+            const container = document.getElementById('optionsContainer');
+            const row = document.createElement('div');
+            row.className = 'admin-form-row';
+            row.style.marginBottom = '10px';
+            row.innerHTML = `
+        <div class="admin-form-group" style="flex: 1;">
+          <input type="text" class="admin-form-input option-name" placeholder="Nombre (ej: Medida)" value="${name}">
+        </div>
+        <div class="admin-form-group" style="flex: 2;">
+          <input type="text" class="admin-form-input option-values" placeholder="Valores separados por coma (ej: 45cm, 50cm, 55cm)" value="${values}">
+        </div>
+        <button type="button" class="admin-btn admin-btn-danger" onclick="this.parentElement.remove()">×</button>
+      `;
+            container.appendChild(row);
+        }
+
+        function saveProduct(e) {
+            e.preventDefault();
+
+            // Recopilar opciones
+            const options = {};
+            document.querySelectorAll('#optionsContainer .admin-form-row').forEach(row => {
+                const name = row.querySelector('.option-name').value.trim().toLowerCase();
+                const values = row.querySelector('.option-values').value.trim();
+                if (name && values) {
+                    options[name] = values.split(',').map(v => v.trim()).filter(v => v);
+                }
+            });
+
+            const productData = {
+                name: document.getElementById('productName').value,
+                category: document.getElementById('productCategory').value,
+                basePrice: parseFloat(document.getElementById('productPrice').value),
+                description: document.getElementById('productDescription').value,
+                active: document.getElementById('productActive').value === 'true',
+                featured: document.getElementById('productFeatured').checked,
+                images: productImages,
+                options
+            };
+
+            const productId = document.getElementById('productId').value;
+
+            if (productId) {
+                KIG.Products.update(productId, productData);
+            } else {
+                KIG.Products.create(productData);
+            }
+
+            closeModal();
+            loadProducts();
+        }
+
+        function editProduct(id) {
+            const product = KIG.Products.getById(id);
+            if (product) {
+                openModal(product);
+            }
+        }
+
+        function deleteProduct(id) {
+            if (confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')) {
+                KIG.Products.delete(id);
+                loadProducts();
+            }
+        }
+
+        function setupLogout() {
+            document.getElementById('logoutBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                if (confirm('¿Cerrar sesión?')) {
+                    KIG.Auth.logout();
+                    window.location.href = 'login.html';
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>

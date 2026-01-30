@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="King Ice Gold - Joyería de alta calidad. Cadenas, anillos, aretes y más en oro 10k y 14k. Envíos asegurados a todo México.">
+  <title>King Ice Gold | Joyería Premium</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+  <!-- Top Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <div class="top-bar-message">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+        Envíos asegurados contra robo y extravío
+      </div>
+      <div class="top-bar-links">
+        <a href="#">Servicio al cliente</a>
+        <span style="margin: 0 8px;">•</span>
+        <a href="#">Boutique</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-content">
+      <div class="menu-toggle" id="menuToggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+
+      <a href="index.html" class="logo">KING <span>ICE</span> GOLD</a>
+
+      <nav class="nav-main">
+        <a href="collection.html">Colección</a>
+        <a href="about.html">Sobre Nosotros</a>
+      </nav>
+
+      <div class="header-icons">
+        <a href="#" class="header-icon" id="searchIcon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.3-4.3"></path>
+          </svg>
+        </a>
+        <a href="cart.html" class="header-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+            <path d="M3 6h18"></path>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+          <span class="cart-count" style="display: none;">0</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Categories Nav -->
+  <nav class="nav-categories">
+    <div class="container">
+      <ul id="categoriesNav">
+        <!-- Se llena dinámicamente -->
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" style="position: relative; overflow: hidden;">
+    <div class="hero-bg-image"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/hero.png') center center / cover no-repeat; opacity: 0.6;">
+    </div>
+    <div class="hero-bg-gradient"
+      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 50%, rgba(0,0,0,0.7) 100%);">
+    </div>
+    <div class="hero-content" style="position: relative; z-index: 2;">
+      <h1 class="hero-title">KING ICE GOLD</h1>
+      <p style="color: var(--color-text-muted); margin-bottom: 2rem; font-size: 1.1rem;">Joyería de Oro Premium</p>
+      <a href="collection.html" class="btn btn-outline btn-lg">VER COLECCIÓN</a>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="section" style="background-color: var(--color-bg-gray);">
+    <div class="container">
+      <h2 class="text-center mb-xl" style="font-style: italic;">MÁS VENDIDOS</h2>
+      <div class="products-grid" id="featuredProducts">
+        <!-- Se llena dinámicamente -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories Showcase -->
+  <section class="section">
+    <div class="container">
+      <h2 class="text-center mb-xl" style="font-style: italic;">CATEGORÍAS</h2>
+      <div class="grid grid-3" id="categoriesShowcase">
+        <!-- Se llena dinámicamente -->
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section class="section" style="background-color: var(--color-bg-dark); color: var(--color-text-light);">
+    <div class="container text-center">
+      <h2 class="mb-lg" style="font-style: italic;">SOBRE NOSOTROS</h2>
+      <p style="max-width: 700px; margin: 0 auto; color: var(--color-text-muted);">
+        En <strong style="color: var(--color-primary);">King Ice Gold</strong> nos especializamos en joyería de la más
+        alta calidad.
+        Cada pieza está elaborada con oro 10k y 14k, garantizando elegancia y durabilidad.
+        Ofrecemos certificado de autenticidad y envíos asegurados a todo México.
+      </p>
+      <div class="mt-xl">
+        <a href="collection.html" class="btn btn-primary">EXPLORAR COLECCIÓN</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Badges -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-4 text-center">
+        <div>
+          <div style="margin-bottom: 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+              viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg></div>
+          <h4>Envío Asegurado</h4>
+          <p class="text-muted" style="font-size: 0.85rem;">Contra robo y extravío</p>
+        </div>
+        <div>
+          <div style="margin-bottom: 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+              viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+              <polyline points="14 2 14 8 20 8" />
+              <path d="m9 15 2 2 4-4" />
+            </svg></div>
+          <h4>Certificado</h4>
+          <p class="text-muted" style="font-size: 0.85rem;">Autenticidad garantizada</p>
+        </div>
+        <div>
+          <div style="margin-bottom: 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+              viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13" rx="2" />
+              <path d="M16 8h4l3 3v5a2 2 0 0 1-2 2h-5" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" />
+            </svg></div>
+          <h4>Entrega Rápida</h4>
+          <p class="text-muted" style="font-size: 0.85rem;">4-5 días hábiles</p>
+        </div>
+        <div>
+          <div style="margin-bottom: 0.5rem;"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"
+              viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M6 3l6 3 6-3v13l-6 3-6-3V3z" />
+              <path d="M12 6v13" />
+              <path d="M6 16l6 3" />
+              <path d="M18 16l-6 3" />
+            </svg></div>
+          <h4>Oro Garantizado</h4>
+          <p class="text-muted" style="font-size: 0.85rem;">10k y 14k auténtico</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>King Ice Gold</h4>
+          <p style="color: var(--color-text-muted); font-size: 0.85rem;">
+            Joyería de alta calidad con envíos asegurados a todo México.
+          </p>
+        </div>
+        <div class="footer-section">
+          <h4>Colección</h4>
+          <ul id="footerCategories">
+            <!-- Se llena dinámicamente -->
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Ayuda</h4>
+          <ul>
+            <li><a href="#">Preguntas frecuentes</a></li>
+            <li><a href="#">Envíos y entregas</a></li>
+            <li><a href="#">Políticas de devolución</a></li>
+            <li><a href="#">Contacto</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contacto</h4>
+          <ul>
+            <li><a href="mailto:contacto@kingicegold.com">contacto@kingicegold.com</a></li>
+            <li><a href="tel:+525512345678">+52 55 1234 5678</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">
+          <span id="adminAccess">© 2026 King Ice Gold.</span> Todos los derechos reservados.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- WhatsApp Button -->
+  <a href="https://wa.me/525512345678?text=Hola,%20me%20interesa%20una%20joya" target="_blank" class="whatsapp-btn">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+    </svg>
+  </a>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-close" id="mobileMenuClose">&times;</div>
+    <nav id="mobileMenuNav">
+      <!-- Se llena dinámicamente -->
+    </nav>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/storage.js"></script>
+  <script src="js/main.js"></script>
+</body>
+
+</html>

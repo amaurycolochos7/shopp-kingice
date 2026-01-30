@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Completa tu compra - King Ice Gold">
+    <title>Checkout | King Ice Gold</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+    <!-- Header Simplificado -->
+    <header class="header" style="border-bottom: 1px solid #eee;">
+        <div class="container header-content" style="justify-content: center;">
+            <a href="index.html" class="logo">KING <span>ICE</span> GOLD</a>
+        </div>
+    </header>
+
+    <!-- Checkout Page -->
+    <main class="checkout-page">
+        <div class="container">
+            <div class="checkout-layout">
+                <!-- Form Column -->
+                <div class="checkout-form">
+                    <form id="checkoutForm">
+                        <!-- Contact Info -->
+                        <div class="checkout-section">
+                            <h2 class="checkout-section-title">Información de Contacto</h2>
+                            <div class="form-group">
+                                <label class="form-label" for="email">Correo electrónico *</label>
+                                <input type="email" class="form-input" id="email" name="email" required
+                                    placeholder="tu@email.com">
+                                <div class="form-error" id="emailError"></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Teléfono (WhatsApp) *</label>
+                                <input type="tel" class="form-input" id="phone" name="phone" required
+                                    placeholder="55 1234 5678">
+                                <div class="form-error" id="phoneError"></div>
+                            </div>
+                        </div>
+
+                        <!-- Personal Info -->
+                        <div class="checkout-section">
+                            <h2 class="checkout-section-title">Datos Personales</h2>
+                            <div class="form-group">
+                                <label class="form-label" for="name">Nombre completo *</label>
+                                <input type="text" class="form-input" id="name" name="name" required
+                                    placeholder="Juan Pérez García">
+                                <div class="form-error" id="nameError"></div>
+                            </div>
+                        </div>
+
+                        <!-- Shipping Address -->
+                        <div class="checkout-section">
+                            <h2 class="checkout-section-title">Dirección de Envío</h2>
+                            <div class="form-group">
+                                <label class="form-label" for="street">Calle y número *</label>
+                                <input type="text" class="form-input" id="street" name="street" required
+                                    placeholder="Av. Insurgentes Sur #123">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="colony">Colonia *</label>
+                                    <input type="text" class="form-input" id="colony" name="colony" required
+                                        placeholder="Del Valle">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="zip">Código Postal *</label>
+                                    <input type="text" class="form-input" id="zip" name="zip" required
+                                        placeholder="03100" maxlength="5">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label class="form-label" for="city">Ciudad *</label>
+                                    <input type="text" class="form-input" id="city" name="city" required
+                                        placeholder="Ciudad de México">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="state">Estado *</label>
+                                    <select class="form-input" id="state" name="state" required>
+                                        <option value="">Seleccionar...</option>
+                                        <option value="Aguascalientes">Aguascalientes</option>
+                                        <option value="Baja California">Baja California</option>
+                                        <option value="Baja California Sur">Baja California Sur</option>
+                                        <option value="Campeche">Campeche</option>
+                                        <option value="Chiapas">Chiapas</option>
+                                        <option value="Chihuahua">Chihuahua</option>
+                                        <option value="Ciudad de México">Ciudad de México</option>
+                                        <option value="Coahuila">Coahuila</option>
+                                        <option value="Colima">Colima</option>
+                                        <option value="Durango">Durango</option>
+                                        <option value="Estado de México">Estado de México</option>
+                                        <option value="Guanajuato">Guanajuato</option>
+                                        <option value="Guerrero">Guerrero</option>
+                                        <option value="Hidalgo">Hidalgo</option>
+                                        <option value="Jalisco">Jalisco</option>
+                                        <option value="Michoacán">Michoacán</option>
+                                        <option value="Morelos">Morelos</option>
+                                        <option value="Nayarit">Nayarit</option>
+                                        <option value="Nuevo León">Nuevo León</option>
+                                        <option value="Oaxaca">Oaxaca</option>
+                                        <option value="Puebla">Puebla</option>
+                                        <option value="Querétaro">Querétaro</option>
+                                        <option value="Quintana Roo">Quintana Roo</option>
+                                        <option value="San Luis Potosí">San Luis Potosí</option>
+                                        <option value="Sinaloa">Sinaloa</option>
+                                        <option value="Sonora">Sonora</option>
+                                        <option value="Tabasco">Tabasco</option>
+                                        <option value="Tamaulipas">Tamaulipas</option>
+                                        <option value="Tlaxcala">Tlaxcala</option>
+                                        <option value="Veracruz">Veracruz</option>
+                                        <option value="Yucatán">Yucatán</option>
+                                        <option value="Zacatecas">Zacatecas</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="references">Referencias adicionales (opcional)</label>
+                                <textarea class="form-input" id="references" name="references" rows="2"
+                                    placeholder="Entre calles, color de casa, etc."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Payment Method -->
+                        <div class="checkout-section">
+                            <h2 class="checkout-section-title">Método de Pago</h2>
+                            <label class="radio-option selected">
+                                <input type="radio" name="payment" value="oxxo" checked>
+                                <div class="radio-option-content">
+                                    <h4>💵 Depósito / Pago en OXXO</h4>
+                                    <p>Al confirmar tu pedido, te enviaremos la referencia de pago por WhatsApp para
+                                        realizar tu depósito en OXXO.</p>
+                                </div>
+                            </label>
+                        </div>
+
+                        <!-- Submit Button (Mobile) -->
+                        <button type="submit" class="btn btn-primary btn-lg btn-block" style="display: none;"
+                            id="submitBtnMobile">
+                            CONFIRMAR PEDIDO
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Order Summary -->
+                <div>
+                    <div class="order-summary">
+                        <h3 class="order-summary-title">Resumen del Pedido</h3>
+
+                        <div id="orderItems">
+                            <!-- Items dinámicos -->
+                        </div>
+
+                        <div class="order-totals">
+                            <div class="order-row">
+                                <span>Subtotal</span>
+                                <span id="orderSubtotal">$0.00</span>
+                            </div>
+                            <div class="order-row">
+                                <span>Envío</span>
+                                <span id="orderShipping">$150.00</span>
+                            </div>
+                            <div class="order-total">
+                                <span>Total</span>
+                                <span id="orderTotal">$0.00</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" form="checkoutForm" class="btn btn-primary btn-lg btn-block mt-lg"
+                            id="submitBtn">
+                            CONFIRMAR PEDIDO
+                        </button>
+
+                        <p
+                            style="font-size: 0.75rem; color: var(--color-text-muted); text-align: center; margin-top: var(--spacing-md);">
+                            Al confirmar, aceptas nuestros términos y condiciones.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Simple -->
+    <footer
+        style="padding: var(--spacing-xl) 0; background-color: var(--color-bg-gray); margin-top: var(--spacing-2xl);">
+        <div class="container text-center">
+            <p style="font-size: 0.8rem; color: var(--color-text-muted);">
+                © 2026 King Ice Gold. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/storage.js"></script>
+    <script>
+        const SHIPPING_COST = 150;
+        let cart = [];
+        let totals = {};
+
+        document.addEventListener('DOMContentLoaded', function () {
+            loadCart();
+            setupForm();
+        });
+
+        function loadCart() {
+            cart = KIG.Cart.get();
+
+            if (cart.length === 0) {
+                window.location.href = 'cart.html';
+                return;
+            }
+
+            renderOrderItems();
+            calculateTotals();
+        }
+
+        function renderOrderItems() {
+            const container = document.getElementById('orderItems');
+            const defaultImage = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60"%3E%3Crect fill="%231a1a1a" width="60" height="60"/%3E%3C/svg%3E';
+
+            container.innerHTML = cart.map(item => {
+                const optionsText = Object.entries(item.options || {})
+                    .map(([k, v]) => `${v}`)
+                    .join(', ');
+
+                return `
+          <div class="order-item">
+            <div class="order-item-image">
+              <img src="${item.image || defaultImage}" alt="${item.name}">
+            </div>
+            <div class="order-item-details">
+              <p class="order-item-name">${item.name}</p>
+              <p class="order-item-options">${optionsText || ''} × ${item.quantity}</p>
+            </div>
+            <p class="order-item-price">${KIG.formatPrice(item.price * item.quantity)}</p>
+          </div>
+        `;
+            }).join('');
+        }
+
+        function calculateTotals() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const shipping = SHIPPING_COST;
+            const total = subtotal + shipping;
+
+            totals = { subtotal, shipping, total };
+
+            document.getElementById('orderSubtotal').textContent = KIG.formatPrice(subtotal);
+            document.getElementById('orderShipping').textContent = KIG.formatPrice(shipping);
+            document.getElementById('orderTotal').textContent = KIG.formatPrice(total);
+        }
+
+        function setupForm() {
+            const form = document.getElementById('checkoutForm');
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                if (!validateForm()) return;
+
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="loader"></span> Procesando...';
+
+                // Simular procesamiento
+                await new Promise(resolve => setTimeout(resolve, 1500));
+
+                // Obtener datos del formulario
+                const formData = new FormData(form);
+                const customerData = {
+                    name: formData.get('name'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    street: formData.get('street'),
+                    colony: formData.get('colony'),
+                    city: formData.get('city'),
+                    state: formData.get('state'),
+                    zip: formData.get('zip'),
+                    references: formData.get('references') || ''
+                };
+
+                // Crear pedido
+                const order = KIG.Orders.create(customerData, cart, totals);
+
+                // Limpiar carrito
+                KIG.Cart.clear();
+
+                // Guardar número de pedido para la página de confirmación
+                sessionStorage.setItem('lastOrder', JSON.stringify(order));
+
+                // Redirigir a confirmación
+                window.location.href = 'confirmation.html';
+            });
+        }
+
+        function validateForm() {
+            let isValid = true;
+
+            // Email
+            const email = document.getElementById('email');
+            const emailError = document.getElementById('emailError');
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            if (!emailRegex.test(email.value)) {
+                email.classList.add('error');
+                emailError.textContent = 'Ingresa un correo válido';
+                isValid = false;
+            } else {
+                email.classList.remove('error');
+                emailError.textContent = '';
+            }
+
+            // Phone
+            const phone = document.getElementById('phone');
+            const phoneError = document.getElementById('phoneError');
+            const phoneClean = phone.value.replace(/\D/g, '');
+
+            if (phoneClean.length < 10) {
+                phone.classList.add('error');
+                phoneError.textContent = 'Ingresa un teléfono de 10 dígitos';
+                isValid = false;
+            } else {
+                phone.classList.remove('error');
+                phoneError.textContent = '';
+            }
+
+            // Name
+            const name = document.getElementById('name');
+            const nameError = document.getElementById('nameError');
+
+            if (name.value.trim().length < 5) {
+                name.classList.add('error');
+                nameError.textContent = 'Ingresa tu nombre completo';
+                isValid = false;
+            } else {
+                name.classList.remove('error');
+                nameError.textContent = '';
+            }
+
+            return isValid;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Confirmación de pedido - King Ice Gold">
+    <title>Pedido Confirmado | King Ice Gold</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+    <!-- Header Simplificado -->
+    <header class="header" style="border-bottom: 1px solid #eee;">
+        <div class="container header-content" style="justify-content: center;">
+            <a href="index.html" class="logo">KING <span>ICE</span> GOLD</a>
+        </div>
+    </header>
+
+    <!-- Confirmation Page -->
+    <main class="confirmation-page">
+        <div class="container">
+            <!-- Success Icon -->
+            <div class="confirmation-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6 9 17l-5-5"></path>
+                </svg>
+            </div>
+
+            <h1 class="confirmation-title">¡Pedido Confirmado!</h1>
+            <p class="order-number" id="orderNumber">Pedido #ORD-00000000-000</p>
+            <p class="text-muted mb-xl">Te hemos enviado los detalles a tu correo electrónico.</p>
+
+            <!-- Payment Instructions -->
+            <div class="payment-instructions">
+                <h3>📋 Instrucciones para realizar tu pago en OXXO</h3>
+                <ol>
+                    <li>Acude a cualquier tienda <strong>OXXO</strong></li>
+                    <li>Indica que deseas hacer un <strong>depósito en efectivo</strong></li>
+                    <li>Proporciona la siguiente referencia de pago:
+                        <div
+                            style="background: #fff; padding: 15px; margin: 10px 0; border-radius: 8px; text-align: center;">
+                            <strong style="font-size: 1.25rem; letter-spacing: 0.1em;"
+                                id="paymentRef">KING-ICE-XXXX</strong>
+                        </div>
+                    </li>
+                    <li>Realiza el pago por el monto total: <strong id="paymentAmount">$0.00</strong></li>
+                    <li>Guarda tu comprobante de pago</li>
+                </ol>
+
+                <div style="background: rgba(212, 175, 55, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <p style="margin: 0; font-size: 0.9rem;">
+                        💬 <strong>Te contactaremos por WhatsApp</strong> al número que proporcionaste para confirmar tu
+                        depósito y darte seguimiento a tu envío.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div style="max-width: 600px; margin: var(--spacing-xl) auto; text-align: left;">
+                <h3
+                    style="font-family: var(--font-body); font-size: 1rem; font-weight: 600; text-transform: uppercase; margin-bottom: var(--spacing-lg);">
+                    Resumen de tu pedido
+                </h3>
+
+                <div id="orderSummary"
+                    style="background: var(--color-bg-gray); padding: var(--spacing-lg); border-radius: var(--border-radius-md);">
+                    <!-- Contenido dinámico -->
+                </div>
+
+                <div
+                    style="margin-top: var(--spacing-lg); padding: var(--spacing-lg); background: var(--color-bg-gray); border-radius: var(--border-radius-md);">
+                    <h4
+                        style="font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; margin-bottom: var(--spacing-md);">
+                        Dirección de envío
+                    </h4>
+                    <p id="shippingAddress" style="font-size: 0.9rem; color: var(--color-text-muted);"></p>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div style="margin-top: var(--spacing-2xl);">
+                <a href="index.html" class="btn btn-primary">VOLVER AL INICIO</a>
+                <a href="collection.html" class="btn btn-outline"
+                    style="margin-left: var(--spacing-md); border-color: var(--color-text-dark); color: var(--color-text-dark);">
+                    SEGUIR COMPRANDO
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Simple -->
+    <footer
+        style="padding: var(--spacing-xl) 0; background-color: var(--color-bg-gray); margin-top: var(--spacing-3xl);">
+        <div class="container text-center">
+            <p style="font-size: 0.8rem; color: var(--color-text-muted);">
+                ¿Tienes dudas? Contáctanos por
+                <a href="https://wa.me/525512345678" style="color: var(--color-primary);">WhatsApp</a>
+            </p>
+            <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: var(--spacing-sm);">
+                © 2026 King Ice Gold. Todos los derechos reservados.
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/storage.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            loadOrder();
+        });
+
+        function loadOrder() {
+            const orderData = sessionStorage.getItem('lastOrder');
+
+            if (!orderData) {
+                // Si no hay pedido, redirigir al inicio
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const order = JSON.parse(orderData);
+            renderOrder(order);
+
+            // Limpiar después de mostrar
+            sessionStorage.removeItem('lastOrder');
+        }
+
+        function renderOrder(order) {
+            // Número de pedido
+            document.getElementById('orderNumber').textContent = `Pedido ${order.orderNumber}`;
+
+            // Referencia de pago (últimos 4 caracteres del ID)
+            const ref = 'KING-ICE-' + order.id.slice(-6).toUpperCase();
+            document.getElementById('paymentRef').textContent = ref;
+
+            // Monto a pagar
+            document.getElementById('paymentAmount').textContent = KIG.formatPrice(order.total);
+
+            // Resumen del pedido
+            const summaryHtml = `
+        ${order.items.map(item => {
+                const options = Object.values(item.options || {}).join(', ');
+                return `
+            <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd;">
+              <div>
+                <strong>${item.name}</strong>
+                ${options ? `<br><span style="font-size: 0.8rem; color: var(--color-text-muted);">${options}</span>` : ''}
+                <br><span style="font-size: 0.8rem;">Cantidad: ${item.quantity}</span>
+              </div>
+              <span>${KIG.formatPrice(item.price * item.quantity)}</span>
+            </div>
+          `;
+            }).join('')}
+        <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+          <span>Subtotal</span>
+          <span>${KIG.formatPrice(order.subtotal)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+          <span>Envío</span>
+          <span>${KIG.formatPrice(order.shipping)}</span>
+        </div>
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-top: 2px solid #ddd; font-weight: 600; font-size: 1.1rem;">
+          <span>Total</span>
+          <span>${KIG.formatPrice(order.total)}</span>
+        </div>
+      `;
+            document.getElementById('orderSummary').innerHTML = summaryHtml;
+
+            // Dirección de envío
+            const addr = order.customer.address;
+            document.getElementById('shippingAddress').innerHTML = `
+        <strong>${order.customer.name}</strong><br>
+        ${addr.street}<br>
+        ${addr.colony}, C.P. ${addr.zip}<br>
+        ${addr.city}, ${addr.state}<br>
+        <br>
+        📧 ${order.customer.email}<br>
+        📱 ${order.customer.phone}
+        ${addr.references ? `<br><br><em>Referencias: ${addr.references}</em>` : ''}
+      `;
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,341 @@
+/* =====================================================
+   KING ICE GOLD - Estilos Responsive
+   ===================================================== */
+
+/* ==================== TABLET (max-width: 1024px) ==================== */
+@media (max-width: 1024px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    h2 {
+        font-size: 1.875rem;
+    }
+
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+
+    .nav-main {
+        display: none;
+    }
+
+    .nav-categories ul {
+        gap: var(--spacing-md);
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding: 0 var(--spacing-md);
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    .nav-categories ul::-webkit-scrollbar {
+        display: none;
+    }
+
+    .nav-categories a {
+        white-space: nowrap;
+    }
+
+    .hero {
+        height: 60vh;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        letter-spacing: 0.2em;
+    }
+
+    .product-layout {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-xl);
+    }
+
+    .checkout-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .order-summary {
+        position: static;
+    }
+
+    .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .grid-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ==================== MÓVIL (max-width: 768px) ==================== */
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.25rem;
+    }
+
+    .section {
+        padding: var(--spacing-2xl) 0;
+    }
+
+    /* Header móvil */
+    .top-bar-content {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .top-bar-links {
+        display: none;
+    }
+
+    .header-content {
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+    }
+
+    .logo {
+        font-size: 1.25rem;
+        order: 2;
+        flex: 1;
+        text-align: center;
+    }
+
+    .menu-toggle {
+        order: 1;
+        display: flex;
+    }
+
+    .header-icons {
+        order: 3;
+    }
+
+    /* Hero móvil */
+    .hero {
+        height: 50vh;
+        min-height: 400px;
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+        letter-spacing: 0.15em;
+    }
+
+    /* Productos */
+    .products-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-md);
+    }
+
+    .product-card-body {
+        padding: var(--spacing-md);
+    }
+
+    .product-card-title {
+        font-size: 0.8rem;
+    }
+
+    /* Página de producto */
+    .product-thumbnails {
+        overflow-x: auto;
+        padding-bottom: var(--spacing-sm);
+    }
+
+    .product-thumbnail {
+        width: 60px;
+        height: 60px;
+        flex-shrink: 0;
+    }
+
+    /* Carrito */
+    .cart-table {
+        display: block;
+    }
+
+    .cart-table thead {
+        display: none;
+    }
+
+    .cart-table tbody {
+        display: block;
+    }
+
+    .cart-table tr {
+        display: flex;
+        flex-wrap: wrap;
+        padding: var(--spacing-md) 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cart-table td {
+        border: none;
+        padding: var(--spacing-xs);
+    }
+
+    .cart-table td:first-child {
+        width: 80px;
+    }
+
+    .cart-table td:nth-child(2) {
+        flex: 1;
+    }
+
+    /* Checkout */
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    /* Footer */
+    .footer-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .footer-section {
+        margin-bottom: var(--spacing-xl);
+    }
+
+    /* WhatsApp */
+    .whatsapp-btn {
+        bottom: 20px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .whatsapp-btn svg {
+        width: 28px;
+        height: 28px;
+    }
+
+    /* Grids */
+    .grid-4,
+    .grid-3,
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ==================== MÓVIL PEQUEÑO (max-width: 480px) ==================== */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+
+    .btn {
+        padding: var(--spacing-sm) var(--spacing-md);
+        font-size: 0.8rem;
+    }
+
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .nav-categories ul {
+        gap: var(--spacing-sm);
+    }
+
+    .nav-categories a {
+        font-size: 0.7rem;
+    }
+}
+
+/* ==================== HAMBURGER MENU ==================== */
+.menu-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: var(--spacing-sm);
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--color-bg-dark);
+    transition: all var(--transition-fast);
+}
+
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Mobile menu overlay */
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: var(--z-modal);
+    padding: var(--spacing-3xl) var(--spacing-xl);
+}
+
+.mobile-menu.active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mobile-menu-close {
+    position: absolute;
+    top: var(--spacing-lg);
+    right: var(--spacing-lg);
+    color: var(--color-text-light);
+    font-size: 2rem;
+    cursor: pointer;
+}
+
+.mobile-menu nav {
+    text-align: center;
+}
+
+.mobile-menu nav a {
+    display: block;
+    font-size: 1.25rem;
+    color: var(--color-text-light);
+    padding: var(--spacing-md);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.mobile-menu nav a:hover {
+    color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex;
+    }
+}
