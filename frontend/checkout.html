@@ -264,36 +264,61 @@
 
         function setupForm() {
             const form = document.getElementById('checkoutForm');
+            const submitBtn = document.getElementById('submitBtn');
+            const submitBtnMobile = document.getElementById('submitBtnMobile');
+
+            // Change button text to reflect WhatsApp flow
+            submitBtn.innerHTML = 'CONFIRMAR POR WHATSAPP <i class="fab fa-whatsapp"></i>';
+            submitBtnMobile.innerHTML = 'CONFIRMAR POR WHATSAPP <i class="fab fa-whatsapp"></i>';
+            submitBtn.style.backgroundColor = '#25D366'; // WhatsApp color
+            submitBtnMobile.style.backgroundColor = '#25D366';
+
+            // Add trust text below button
+            const trustText = document.createElement('p');
+            trustText.style.fontSize = '0.85rem';
+            trustText.style.color = '#555';
+            trustText.style.textAlign = 'center';
+            trustText.style.marginTop = '10px';
+            trustText.style.fontWeight = '500';
+            trustText.innerHTML = '🛡️ Este pedido se confirma y coordina directamente vía WhatsApp.';
+            submitBtn.parentNode.insertBefore(trustText, submitBtn.nextSibling);
+
 
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
 
                 if (!validateForm()) return;
 
-                const submitBtn = document.getElementById('submitBtn');
+                // Disable buttons to prevent double click
                 submitBtn.disabled = true;
-                submitBtn.innerHTML = '<span class="loader"></span> Procesando...';
+                submitBtnMobile.disabled = true;
+                submitBtn.innerHTML = '<span class="loader"></span> Generando pedido...';
+                submitBtnMobile.innerHTML = '<span class="loader"></span> Generando...';
 
-                // Simular procesamiento
-                await new Promise(resolve => setTimeout(resolve, 1500));
-
-                // Obtener datos del formulario
+                // Get form data
                 const formData = new FormData(form);
 
-                // Build order data for API
+                // Construct items list text for WhatsApp
+                const itemsListText = cart.map(item => {
+                    const opts = Object.values(item.options || {}).join(' ');
+                    return `- ${item.name} (${opts}) x${item.quantity}`;
+                }).join('\n');
+
+                const customerName = formData.get('name');
+                const customerPhone = formData.get('phone');
+
+                // Build Order Data
                 const orderData = {
                     customer: {
-                        name: formData.get('name'),
+                        name: customerName,
                         email: formData.get('email'),
-                        phone: formData.get('phone')
-                    },
-                    shipping_address: {
+                        phone: customerPhone,
                         street: formData.get('street'),
                         colony: formData.get('colony'),
                         city: formData.get('city'),
                         state: formData.get('state'),
                         zip_code: formData.get('zip'),
-                        references: formData.get('references') || ''
+                        address_references: formData.get('references') || ''
                     },
                     items: cart.map(item => ({
                         product_id: item.productId || item.id,
@@ -304,28 +329,67 @@
                     })),
                     subtotal: totals.subtotal,
                     shipping_cost: totals.shipping,
+                    discount: 0,
                     total: totals.total,
-                    payment_method: 'transfer'
+                    payment_method: 'whatsapp_pending',
+                    notes: 'Pedido iniciado vía web para confirmar en WhatsApp'
                 };
 
-                // Crear pedido via API
-                const order = await KIG.Orders.create(orderData);
+                // Generate WhatsApp Message Snapshot
+                const now = new Date().toLocaleString('es-MX', { dateStyle: 'short', timeStyle: 'short' });
+                const wsMessage = `Hola, quiero confirmar este pedido:
 
-                if (!order || order.error) {
+🧾 *Pedido Web*
+🕒 Fecha: ${now}
+
+📦 *Productos:*
+${itemsListText}
+
+💰 *Total: ${KIG.formatPrice(totals.total)}* (Envío incl.)
+
+👤 *Mis Datos:*
+Nombre: ${customerName}
+Teléfono: ${customerPhone}
+📍 Envío a: ${formData.get('city')}, ${formData.get('state')}
+
+🌐 Sitio: kingicegold.com.mx
+
+Quedo atento(a) para confirmar disponibilidad y cuenta de pago.`;
+
+                // Add snapshot to order data
+                orderData.whatsapp_message = wsMessage;
+
+                try {
+                    // Create Order in Backend
+                    const result = await API.Orders.create(orderData);
+
+                    if (!result.success) {
+                        throw new Error(result.error || 'Error al crear pedido');
+                    }
+
+                    const order = result.data.order;
+                    const orderNumber = order.order_number;
+
+                    // Finalize message with real Order Number
+                    const finalMessage = wsMessage.replace('Pedido Web', `Pedido: ${orderNumber}`);
+
+                    // Clear cart
+                    KIG.Cart.clear();
+
+                    // Redirect to WhatsApp
+                    const phone = '5213324749328'; // Replace with real admin number if different
+                    const url = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(finalMessage)}`;
+
+                    window.location.href = url;
+
+                } catch (err) {
+                    console.error('Error creating order:', err);
                     submitBtn.disabled = false;
-                    submitBtn.innerHTML = 'Confirmar Pedido';
-                    alert('Error al crear el pedido. Intenta de nuevo.');
-                    return;
+                    submitBtnMobile.disabled = false;
+                    submitBtn.innerHTML = 'CONFIRMAR POR WHATSAPP <i class="fab fa-whatsapp"></i>';
+                    submitBtnMobile.innerHTML = 'CONFIRMAR POR WHATSAPP <i class="fab fa-whatsapp"></i>';
+                    alert('Hubo un error al generar el pedido. Por favor intenta de nuevo.');
                 }
-
-                // Limpiar carrito
-                KIG.Cart.clear();
-
-                // Guardar número de pedido para la página de confirmación
-                sessionStorage.setItem('lastOrder', JSON.stringify(order));
-
-                // Redirigir a confirmación
-                window.location.href = 'confirmation.html';
             });
         }
 

@@ -117,6 +117,7 @@ const API = {
 
     Orders: {
         async create(orderData) {
+            // orderData now includes { customer, items, ..., whatsapp_message }
             return API._request('POST', '/orders', orderData);
         },
 

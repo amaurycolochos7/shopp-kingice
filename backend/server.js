@@ -96,6 +96,25 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// DEBUG ROUTE (Temporary)
+app.get('/api/debug-config', (req, res) => {
+  if (req.query.key !== 'KingIceDebug2026') {
+    return res.status(403).json({ error: 'Forbidden' });
+  }
+
+  const dbUrl = process.env.DATABASE_URL || '';
+  const maskedDbUrl = dbUrl.replace(/:[^:@]+@/, ':***@');
+
+  res.json({
+    node_env: process.env.NODE_ENV,
+    port: process.env.PORT,
+    db_url_masked: maskedDbUrl,
+    db_host: process.env.DB_HOST,
+    frontend_url: process.env.FRONTEND_URL,
+    timestamp: new Date().toISOString()
+  });
+});
+
 // =====================================================
 // FRONTEND FALLBACK — SPA-style routing
 // =====================================================

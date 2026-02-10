@@ -158,16 +158,16 @@
     <script src="../js/storage.js"></script>
     <script>
         const STATUS_LABELS = {
-            pending: 'Pendiente',
-            paid: 'Pagado',
+            sent_to_whatsapp: 'Por Confirmar',
+            confirmed: 'Confirmado',
             shipped: 'Enviado',
             delivered: 'Entregado',
             cancelled: 'Cancelado'
         };
 
         const STATUS_CLASSES = {
-            pending: 'badge-pending',
-            paid: 'badge-paid',
+            sent_to_whatsapp: 'badge-pending',
+            confirmed: 'badge-paid',
             shipped: 'badge-shipped',
             delivered: 'badge-delivered',
             cancelled: 'badge-cancelled'
@@ -178,6 +178,17 @@
                 window.location.href = 'login.html';
                 return;
             }
+
+            // Update filter options
+            const filterSelect = document.getElementById('statusFilter');
+            filterSelect.innerHTML = `
+                <option value="all">Todos los estados</option>
+                <option value="sent_to_whatsapp">Por Confirmar</option>
+                <option value="confirmed">Confirmados</option>
+                <option value="shipped">Enviados</option>
+                <option value="delivered">Entregados</option>
+                <option value="cancelled">Cancelados</option>
+            `;
 
             loadOrders();
             setupEventListeners();
@@ -231,10 +242,14 @@
                 const itemCount = order.item_count || (order.items && order.items.length) || 0;
                 const orderDate = order.created_at || order.createdAt;
 
+                // Handle legacy or unknown status
+                const badgeClass = STATUS_CLASSES[order.status] || 'badge-default';
+                const badgeLabel = STATUS_LABELS[order.status] || order.status;
+
                 return `
         <tr>
           <td>
-            <a href="#" onclick="viewOrder('${order.id}'); return false;" style="color: var(--color-primary);">
+            <a href="#" onclick="viewOrder('${order.id}'); return false;" style="font-weight:600; color: var(--color-primary);">
               ${orderNum}
             </a>
           </td>
@@ -245,9 +260,9 @@
           <td>${itemCount} producto(s)</td>
           <td>${KIG.formatPrice(order.total)}</td>
           <td>
-            <span class="badge ${STATUS_CLASSES[order.status]}">${STATUS_LABELS[order.status]}</span>
+            <span class="badge ${badgeClass}">${badgeLabel}</span>
           </td>
-          <td>${new Date(orderDate).toLocaleDateString('es-MX')}</td>
+          <td>${new Date(orderDate).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
           <td>
             <button class="admin-btn admin-btn-icon" onclick="viewOrder('${order.id}')" title="Ver detalles">👁️</button>
           </td>
@@ -299,6 +314,7 @@
             const items = order.items || [];
             const subtotal = order.subtotal || 0;
             const shippingCost = order.shipping_cost || order.shipping || 0;
+            const whatsappMessage = order.whatsapp_message || '';
 
             document.getElementById('orderDetails').innerHTML = `
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-lg);">
@@ -319,6 +335,13 @@
             </p>
           </div>
         </div>
+
+        ${whatsappMessage ? `
+        <div style="margin-top: var(--spacing-lg); background: #e6f7ea; padding: var(--spacing-md); border-radius: var(--border-radius-sm); border-left: 4px solid #25D366;">
+            <p style="font-size: 0.8rem; color: #075e54; margin-bottom: 5px;"><strong>Mensaje Original de WhatsApp:</strong></p>
+            <pre style="white-space: pre-wrap; font-family: inherit; font-size: 0.85rem; color: #128c7e; margin: 0;">${whatsappMessage}</pre>
+        </div>
+        ` : ''}
         
         <div style="margin-top: var(--spacing-lg);">
           <h4 style="color: var(--admin-text); font-size: 0.9rem; margin-bottom: var(--spacing-md);">Productos</h4>
@@ -372,12 +395,9 @@
         }
 
         async function updateOrderStatus(orderId, newStatus) {
-            const statuses = ['pending', 'paid', 'shipped', 'delivered', 'cancelled'];
-            const labels = ['Pendiente', 'Pagado', 'Enviado', 'Entregado', 'Cancelado'];
+            const label = STATUS_LABELS[newStatus];
 
-            const statusLabel = labels[statuses.indexOf(newStatus)];
-
-            if (confirm(`¿Cambiar estado a "${statusLabel}"?`)) {
+            if (confirm(`¿Cambiar estado a "${label}"?`)) {
                 await KIG.Orders.updateStatus(orderId, newStatus);
                 await viewOrder(orderId); // Refrescar modal
                 await loadOrders(document.getElementById('statusFilter').value);

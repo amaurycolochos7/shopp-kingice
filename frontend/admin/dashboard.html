@@ -254,7 +254,7 @@
     <script src="../js/api.js"></script>
     <script src="../js/storage.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('kig:ready', function () {
             // Verificar autenticación
             if (!KIG.Auth.isLoggedIn()) {
                 window.location.href = 'login.html';
@@ -266,63 +266,79 @@
         });
 
         async function loadDashboard() {
-            // Stats de pedidos (from API)
-            const orderStats = await KIG.Orders.getStats();
-            document.getElementById('statOrders').textContent = orderStats.totalOrders || orderStats.total || 0;
-            document.getElementById('statRevenue').textContent = KIG.formatPrice(orderStats.totalRevenue || orderStats.monthlyRevenue || 0);
-            document.getElementById('statCustomers').textContent = orderStats.totalCustomers || orderStats.uniqueCustomers || 0;
-            document.getElementById('statPending').textContent = orderStats.pendingOrders || orderStats.pending || 0;
+            try {
+                // Stats de pedidos (from API)
+                const response = await KIG.Orders.getStats();
+                const stats = response.stats; // API returns { stats: { ... } }
 
-            // Stats de productos (from cached data)
-            const products = KIG.Products.getAll();
-            const categories = KIG.Collections.getAll();
-            document.getElementById('totalProducts').textContent = orderStats.totalProducts || products.length;
-            document.getElementById('totalCategories').textContent = orderStats.totalCategories || categories.length;
-            document.getElementById('featuredProducts').textContent = products.filter(p => p.featured).length;
+                // Display Total Orders
+                document.getElementById('statOrders').textContent = stats.totalOrders || 0;
 
-            // Pedidos recientes
-            await loadRecentOrders();
+                // Display Revenue
+                document.getElementById('statRevenue').textContent = KIG.formatPrice(stats.totalRevenue || 0);
+
+                // Display Customers
+                document.getElementById('statCustomers').textContent = stats.totalCustomers || 0;
+
+                // Display Pending (Sent to WhatsApp)
+                // In new flow, 'sent_to_whatsapp' are the ones pending confirmation
+                const pendingCount = stats.ordersByStatus?.sent_to_whatsapp || 0;
+                document.getElementById('statPending').textContent = pendingCount;
+
+                // Stats de productos (from API stats directly if available, else cache)
+                document.getElementById('totalProducts').textContent = stats.totalProducts || 0;
+                document.getElementById('totalCategories').textContent = stats.totalCategories || 0;
+
+                // Featured count might still need local check if not in stats
+                const products = KIG.Products.getAll(); // Ensure this doesn't fail if empty
+                document.getElementById('featuredProducts').textContent = products.filter(p => p.featured).length;
+
+                // Pedidos recientes
+                await loadRecentOrders();
+            } catch (err) {
+                console.error("Error loading dashboard stats:", err);
+            }
         }
 
         async function loadRecentOrders() {
-            const orders = await KIG.Orders.getAll();
-            const recentOrders = orders.slice(0, 5);
-            const tbody = document.getElementById('recentOrders');
+            try {
+                // Fetch recent orders directly from API endpoint to ensure freshness
+                const response = await KIG.API._request('GET', '/dashboard/recent?limit=10');
+                const recentOrders = response.orders || [];
+                const tbody = document.getElementById('recentOrders');
 
-            if (recentOrders.length === 0) {
-                return;
+                if (recentOrders.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" style="text-align: center; padding: 40px; color: var(--admin-text-muted);">No hay pedidos aún</td></tr>`;
+                    return;
+                }
+
+                tbody.innerHTML = recentOrders.map(order => {
+                    const statusConfig = {
+                        'sent_to_whatsapp': { label: 'Por Confirmar', class: 'badge-pending' }, // Orange/Yellow
+                        'confirmed': { label: 'Confirmado', class: 'badge-paid' },    // Blue/Info
+                        'shipped': { label: 'Enviado', class: 'badge-shipped' }, // Purple
+                        'delivered': { label: 'Entregado', class: 'badge-delivered' }, // Green
+                        'cancelled': { label: 'Cancelado', class: 'badge-cancelled' }  // Red/Gray
+                    };
+
+                    const config = statusConfig[order.status] || { label: order.status, class: 'badge-default' };
+
+                    const customerName = order.customer ? order.customer.name : 'Cliente';
+                    const orderDate = order.created_at || order.createdAt;
+
+                    return `
+              <tr>
+                <td><a href="orders.html?id=${order.id}" style="font-weight:600; color: var(--color-primary);">${order.order_number}</a></td>
+                <td>${customerName}</td>
+                <td>${KIG.formatPrice(order.total)}</td>
+                <td><span class="badge ${config.class}">${config.label}</span></td>
+                <td>${new Date(orderDate).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
+              </tr>
+            `;
+                }).join('');
+            } catch (err) {
+                console.error("Error loading recent orders:", err);
             }
-
-            tbody.innerHTML = recentOrders.map(order => {
-                const statusClasses = {
-                    pending: 'badge-pending',
-                    paid: 'badge-paid',
-                    shipped: 'badge-shipped',
-                    delivered: 'badge-delivered',
-                    cancelled: 'badge-cancelled'
-                };
-                const statusLabels = {
-                    pending: 'Pendiente',
-                    paid: 'Pagado',
-                    shipped: 'Enviado',
-                    delivered: 'Entregado',
-                    cancelled: 'Cancelado'
-                };
-
-                const orderNum = order.order_number || order.orderNumber || order.id;
-                const customerName = order.customer_name || (order.customer && order.customer.name) || 'N/A';
-                const orderDate = order.created_at || order.createdAt;
-
-                return `
-          <tr>
-            <td><a href="orders.html?id=${order.id}" style="color: var(--color-primary);">${orderNum}</a></td>
-            <td>${customerName}</td>
-            <td>${KIG.formatPrice(order.total)}</td>
-            <td><span class="badge ${statusClasses[order.status]}">${statusLabels[order.status]}</span></td>
-            <td>${new Date(orderDate).toLocaleDateString('es-MX')}</td>
-          </tr>
-        `;
-            }).join('');
         }
 
         function setupLogout() {
