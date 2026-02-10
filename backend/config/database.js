@@ -4,7 +4,7 @@
 const { Pool } = require('pg');
 
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.DATABASE_URL ? process.env.DATABASE_URL.replace('postgres-transmit-solid-state-firewall-yq5oc1g', '187.77.11.79') : undefined,
     // Fallback to individual vars if DATABASE_URL not set
     host: process.env.DATABASE_URL ? undefined : (process.env.DB_HOST || 'localhost'),
     port: process.env.DATABASE_URL ? undefined : (process.env.DB_PORT || 5432),
