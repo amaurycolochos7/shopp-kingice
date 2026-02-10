@@ -175,6 +175,7 @@
         </div>
     </div>
 
+    <script src="../js/api.js"></script>
     <script src="../js/storage.js"></script>
     <script>
         let editingCategory = null;
@@ -298,22 +299,22 @@
             editingCategory = null;
         }
 
-        function saveCategory(e) {
+        async function saveCategory(e) {
             e.preventDefault();
 
             const categoryData = {
                 name: document.getElementById('categoryName').value,
                 slug: document.getElementById('categorySlug').value || document.getElementById('categoryName').value.toLowerCase().replace(/\s+/g, '-'),
-                order: parseInt(document.getElementById('categoryOrder').value) || 1,
+                display_order: parseInt(document.getElementById('categoryOrder').value) || 1,
                 active: document.getElementById('categoryActive').checked
             };
 
             const categoryId = document.getElementById('categoryId').value;
 
             if (categoryId) {
-                KIG.Collections.update(categoryId, categoryData);
+                await KIG.Collections.update(categoryId, categoryData);
             } else {
-                KIG.Collections.create(categoryData);
+                await KIG.Collections.create(categoryData);
             }
 
             closeModal();
@@ -327,10 +328,10 @@
             }
         }
 
-        function deleteCategory(id) {
+        async function deleteCategory(id) {
             const products = KIG.Products.getAll();
             const category = KIG.Collections.getById(id);
-            const productCount = products.filter(p => p.category === category.slug).length;
+            const productCount = products.filter(p => p.category === (category && category.slug)).length;
 
             if (productCount > 0) {
                 alert(`No se puede eliminar esta categoría porque tiene ${productCount} productos asociados. Primero elimina o reasigna los productos.`);
@@ -338,7 +339,7 @@
             }
 
             if (confirm('¿Eliminar esta categoría? Esta acción no se puede deshacer.')) {
-                KIG.Collections.delete(id);
+                await KIG.Collections.delete(id);
                 loadCategories();
             }
         }

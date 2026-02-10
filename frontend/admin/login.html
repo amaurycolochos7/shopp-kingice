@@ -52,6 +52,7 @@
         </div>
     </div>
 
+    <script src="../js/api.js"></script>
     <script src="../js/storage.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -68,13 +69,13 @@
             const form = document.getElementById('loginForm');
             const errorEl = document.getElementById('loginError');
 
-            form.addEventListener('submit', (e) => {
+            form.addEventListener('submit', async (e) => {
                 e.preventDefault();
 
                 const username = document.getElementById('username').value;
                 const password = document.getElementById('password').value;
 
-                const result = KIG.Auth.login(username, password);
+                const result = await KIG.Auth.login(username, password);
 
                 if (result.success) {
                     window.location.href = 'dashboard.html';

@@ -154,6 +154,7 @@
         </div>
     </div>
 
+    <script src="../js/api.js"></script>
     <script src="../js/storage.js"></script>
     <script>
         const STATUS_LABELS = {
@@ -199,10 +200,11 @@
             }
         }
 
-        function loadOrders(statusFilter = 'all') {
-            let orders = KIG.Orders.getAll().sort((a, b) =>
-                new Date(b.createdAt) - new Date(a.createdAt)
-            );
+        async function loadOrders(statusFilter = 'all') {
+            let orders = await KIG.Orders.getAll();
+
+            // Sort by date descending
+            orders.sort((a, b) => new Date(b.created_at || b.createdAt) - new Date(a.created_at || a.createdAt));
 
             if (statusFilter !== 'all') {
                 orders = orders.filter(o => o.status === statusFilter);
@@ -222,28 +224,36 @@
                 return;
             }
 
-            tbody.innerHTML = orders.map(order => `
+            tbody.innerHTML = orders.map(order => {
+                const orderNum = order.order_number || order.orderNumber || order.id;
+                const customerName = order.customer_name || (order.customer && order.customer.name) || 'N/A';
+                const customerPhone = order.customer_phone || (order.customer && order.customer.phone) || '';
+                const itemCount = order.item_count || (order.items && order.items.length) || 0;
+                const orderDate = order.created_at || order.createdAt;
+
+                return `
         <tr>
           <td>
             <a href="#" onclick="viewOrder('${order.id}'); return false;" style="color: var(--color-primary);">
-              ${order.orderNumber}
+              ${orderNum}
             </a>
           </td>
           <td>
-            <strong>${order.customer.name}</strong><br>
-            <span style="font-size: 0.8rem; color: var(--admin-text-muted);">${order.customer.phone}</span>
+            <strong>${customerName}</strong><br>
+            <span style="font-size: 0.8rem; color: var(--admin-text-muted);">${customerPhone}</span>
           </td>
-          <td>${order.items.length} producto(s)</td>
+          <td>${itemCount} producto(s)</td>
           <td>${KIG.formatPrice(order.total)}</td>
           <td>
             <span class="badge ${STATUS_CLASSES[order.status]}">${STATUS_LABELS[order.status]}</span>
           </td>
-          <td>${new Date(order.createdAt).toLocaleDateString('es-MX')}</td>
+          <td>${new Date(orderDate).toLocaleDateString('es-MX')}</td>
           <td>
             <button class="admin-btn admin-btn-icon" onclick="viewOrder('${order.id}')" title="Ver detalles">👁️</button>
           </td>
         </tr>
-      `).join('');
+      `;
+            }).join('');
         }
 
         function setupEventListeners() {
@@ -269,63 +279,74 @@
             });
         }
 
-        function viewOrder(orderId) {
-            const order = KIG.Orders.getById(orderId);
+        async function viewOrder(orderId) {
+            const order = await KIG.Orders.getById(orderId);
             if (!order) return;
 
             const modal = document.getElementById('orderModal');
-            document.getElementById('modalTitle').textContent = `Pedido ${order.orderNumber}`;
+            const orderNum = order.order_number || order.orderNumber || order.id;
+            document.getElementById('modalTitle').textContent = `Pedido ${orderNum}`;
 
-            const addr = order.customer.address;
+            const customerName = order.customer_name || (order.customer && order.customer.name) || 'N/A';
+            const customerEmail = order.customer_email || (order.customer && order.customer.email) || '';
+            const customerPhone = order.customer_phone || (order.customer && order.customer.phone) || '';
+            const street = order.street || (order.customer && order.customer.street) || '';
+            const colony = order.colony || (order.customer && order.customer.colony) || '';
+            const city = order.city || (order.customer && order.customer.city) || '';
+            const state = order.state || (order.customer && order.customer.state) || '';
+            const zipCode = order.zip_code || (order.customer && order.customer.zip_code) || '';
+            const references = order.address_references || (order.customer && order.customer.address_references) || '';
+            const items = order.items || [];
+            const subtotal = order.subtotal || 0;
+            const shippingCost = order.shipping_cost || order.shipping || 0;
 
             document.getElementById('orderDetails').innerHTML = `
         <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-lg);">
-          <!-- Información del cliente -->
           <div style="background: var(--admin-bg); padding: var(--spacing-lg); border-radius: var(--border-radius-md);">
             <h4 style="color: var(--admin-text-muted); font-size: 0.75rem; text-transform: uppercase; margin-bottom: var(--spacing-md);">Cliente</h4>
-            <p style="color: var(--admin-text); margin-bottom: 4px;"><strong>${order.customer.name}</strong></p>
-            <p style="color: var(--admin-text-muted); font-size: 0.9rem;">📧 ${order.customer.email}</p>
-            <p style="color: var(--admin-text-muted); font-size: 0.9rem;">📱 ${order.customer.phone}</p>
+            <p style="color: var(--admin-text); margin-bottom: 4px;"><strong>${customerName}</strong></p>
+            <p style="color: var(--admin-text-muted); font-size: 0.9rem;">📧 ${customerEmail}</p>
+            <p style="color: var(--admin-text-muted); font-size: 0.9rem;">📱 ${customerPhone}</p>
           </div>
           
-          <!-- Dirección de envío -->
           <div style="background: var(--admin-bg); padding: var(--spacing-lg); border-radius: var(--border-radius-md);">
             <h4 style="color: var(--admin-text-muted); font-size: 0.75rem; text-transform: uppercase; margin-bottom: var(--spacing-md);">Dirección de Envío</h4>
             <p style="color: var(--admin-text); font-size: 0.9rem;">
-              ${addr.street}<br>
-              ${addr.colony}, C.P. ${addr.zip}<br>
-              ${addr.city}, ${addr.state}
-              ${addr.references ? `<br><em style="color: var(--admin-text-muted);">Ref: ${addr.references}</em>` : ''}
+              ${street}<br>
+              ${colony}${zipCode ? `, C.P. ${zipCode}` : ''}<br>
+              ${city}${state ? `, ${state}` : ''}
+              ${references ? `<br><em style="color: var(--admin-text-muted);">Ref: ${references}</em>` : ''}
             </p>
           </div>
         </div>
         
-        <!-- Productos -->
         <div style="margin-top: var(--spacing-lg);">
           <h4 style="color: var(--admin-text); font-size: 0.9rem; margin-bottom: var(--spacing-md);">Productos</h4>
-          ${order.items.map(item => {
-                const options = Object.values(item.options || {}).join(', ');
+          ${items.map(item => {
+                const itemName = item.product_name || item.name || 'Producto';
+                const itemOptions = item.selected_options || item.options || {};
+                const optionsStr = typeof itemOptions === 'string' ? itemOptions : Object.values(itemOptions).join(', ');
+                const price = item.unit_price || item.price || 0;
                 return `
               <div style="display: flex; justify-content: space-between; padding: var(--spacing-md); background: var(--admin-bg); border-radius: var(--border-radius-sm); margin-bottom: var(--spacing-sm);">
                 <div>
-                  <p style="color: var(--admin-text);">${item.name}</p>
-                  <p style="color: var(--admin-text-muted); font-size: 0.8rem;">${options || 'Sin opciones'} × ${item.quantity}</p>
+                  <p style="color: var(--admin-text);">${itemName}</p>
+                  <p style="color: var(--admin-text-muted); font-size: 0.8rem;">${optionsStr || 'Sin opciones'} × ${item.quantity}</p>
                 </div>
-                <p style="color: var(--admin-text);">${KIG.formatPrice(item.price * item.quantity)}</p>
+                <p style="color: var(--admin-text);">${KIG.formatPrice(price * item.quantity)}</p>
               </div>
             `;
             }).join('')}
         </div>
         
-        <!-- Totales -->
         <div style="margin-top: var(--spacing-lg); padding: var(--spacing-lg); background: var(--admin-bg); border-radius: var(--border-radius-md);">
           <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-sm);">
             <span style="color: var(--admin-text-muted);">Subtotal</span>
-            <span style="color: var(--admin-text);">${KIG.formatPrice(order.subtotal)}</span>
+            <span style="color: var(--admin-text);">${KIG.formatPrice(subtotal)}</span>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-sm);">
             <span style="color: var(--admin-text-muted);">Envío</span>
-            <span style="color: var(--admin-text);">${KIG.formatPrice(order.shipping)}</span>
+            <span style="color: var(--admin-text);">${KIG.formatPrice(shippingCost)}</span>
           </div>
           <div style="display: flex; justify-content: space-between; padding-top: var(--spacing-md); border-top: 1px solid rgba(255,255,255,0.1);">
             <span style="color: var(--admin-text); font-weight: 600;">Total</span>
@@ -333,7 +354,6 @@
           </div>
         </div>
         
-        <!-- Estado -->
         <div style="margin-top: var(--spacing-lg);">
           <h4 style="color: var(--admin-text); font-size: 0.9rem; margin-bottom: var(--spacing-md);">Cambiar Estado</h4>
           <div style="display: flex; gap: var(--spacing-sm); flex-wrap: wrap;">
@@ -346,36 +366,21 @@
             `).join('')}
           </div>
         </div>
-        
-        <!-- Historial -->
-        <div style="margin-top: var(--spacing-lg);">
-          <h4 style="color: var(--admin-text); font-size: 0.9rem; margin-bottom: var(--spacing-md);">Historial</h4>
-          <div style="max-height: 150px; overflow-y: auto;">
-            ${order.statusHistory.map(h => `
-              <div style="display: flex; justify-content: space-between; padding: var(--spacing-sm) 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
-                <span class="badge ${STATUS_CLASSES[h.status]}">${STATUS_LABELS[h.status]}</span>
-                <span style="color: var(--admin-text-muted); font-size: 0.8rem;">
-                  ${new Date(h.date).toLocaleString('es-MX')}
-                </span>
-              </div>
-            `).reverse().join('')}
-          </div>
-        </div>
       `;
 
             modal.classList.add('active');
         }
 
-        function updateOrderStatus(orderId, newStatus) {
+        async function updateOrderStatus(orderId, newStatus) {
             const statuses = ['pending', 'paid', 'shipped', 'delivered', 'cancelled'];
             const labels = ['Pendiente', 'Pagado', 'Enviado', 'Entregado', 'Cancelado'];
 
             const statusLabel = labels[statuses.indexOf(newStatus)];
 
             if (confirm(`¿Cambiar estado a "${statusLabel}"?`)) {
-                KIG.Orders.updateStatus(orderId, newStatus);
-                viewOrder(orderId); // Refrescar modal
-                loadOrders(document.getElementById('statusFilter').value);
+                await KIG.Orders.updateStatus(orderId, newStatus);
+                await viewOrder(orderId); // Refrescar modal
+                await loadOrders(document.getElementById('statusFilter').value);
             }
         }
 

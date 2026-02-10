@@ -1,15 +1,13 @@
 /**
- * KING ICE GOLD - Sistema de Almacenamiento
- * Gestión de localStorage para productos, pedidos, categorías y sesión admin
+ * KING ICE GOLD - Sistema de Almacenamiento (API-Connected)
+ * Now uses the backend API for products, categories, orders, and admin auth.
+ * Cart remains in localStorage (client-side only).
  */
 
 const STORAGE_KEYS = {
-  PRODUCTS: 'kig_products',
-  COLLECTIONS: 'kig_collections',
-  ORDERS: 'kig_orders',
   CART: 'kig_cart',
-  ADMIN: 'kig_admin',
-  SESSION: 'kig_session'
+  SESSION: 'kig_jwt_token',
+  ADMIN: 'kig_admin'
 };
 
 // ==================== UTILIDADES ====================
@@ -35,7 +33,7 @@ function formatDate(dateString) {
   });
 }
 
-// ==================== STORAGE BASE ====================
+// ==================== STORAGE BASE (for cart only) ====================
 
 const Storage = {
   get(key) {
@@ -63,11 +61,30 @@ const Storage = {
   }
 };
 
-// ==================== COLECCIONES/CATEGORÍAS ====================
+// ==================== COLECCIONES/CATEGORÍAS (API) ====================
 
 const Collections = {
+  _cache: null,
+
+  async loadAll() {
+    const result = await API.Categories.getAll();
+    if (result.success && result.data.categories) {
+      this._cache = result.data.categories.map(cat => ({
+        id: cat.id,
+        name: cat.name,
+        slug: cat.slug,
+        image: cat.image_url || `images/categories/${cat.slug}.png`,
+        order: cat.display_order || 0,
+        active: cat.active
+      }));
+    } else {
+      this._cache = this._getDefaults();
+    }
+    return this._cache;
+  },
+
   getAll() {
-    return Storage.get(STORAGE_KEYS.COLLECTIONS) || [];
+    return this._cache || this._getDefaults();
   },
 
   getById(id) {
@@ -80,68 +97,35 @@ const Collections = {
     return collections.find(c => c.slug === slug);
   },
 
-  create(data) {
-    const collections = this.getAll();
-    const newCollection = {
-      id: generateId('col-'),
-      name: data.name,
-      slug: data.slug || data.name.toLowerCase().replace(/\s+/g, '-'),
-      image: data.image || '',
-      order: data.order || collections.length + 1,
-      active: true,
-      createdAt: new Date().toISOString()
-    };
-    collections.push(newCollection);
-    Storage.set(STORAGE_KEYS.COLLECTIONS, collections);
-    return newCollection;
-  },
-
-  update(id, data) {
-    const collections = this.getAll();
-    const index = collections.findIndex(c => c.id === id);
-    if (index === -1) return null;
-
-    collections[index] = { ...collections[index], ...data, updatedAt: new Date().toISOString() };
-    Storage.set(STORAGE_KEYS.COLLECTIONS, collections);
-    return collections[index];
-  },
-
-  delete(id) {
-    const collections = this.getAll();
-    const filtered = collections.filter(c => c.id !== id);
-    Storage.set(STORAGE_KEYS.COLLECTIONS, filtered);
-    return true;
-  },
-
-  initDefaults() {
-    const existing = this.getAll();
-
-    // Mapeo de categorías a imágenes
-    const categoryImages = {
-      'cadenas': 'images/categories/cadenas.png',
-      'anillos': 'images/categories/anillos.png',
-      'aretes': 'images/categories/aretes.png',
-      'pulsos': 'images/categories/pulsos.png',
-      'dijes': 'images/categories/dijes.png',
-      'relojes': 'images/categories/relojes.png'
-    };
-
-    // Si ya existen categorías, actualizamos las imágenes faltantes
-    if (existing.length > 0) {
-      const updated = existing.map(cat => {
-        if (!cat.image || cat.image === '') {
-          const img = categoryImages[cat.slug];
-          if (img) {
-            cat.image = img;
-          }
-        }
-        return cat;
-      });
-      Storage.set(STORAGE_KEYS.COLLECTIONS, updated);
-      return;
+  async create(data) {
+    const result = await API.Categories.create(data);
+    if (result.success) {
+      await this.loadAll(); // Refresh cache
+      return result.data.category;
     }
+    return null;
+  },
 
-    const defaults = [
+  async update(id, data) {
+    const result = await API.Categories.update(id, data);
+    if (result.success) {
+      await this.loadAll();
+      return result.data.category;
+    }
+    return null;
+  },
+
+  async delete(id) {
+    const result = await API.Categories.delete(id);
+    if (result.success) {
+      await this.loadAll();
+      return true;
+    }
+    return false;
+  },
+
+  _getDefaults() {
+    return [
       { name: 'Cadenas', slug: 'cadenas', order: 1, image: 'images/categories/cadenas.png' },
       { name: 'Anillos', slug: 'anillos', order: 2, image: 'images/categories/anillos.png' },
       { name: 'Aretes', slug: 'aretes', order: 3, image: 'images/categories/aretes.png' },
@@ -149,16 +133,72 @@ const Collections = {
       { name: 'Dijes', slug: 'dijes', order: 5, image: 'images/categories/dijes.png' },
       { name: 'Relojes', slug: 'relojes', order: 6, image: 'images/categories/relojes.png' }
     ];
+  },
 
-    defaults.forEach(col => this.create(col));
+  initDefaults() {
+    // No-op: data comes from API, defaults loaded if API fails
   }
 };
 
-// ==================== PRODUCTOS ====================
+// ==================== PRODUCTOS (API) ====================
 
 const Products = {
+  _cache: null,
+
+  async loadAll() {
+    const result = await API.Products.getAll({ limit: 200 });
+    if (result.success && result.data.products) {
+      this._cache = result.data.products.map(p => this._transform(p));
+    } else {
+      this._cache = [];
+    }
+    return this._cache;
+  },
+
+  async loadFeatured(limit = 8) {
+    const result = await API.Products.getFeatured(limit);
+    if (result.success && result.data.products) {
+      return result.data.products.map(p => this._transform(p));
+    }
+    return [];
+  },
+
+  _transform(p) {
+    // Transform API product to the format the frontend expects
+    const images = Array.isArray(p.images)
+      ? p.images.map(img => img.image_url || img)
+      : [];
+
+    const options = {};
+    if (Array.isArray(p.options)) {
+      p.options.forEach(opt => {
+        const values = typeof opt.option_values === 'string'
+          ? JSON.parse(opt.option_values)
+          : opt.option_values;
+        options[opt.option_name] = values;
+      });
+    }
+
+    return {
+      id: p.id,
+      name: p.name,
+      slug: p.slug,
+      category: typeof p.category === 'object' ? p.category.slug : p.category,
+      categoryName: typeof p.category === 'object' ? p.category.name : '',
+      categoryId: typeof p.category === 'object' ? p.category.id : p.category_id,
+      description: p.description || '',
+      basePrice: parseFloat(p.base_price) || 0,
+      images: images.length > 0 ? images : [`images/products/${typeof p.category === 'object' ? p.category.slug : 'default'}.png`],
+      options: options,
+      active: p.active !== false,
+      featured: p.featured || false,
+      sku: p.sku || '',
+      createdAt: p.created_at
+    };
+  },
+
   getAll() {
-    return Storage.get(STORAGE_KEYS.PRODUCTS) || [];
+    return this._cache || [];
   },
 
   getActive() {
@@ -166,8 +206,7 @@ const Products = {
   },
 
   getById(id) {
-    const products = this.getAll();
-    return products.find(p => p.id === id);
+    return this.getAll().find(p => p.id === id || p.id === parseInt(id));
   },
 
   getByCategory(categorySlug) {
@@ -175,200 +214,42 @@ const Products = {
   },
 
   getFeatured(limit = 8) {
-    return this.getActive().slice(0, limit);
+    return this.getActive().filter(p => p.featured).slice(0, limit);
   },
 
-  create(data) {
-    const products = this.getAll();
-    const newProduct = {
-      id: generateId('prod-'),
-      name: data.name,
-      category: data.category,
-      description: data.description || '',
-      basePrice: parseFloat(data.basePrice) || 0,
-      images: data.images || [],
-      options: data.options || {},
-      active: data.active !== false,
-      featured: data.featured || false,
-      createdAt: new Date().toISOString()
-    };
-    products.push(newProduct);
-    Storage.set(STORAGE_KEYS.PRODUCTS, products);
-    return newProduct;
-  },
-
-  update(id, data) {
-    const products = this.getAll();
-    const index = products.findIndex(p => p.id === id);
-    if (index === -1) return null;
-
-    if (data.basePrice) {
-      data.basePrice = parseFloat(data.basePrice);
+  async create(data) {
+    const result = await API.Products.create(data);
+    if (result.success) {
+      await this.loadAll();
+      return result.data.product;
     }
-
-    products[index] = { ...products[index], ...data, updatedAt: new Date().toISOString() };
-    Storage.set(STORAGE_KEYS.PRODUCTS, products);
-    return products[index];
+    return null;
   },
 
-  delete(id) {
-    const products = this.getAll();
-    const filtered = products.filter(p => p.id !== id);
-    Storage.set(STORAGE_KEYS.PRODUCTS, filtered);
-    return true;
+  async update(id, data) {
+    const result = await API.Products.update(id, data);
+    if (result.success) {
+      await this.loadAll();
+      return result.data.product;
+    }
+    return null;
+  },
+
+  async delete(id) {
+    const result = await API.Products.delete(id);
+    if (result.success) {
+      await this.loadAll();
+      return true;
+    }
+    return false;
   },
 
   initDefaults() {
-    // Mapeo de categorías a imágenes
-    const categoryImages = {
-      'cadenas': 'images/products/cadena.png',
-      'anillos': 'images/products/anillo.png',
-      'aretes': 'images/products/aretes.png',
-      'pulsos': 'images/products/pulsera.png',
-      'dijes': 'images/products/dije.png',
-      'relojes': 'images/products/reloj.png'
-    };
-
-    // Productos de ejemplo
-    const defaults = [
-      {
-        name: 'Cadena de Oro Torzal Pavé',
-        category: 'cadenas',
-        description: 'Elegante cadena de oro amarillo estilo torzal pavé. Acabado brillante de alta calidad.',
-        basePrice: 27838.20,
-        images: ['images/products/cadena.png'],
-        options: {
-          medida: ['45cm', '50cm', '55cm', '60cm'],
-          kilataje: ['10k', '14k'],
-          estructura: ['3.919g', '4.339g', '4.829g', '5.32g']
-        },
-        featured: true
-      },
-      {
-        name: 'Cadena Tejido Hollow Box',
-        category: 'cadenas',
-        description: 'Cadena de oro con tejido hollow box. Diseño moderno y versátil.',
-        basePrice: 10374.00,
-        images: ['images/products/cadena.png'],
-        options: {
-          medida: ['45cm', '50cm', '55cm', '60cm'],
-          kilataje: ['10k', '14k'],
-          estructura: ['3.919g', '4.339g', '4.829g', '5.32g']
-        },
-        featured: true
-      },
-      {
-        name: 'Anillo Solitario Diamante',
-        category: 'anillos',
-        description: 'Anillo solitario con diamante central de alta calidad.',
-        basePrice: 15500.00,
-        images: ['images/products/anillo.png'],
-        options: {
-          talla: ['6', '7', '8', '9', '10'],
-          kilataje: ['10k', '14k']
-        },
-        featured: true
-      },
-      {
-        name: 'Aretes de Oro Huggie',
-        category: 'aretes',
-        description: 'Aretes estilo huggie en oro amarillo. Elegantes y cómodos.',
-        basePrice: 4500.00,
-        images: ['images/products/aretes.png'],
-        options: {
-          kilataje: ['10k', '14k']
-        },
-        featured: true
-      },
-      {
-        name: 'Pulsera Cubana',
-        category: 'pulsos',
-        description: 'Pulsera estilo cubano en oro. Look urbano y moderno.',
-        basePrice: 18900.00,
-        images: ['images/products/pulsera.png'],
-        options: {
-          medida: ['18cm', '20cm', '22cm'],
-          kilataje: ['10k', '14k'],
-          estructura: ['15g', '20g', '25g']
-        },
-        featured: true
-      },
-      {
-        name: 'Dije Cruz San Benito',
-        category: 'dijes',
-        description: 'Dije de cruz San Benito en oro. Símbolo de protección.',
-        basePrice: 3200.00,
-        images: ['images/products/dije.png'],
-        options: {
-          tamaño: ['Pequeño', 'Mediano', 'Grande'],
-          kilataje: ['10k', '14k']
-        },
-        featured: true
-      },
-      {
-        name: 'Reloj Oro con Diamantes',
-        category: 'relojes',
-        description: 'Reloj de lujo en oro amarillo con bisel de diamantes. Elegancia atemporal.',
-        basePrice: 45000.00,
-        images: ['images/products/reloj.png'],
-        options: {
-          tamaño: ['Mediano', 'Grande'],
-          kilataje: ['14k']
-        },
-        featured: true
-      },
-      {
-        name: 'Reloj Clásico Oro Rosa',
-        category: 'relojes',
-        description: 'Reloj elegante en oro rosa con detalles de diamantes. Perfecto para ocasiones especiales.',
-        basePrice: 38500.00,
-        images: ['images/products/reloj.png'],
-        options: {
-          tamaño: ['Pequeño', 'Mediano'],
-          kilataje: ['14k']
-        },
-        featured: true
-      }
-    ];
-
-    const existingProducts = this.getAll();
-
-    // Si no hay productos, crear todos
-    if (existingProducts.length === 0) {
-      defaults.forEach(prod => this.create(prod));
-      return;
-    }
-
-    // Actualizar imágenes faltantes en productos existentes
-    let needsUpdate = false;
-    const updatedProducts = existingProducts.map(product => {
-      if (!product.images || product.images.length === 0 || product.images[0] === '') {
-        const img = categoryImages[product.category];
-        if (img) {
-          product.images = [img];
-          needsUpdate = true;
-        }
-      }
-      return product;
-    });
-
-    if (needsUpdate) {
-      Storage.set(STORAGE_KEYS.PRODUCTS, updatedProducts);
-    }
-
-    // Verificar si falta algún producto por categoría y agregarlo
-    const existingCategories = [...new Set(existingProducts.map(p => p.category))];
-    const defaultCategories = [...new Set(defaults.map(p => p.category))];
-    const missingCategories = defaultCategories.filter(cat => !existingCategories.includes(cat));
-
-    if (missingCategories.length > 0) {
-      const productsToAdd = defaults.filter(p => missingCategories.includes(p.category));
-      productsToAdd.forEach(prod => this.create(prod));
-    }
+    // No-op: data comes from API
   }
 };
 
-// ==================== CARRITO ====================
+// ==================== CARRITO (localStorage — client-side) ====================
 
 const Cart = {
   get() {
@@ -454,161 +335,68 @@ const Cart = {
   }
 };
 
-// ==================== PEDIDOS ====================
+// ==================== PEDIDOS (API) ====================
 
 const Orders = {
-  getAll() {
-    return Storage.get(STORAGE_KEYS.ORDERS) || [];
+  async create(orderData) {
+    const result = await API.Orders.create(orderData);
+    if (result.success) {
+      return result.data.order || result.data;
+    }
+    console.error('Error creating order:', result.error);
+    return { error: result.error || 'Error creating order' };
   },
 
-  getById(id) {
-    const orders = this.getAll();
-    return orders.find(o => o.id === id);
+  async getAll() {
+    const result = await API.Orders.getAll();
+    if (result.success) {
+      return result.data.orders || [];
+    }
+    return [];
   },
 
-  getByStatus(status) {
-    return this.getAll().filter(o => o.status === status);
+  async getById(id) {
+    const result = await API.Orders.getById(id);
+    if (result.success) {
+      return result.data.order || null;
+    }
+    return null;
   },
 
-  create(customerData, items, totals) {
-    const orders = this.getAll();
-    const orderNumber = `ORD-${new Date().toISOString().slice(0, 10).replace(/-/g, '')}-${(orders.length + 1).toString().padStart(3, '0')}`;
-
-    const newOrder = {
-      id: generateId('order-'),
-      orderNumber,
-      customer: {
-        name: customerData.name,
-        email: customerData.email,
-        phone: customerData.phone,
-        address: {
-          street: customerData.street,
-          colony: customerData.colony,
-          city: customerData.city,
-          state: customerData.state,
-          zip: customerData.zip,
-          references: customerData.references || ''
-        }
-      },
-      items: items.map(item => ({
-        productId: item.productId,
-        name: item.name,
-        options: item.options,
-        quantity: item.quantity,
-        price: item.price
-      })),
-      subtotal: totals.subtotal,
-      shipping: totals.shipping,
-      total: totals.total,
-      status: 'pending',
-      paymentMethod: 'oxxo',
-      createdAt: new Date().toISOString(),
-      statusHistory: [
-        { status: 'pending', date: new Date().toISOString(), note: 'Pedido creado' }
-      ]
-    };
-
-    orders.push(newOrder);
-    Storage.set(STORAGE_KEYS.ORDERS, orders);
-    return newOrder;
+  async updateStatus(id, status, note = '') {
+    const result = await API.Orders.updateStatus(id, status, note);
+    if (result.success) {
+      return result.data.order || result.data;
+    }
+    return null;
   },
 
-  updateStatus(id, status, note = '') {
-    const orders = this.getAll();
-    const index = orders.findIndex(o => o.id === id);
-    if (index === -1) return null;
-
-    orders[index].status = status;
-    orders[index].statusHistory.push({
-      status,
-      date: new Date().toISOString(),
-      note
-    });
-    orders[index].updatedAt = new Date().toISOString();
-
-    Storage.set(STORAGE_KEYS.ORDERS, orders);
-    return orders[index];
-  },
-
-  getStats() {
-    const orders = this.getAll();
-    const thisMonth = new Date();
-    thisMonth.setDate(1);
-    thisMonth.setHours(0, 0, 0, 0);
-
-    const monthlyOrders = orders.filter(o => new Date(o.createdAt) >= thisMonth);
-
-    return {
-      total: orders.length,
-      pending: orders.filter(o => o.status === 'pending').length,
-      monthlyRevenue: monthlyOrders.reduce((sum, o) => sum + o.total, 0),
-      uniqueCustomers: [...new Set(orders.map(o => o.customer.email))].length
-    };
+  async getStats() {
+    const result = await API.Dashboard.getStats();
+    if (result.success) {
+      return result.data;
+    }
+    return { total: 0, pending: 0, monthlyRevenue: 0, uniqueCustomers: 0 };
   }
 };
 
-// ==================== AUTENTICACIÓN ADMIN ====================
+// ==================== AUTENTICACIÓN ADMIN (API + JWT) ====================
 
 const Auth = {
-  // Hash simple para contraseña (en producción usar bcrypt)
-  hashPassword(password) {
-    let hash = 0;
-    for (let i = 0; i < password.length; i++) {
-      const char = password.charCodeAt(i);
-      hash = ((hash << 5) - hash) + char;
-      hash = hash & hash;
+  async login(username, password) {
+    const result = await API.Auth.login(username, password);
+    if (result.success) {
+      return { success: true, message: 'Login exitoso' };
     }
-    return hash.toString(16);
-  },
-
-  initAdmin() {
-    const existing = Storage.get(STORAGE_KEYS.ADMIN);
-    if (existing) return;
-
-    // Credenciales por defecto
-    Storage.set(STORAGE_KEYS.ADMIN, {
-      username: 'admin',
-      passwordHash: this.hashPassword('kingice2026'),
-      createdAt: new Date().toISOString()
-    });
-  },
-
-  login(username, password) {
-    const admin = Storage.get(STORAGE_KEYS.ADMIN);
-    if (!admin) return { success: false, message: 'No hay administrador configurado' };
-
-    if (admin.username !== username) {
-      return { success: false, message: 'Usuario incorrecto' };
-    }
-
-    if (admin.passwordHash !== this.hashPassword(password)) {
-      return { success: false, message: 'Contraseña incorrecta' };
-    }
-
-    // Crear sesión (expira en 24 horas)
-    const session = {
-      token: generateId('sess-'),
-      expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString()
-    };
-    Storage.set(STORAGE_KEYS.SESSION, session);
-
-    return { success: true, message: 'Login exitoso' };
+    return { success: false, message: result.error || 'Credenciales incorrectas' };
   },
 
   logout() {
-    Storage.remove(STORAGE_KEYS.SESSION);
+    API.Auth.logout();
   },
 
   isLoggedIn() {
-    const session = Storage.get(STORAGE_KEYS.SESSION);
-    if (!session) return false;
-
-    if (new Date(session.expiresAt) < new Date()) {
-      this.logout();
-      return false;
-    }
-
-    return true;
+    return API.Auth.isLoggedIn();
   },
 
   checkAuth() {
@@ -619,36 +407,47 @@ const Auth = {
     return true;
   },
 
-  changePassword(currentPassword, newPassword) {
-    const admin = Storage.get(STORAGE_KEYS.ADMIN);
-    if (!admin) return { success: false, message: 'Error de configuración' };
-
-    if (admin.passwordHash !== this.hashPassword(currentPassword)) {
-      return { success: false, message: 'Contraseña actual incorrecta' };
+  async changePassword(currentPassword, newPassword) {
+    const result = await API.Auth.changePassword(currentPassword, newPassword);
+    if (result.success) {
+      return { success: true, message: 'Contraseña actualizada' };
     }
+    return { success: false, message: result.error || 'Error al cambiar contraseña' };
+  },
 
-    admin.passwordHash = this.hashPassword(newPassword);
-    admin.updatedAt = new Date().toISOString();
-    Storage.set(STORAGE_KEYS.ADMIN, admin);
-
-    return { success: true, message: 'Contraseña actualizada' };
+  initAdmin() {
+    // No-op: admin users are in the database
   }
 };
 
 // ==================== INICIALIZACIÓN ====================
 
-function initStorage() {
-  Collections.initDefaults();
-  Products.initDefaults();
-  Auth.initAdmin();
+async function initStorage() {
+  // Load data from API in parallel
+  try {
+    await Promise.all([
+      Collections.loadAll(),
+      Products.loadAll()
+    ]);
+  } catch (err) {
+    console.warn('⚠️ Could not load data from API, using defaults:', err.message);
+  }
+
   Cart.updateCartCount();
 }
 
 // Inicializar cuando el DOM esté listo
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initStorage);
+  document.addEventListener('DOMContentLoaded', () => {
+    initStorage().then(() => {
+      // Dispatch custom event when data is ready
+      window.dispatchEvent(new Event('kig:ready'));
+    });
+  });
 } else {
-  initStorage();
+  initStorage().then(() => {
+    window.dispatchEvent(new Event('kig:ready'));
+  });
 }
 
 // Exportar para uso global
@@ -661,5 +460,6 @@ window.KIG = {
   Auth,
   formatPrice,
   formatDate,
-  generateId
+  generateId,
+  ready: initStorage
 };

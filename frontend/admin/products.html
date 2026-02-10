@@ -220,6 +220,7 @@
         </div>
     </div>
 
+    <script src="../js/api.js"></script>
     <script src="../js/storage.js"></script>
     <script>
         let editingProduct = null;
@@ -303,10 +304,10 @@
         ${categories.map(c => `<option value="${c.slug}">${c.name}</option>`).join('')}
       `;
 
-            // También para el modal
+            // También para el modal — use id for API
             const categorySelect = document.getElementById('productCategory');
             categorySelect.innerHTML = categories.map(c =>
-                `<option value="${c.slug}">${c.name}</option>`
+                `<option value="${c.id}">${c.name}</option>`
             ).join('');
         }
 
@@ -469,36 +470,41 @@
             container.appendChild(row);
         }
 
-        function saveProduct(e) {
+        async function saveProduct(e) {
             e.preventDefault();
 
-            // Recopilar opciones
-            const options = {};
+            // Recopilar opciones as array for API
+            const options = [];
             document.querySelectorAll('#optionsContainer .admin-form-row').forEach(row => {
-                const name = row.querySelector('.option-name').value.trim().toLowerCase();
+                const name = row.querySelector('.option-name').value.trim();
                 const values = row.querySelector('.option-values').value.trim();
                 if (name && values) {
-                    options[name] = values.split(',').map(v => v.trim()).filter(v => v);
+                    options.push({
+                        name: name,
+                        values: values.split(',').map(v => v.trim()).filter(v => v),
+                        required: true
+                    });
                 }
             });
 
             const productData = {
                 name: document.getElementById('productName').value,
-                category: document.getElementById('productCategory').value,
-                basePrice: parseFloat(document.getElementById('productPrice').value),
+                slug: document.getElementById('productName').value.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+                category_id: parseInt(document.getElementById('productCategory').value),
+                base_price: parseFloat(document.getElementById('productPrice').value),
                 description: document.getElementById('productDescription').value,
                 active: document.getElementById('productActive').value === 'true',
                 featured: document.getElementById('productFeatured').checked,
-                images: productImages,
+                images: productImages.map((img, i) => ({ url: img, alt: '' })),
                 options
             };
 
             const productId = document.getElementById('productId').value;
 
             if (productId) {
-                KIG.Products.update(productId, productData);
+                await KIG.Products.update(productId, productData);
             } else {
-                KIG.Products.create(productData);
+                await KIG.Products.create(productData);
             }
 
             closeModal();
@@ -512,9 +518,9 @@
             }
         }
 
-        function deleteProduct(id) {
+        async function deleteProduct(id) {
             if (confirm('¿Eliminar este producto? Esta acción no se puede deshacer.')) {
-                KIG.Products.delete(id);
+                await KIG.Products.delete(id);
                 loadProducts();
             }
         }

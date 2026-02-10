@@ -3,13 +3,27 @@
  * Funcionalidad general de la tienda
  */
 
-document.addEventListener('DOMContentLoaded', function () {
+// Wait for API data to load, then initialize
+window.addEventListener('kig:ready', function () {
   initCategories();
   initFeaturedProducts();
   initCategoriesShowcase();
   initMobileMenu();
   initAdminAccess();
   initSearch();
+});
+
+// Fallback: if kig:ready already fired before this script loaded
+document.addEventListener('DOMContentLoaded', function () {
+  // Check if data is already loaded
+  if (KIG.Products.getAll().length > 0 || KIG.Collections.getAll().length > 0) {
+    initCategories();
+    initFeaturedProducts();
+    initCategoriesShowcase();
+    initMobileMenu();
+    initAdminAccess();
+    initSearch();
+  }
 });
 
 // ==================== CATEGORÍAS ====================
@@ -201,7 +215,6 @@ function initSearch() {
 
   searchIcon.addEventListener('click', (e) => {
     e.preventDefault();
-    // TODO: Implementar modal de búsqueda
     const query = prompt('Buscar productos:');
     if (query && query.trim()) {
       window.location.href = `collection.html?search=${encodeURIComponent(query.trim())}`;

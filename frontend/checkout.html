@@ -202,6 +202,7 @@
         </div>
     </footer>
 
+    <script src="js/api.js"></script>
     <script src="js/storage.js"></script>
     <script>
         const SHIPPING_COST = 150;
@@ -278,20 +279,44 @@
 
                 // Obtener datos del formulario
                 const formData = new FormData(form);
-                const customerData = {
-                    name: formData.get('name'),
-                    email: formData.get('email'),
-                    phone: formData.get('phone'),
-                    street: formData.get('street'),
-                    colony: formData.get('colony'),
-                    city: formData.get('city'),
-                    state: formData.get('state'),
-                    zip: formData.get('zip'),
-                    references: formData.get('references') || ''
+
+                // Build order data for API
+                const orderData = {
+                    customer: {
+                        name: formData.get('name'),
+                        email: formData.get('email'),
+                        phone: formData.get('phone')
+                    },
+                    shipping_address: {
+                        street: formData.get('street'),
+                        colony: formData.get('colony'),
+                        city: formData.get('city'),
+                        state: formData.get('state'),
+                        zip_code: formData.get('zip'),
+                        references: formData.get('references') || ''
+                    },
+                    items: cart.map(item => ({
+                        product_id: item.productId || item.id,
+                        name: item.name,
+                        quantity: item.quantity,
+                        unit_price: item.price,
+                        selected_options: item.options || {}
+                    })),
+                    subtotal: totals.subtotal,
+                    shipping_cost: totals.shipping,
+                    total: totals.total,
+                    payment_method: 'transfer'
                 };
 
-                // Crear pedido
-                const order = KIG.Orders.create(customerData, cart, totals);
+                // Crear pedido via API
+                const order = await KIG.Orders.create(orderData);
+
+                if (!order || order.error) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Confirmar Pedido';
+                    alert('Error al crear el pedido. Intenta de nuevo.');
+                    return;
+                }
 
                 // Limpiar carrito
                 KIG.Cart.clear();
