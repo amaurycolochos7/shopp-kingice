@@ -97,7 +97,7 @@ app.get('/api/health', (req, res) => {
 });
 
 // DEBUG ROUTE (Temporary)
-app.get('/api/debug-config', (req, res) => {
+app.get('/api/debug-config', async (req, res) => {
   if (req.query.key !== 'KingIceDebug2026') {
     return res.status(403).json({ error: 'Forbidden' });
   }
@@ -105,12 +105,24 @@ app.get('/api/debug-config', (req, res) => {
   const dbUrl = process.env.DATABASE_URL || '';
   const maskedDbUrl = dbUrl.replace(/:[^:@]+@/, ':***@');
 
+  let dbStatus = 'unknown';
+  let dbError = null;
+
+  try {
+    const { pool } = require('./config/database');
+    await pool.query('SELECT 1');
+    dbStatus = 'connected';
+  } catch (err) {
+    dbStatus = 'error';
+    dbError = err.message;
+  }
+
   res.json({
     node_env: process.env.NODE_ENV,
     port: process.env.PORT,
     db_url_masked: maskedDbUrl,
-    db_host: process.env.DB_HOST,
-    frontend_url: process.env.FRONTEND_URL,
+    db_status: dbStatus,
+    db_error: dbError,
     timestamp: new Date().toISOString()
   });
 });
