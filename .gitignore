@@ -1,10 +1,11 @@
 # Dependencies
 node_modules/
 
-# Environment files (keep .env.example)
+# Environment files
 .env
 .env.local
 .env.*.local
+backend/.env
 
 # IDE
 .vscode/
@@ -14,8 +15,8 @@ node_modules/
 .DS_Store
 Thumbs.db
 
-# Vercel
-.vercel
-
 # Logs
 *.log
+
+# Docker
+postgres_data/
