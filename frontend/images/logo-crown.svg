@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 100" fill="none">
+  <!-- Crown shape matching KIG branding -->
+  <path d="M10 75 L25 30 L40 55 L60 15 L80 55 L95 30 L110 75 Z" 
+        fill="none" stroke="#C8932A" stroke-width="4" stroke-linejoin="round"/>
+  <!-- Base line -->
+  <line x1="10" y1="80" x2="110" y2="80" stroke="#C8932A" stroke-width="4" stroke-linecap="round"/>
+  <!-- Diamond on top -->
+  <path d="M60 15 L54 5 L60 -2 L66 5 Z" fill="#C8932A"/>
+  <!-- Small gems on crown points -->
+  <circle cx="25" cy="28" r="3" fill="#C8932A"/>
+  <circle cx="95" cy="28" r="3" fill="#C8932A"/>
+</svg>

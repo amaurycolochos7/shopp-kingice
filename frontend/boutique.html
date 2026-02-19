@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Boutique King Ice Gold - Descubre nuestra colección exclusiva de joyería premium en oro 10k y 14k.">
+    <title>Boutique | King Ice Gold</title>
+
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@100;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <style>
+        .boutique-hero {
+            position: relative;
+            height: 70vh;
+            min-height: 450px;
+            background: var(--color-bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .boutique-hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.45;
+        }
+
+        .boutique-hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(10, 10, 10, 0.2), rgba(10, 10, 10, 0.7));
+        }
+
+        .boutique-hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: var(--color-text-light);
+        }
+
+        .boutique-hero-content h1 {
+            font-size: 3rem;
+            font-weight: 200;
+            letter-spacing: 0.35em;
+            color: var(--color-text-light);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .boutique-hero-content p {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 1rem;
+            letter-spacing: 0.15em;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        /* Category Showcase */
+        .boutique-categories {
+            padding: var(--spacing-4xl) 0;
+        }
+
+        .boutique-cat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--spacing-lg);
+        }
+
+        .boutique-cat-card {
+            position: relative;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            border-radius: var(--border-radius-md);
+        }
+
+        .boutique-cat-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .boutique-cat-card:hover img {
+            transform: scale(1.06);
+        }
+
+        .boutique-cat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, transparent 50%, rgba(0, 0, 0, 0.7) 100%);
+        }
+
+        .boutique-cat-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 2;
+            text-align: center;
+            padding: var(--spacing-xl) var(--spacing-md);
+        }
+
+        .boutique-cat-label h3 {
+            color: var(--color-text-light);
+            font-size: 1.1rem;
+            font-weight: 400;
+            letter-spacing: 0.15em;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .boutique-cat-label span {
+            display: block;
+            color: var(--color-primary);
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            margin-top: var(--spacing-xs);
+        }
+
+        /* Featured Banner */
+        .boutique-banner {
+            position: relative;
+            background: var(--color-bg-dark);
+            padding: var(--spacing-4xl) 0;
+            overflow: hidden;
+        }
+
+        .boutique-banner-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3xl);
+            align-items: center;
+        }
+
+        .boutique-banner-image {
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+        }
+
+        .boutique-banner-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .boutique-banner-text h2 {
+            color: var(--color-text-light);
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .boutique-banner-text p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.92rem;
+            line-height: 1.8;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        /* Experience Section */
+        .boutique-experience {
+            padding: var(--spacing-4xl) 0;
+            text-align: center;
+        }
+
+        .experience-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-2xl);
+            margin-top: var(--spacing-3xl);
+        }
+
+        .experience-card {
+            padding: var(--spacing-2xl);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--border-radius-md);
+            transition: all var(--transition-normal);
+        }
+
+        .experience-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--color-primary);
+        }
+
+        .experience-card svg {
+            width: 40px;
+            height: 40px;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .experience-card h4 {
+            font-size: 0.95rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .experience-card p {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+            line-height: 1.7;
+        }
+
+        @media (max-width: 768px) {
+            .boutique-cat-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .boutique-banner-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .experience-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .boutique-hero-content h1 {
+                font-size: 2rem;
+                letter-spacing: 0.2em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-links">
+                <a href="servicio-cliente.html">Servicio al cliente</a>
+            </div>
+            <div class="top-bar-message">
+                🔒 Envíos asegurados contra robo y extravío
+            </div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <a href="index.html" class="logo"><img src="images/logo-crown.svg" alt="King Ice Gold"></a>
+            <nav class="nav-main">
+                <a href="collection.html">Colección</a>
+                <a href="boutique.html" class="active">Boutique</a>
+                <a href="about.html">Sobre Nosotros</a>
+            </nav>
+            <div class="header-icons">
+                <a href="#" class="header-icon" id="searchIcon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                </a>
+                <a href="cart.html" class="header-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-count" style="display: none;">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Categories Nav -->
+    <nav class="nav-categories">
+        <div class="container">
+            <ul id="categoriesNav"></ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="boutique-hero">
+        <video class="boutique-hero-video" autoplay muted loop playsinline>
+            <source src="video/banner.mp4" type="video/mp4">
+        </video>
+        <div class="boutique-hero-overlay"></div>
+        <div class="boutique-hero-content">
+            <h1>BOUTIQUE</h1>
+            <p>COLECCIÓN EXCLUSIVA DE JOYERÍA PREMIUM</p>
+            <a href="collection.html" class="btn btn-outline btn-lg">EXPLORAR COLECCIÓN</a>
+        </div>
+    </section>
+
+    <!-- Category Showcase -->
+    <section class="boutique-categories">
+        <div class="container">
+            <h2 class="text-center section-title">CATEGORÍAS</h2>
+            <div class="boutique-cat-grid" id="boutiqueCategories" style="margin-top: var(--spacing-3xl);">
+                <!-- Filled dynamically -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Banner -->
+    <section class="boutique-banner">
+        <div class="container">
+            <div class="boutique-banner-grid">
+                <div class="boutique-banner-image">
+                    <img src="images/about/panthere.webp" alt="Diseños Personalizados">
+                </div>
+                <div class="boutique-banner-text">
+                    <h2>DISEÑOS PERSONALIZADOS</h2>
+                    <p>
+                        En King Ice Gold, transformamos tus ideas en piezas únicas. Nuestro servicio de personalización
+                        te permite crear joyas exclusivas que reflejen tu estilo personal. Desde grabados especiales
+                        hasta diseños completamente a medida.
+                    </p>
+                    <a href="https://wa.me/525512345678?text=Hola,%20me%20interesa%20un%20diseño%20personalizado"
+                        target="_blank" class="btn btn-primary btn-lg">DISEÑAR MI JOYA</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience -->
+    <section class="boutique-experience">
+        <div class="container">
+            <h2 class="section-title">LA EXPERIENCIA KING ICE</h2>
+            <div class="experience-grid">
+                <div class="experience-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M6 3h12l4 6-10 13L2 9z" />
+                    </svg>
+                    <h4>Oro Certificado</h4>
+                    <p>Cada pieza viene con certificado de autenticidad. Oro genuino de 10k y 14k.</p>
+                </div>
+                <div class="experience-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <rect x="1" y="3" width="15" height="13" />
+                        <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+                        <circle cx="5.5" cy="18.5" r="2.5" />
+                        <circle cx="18.5" cy="18.5" r="2.5" />
+                    </svg>
+                    <h4>Envío Seguro</h4>
+                    <p>Entrega en 4-5 días hábiles con seguro incluido a todo México.</p>
+                </div>
+                <div class="experience-card">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path
+                            d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                    </svg>
+                    <h4>Asesoría Personal</h4>
+                    <p>Te ayudamos a elegir la pieza perfecta vía WhatsApp.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>King Ice Gold</h4>
+                    <p class="text-muted" style="font-size: 0.85rem;">Joyería de alta calidad con envíos asegurados a
+                        todo México.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Colección</h4>
+                    <ul id="footerCategories"></ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Ayuda</h4>
+                    <ul>
+                        <li><a href="servicio-cliente.html">Servicio al cliente</a></li>
+                        <li><a href="servicio-cliente.html#envios">Envíos y entregas</a></li>
+                        <li><a href="servicio-cliente.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li><a href="mailto:contacto@kingicegold.com">contacto@kingicegold.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    <span id="adminAccess">© 2026 King Ice Gold.</span> Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/525512345678?text=Hola,%20me%20interesa%20una%20joya" target="_blank" class="whatsapp-btn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+    </a>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-close" id="mobileMenuClose">&times;</div>
+        <nav id="mobileMenuNav"></nav>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Dynamic category grid
+        window.addEventListener('kig:ready', function () {
+            const container = document.getElementById('boutiqueCategories');
+            if (!container) return;
+            const collections = KIG.Collections.getAll();
+            container.innerHTML = collections.slice(0, 8).map(col => `
+                <a href="collection.html?category=${col.slug}" class="boutique-cat-card">
+                    <img src="${col.image}" alt="${col.name}" loading="lazy">
+                    <div class="boutique-cat-label">
+                        <h3>${col.name.toUpperCase()}</h3>
+                        <span>VER COLECCIÓN</span>
+                    </div>
+                </a>
+            `).join('');
+        });
+
+        // Fallback
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof KIG !== 'undefined' && KIG.Collections.getAll().length > 0) {
+                const container = document.getElementById('boutiqueCategories');
+                if (!container || container.children.length > 0) return;
+                const collections = KIG.Collections.getAll();
+                container.innerHTML = collections.slice(0, 8).map(col => `
+                    <a href="collection.html?category=${col.slug}" class="boutique-cat-card">
+                        <img src="${col.image}" alt="${col.name}" loading="lazy">
+                        <div class="boutique-cat-label">
+                            <h3>${col.name.toUpperCase()}</h3>
+                            <span>VER COLECCIÓN</span>
+                        </div>
+                    </a>
+                `).join('');
+            }
+        });
+    </script>
+</body>
+
+</html>

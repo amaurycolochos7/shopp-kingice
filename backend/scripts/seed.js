@@ -10,7 +10,7 @@ async function seed() {
     console.log('🌱 Iniciando seed de la base de datos...\n');
 
     try {
-        // Check if admin already exists
+        // ─── Admin ───
         const { rows: existingAdmins } = await query(
             'SELECT id FROM admins WHERE username = $1', ['admin']
         );
@@ -32,57 +32,109 @@ async function seed() {
 
         console.log('   ✅ Admin: admin / kingice2026\n');
 
-        // Check if categories exist
+        // ─── Categories (8) ───
         const { rows: existingCats } = await query('SELECT COUNT(*)::int AS count FROM categories');
 
         if (parseInt(existingCats[0].count) === 0) {
             console.log('📂 Creando categorías...');
             await query(`
-        INSERT INTO categories (name, slug, display_order, active) VALUES
-        ('Cadenas', 'cadenas', 1, TRUE),
-        ('Anillos', 'anillos', 2, TRUE),
-        ('Aretes', 'aretes', 3, TRUE),
-        ('Pulsos', 'pulsos', 4, TRUE),
-        ('Dijes', 'dijes', 5, TRUE),
-        ('Relojes', 'relojes', 6, TRUE)
+        INSERT INTO categories (name, slug, image, display_order, active) VALUES
+        ('Cadenas', 'cadenas', 'images/categories/cadenas.webp', 1, TRUE),
+        ('Anillos', 'anillos', 'images/categories/anillos.webp', 2, TRUE),
+        ('Aretes', 'aretes', 'images/categories/aretes.webp', 3, TRUE),
+        ('Pulsos', 'pulsos', 'images/categories/pulsos.webp', 4, TRUE),
+        ('Dijes', 'dijes', 'images/categories/dijes.webp', 5, TRUE),
+        ('Relojes', 'relojes', 'images/categories/relojes.webp', 6, TRUE),
+        ('Religiosos', 'religiosos', 'images/categories/religiosos.webp', 7, TRUE),
+        ('Diamantes', 'diamantes', 'images/categories/diamantes.webp', 8, TRUE)
       `);
-            console.log('   ✅ 6 categorías creadas\n');
+            console.log('   ✅ 8 categorías creadas\n');
         } else {
             console.log(`📂 Categorías ya existen (${existingCats[0].count})\n`);
         }
 
-        // Check if products exist
+        // ─── Products (24) ───
         const { rows: existingProds } = await query('SELECT COUNT(*)::int AS count FROM products');
 
         if (parseInt(existingProds[0].count) === 0) {
-            console.log('🏷️  Creando productos de ejemplo...');
-            await query(`
-        INSERT INTO products (category_id, name, slug, description, base_price, active, featured) VALUES
-        (1, 'Cadena de Oro Torzal Pavé', 'cadena-oro-torzal-pave', 'Elegante cadena de oro amarillo estilo torzal pavé. Acabado brillante de alta calidad.', 27838.20, TRUE, TRUE),
-        (1, 'Cadena Tejido Hollow Box', 'cadena-tejido-hollow-box', 'Cadena de oro con tejido hollow box. Diseño moderno y versátil.', 10374.00, TRUE, TRUE),
-        (2, 'Anillo Solitario Diamante', 'anillo-solitario-diamante', 'Anillo solitario con diamante central de alta calidad.', 15500.00, TRUE, TRUE),
-        (3, 'Aretes de Oro Huggie', 'aretes-oro-huggie', 'Aretes estilo huggie en oro amarillo. Elegantes y cómodos.', 4500.00, TRUE, TRUE),
-        (4, 'Pulsera Cubana', 'pulsera-cubana', 'Pulsera estilo cubano en oro. Look urbano y moderno.', 18900.00, TRUE, TRUE),
-        (5, 'Dije Cruz San Benito', 'dije-cruz-san-benito', 'Dije de cruz San Benito en oro. Símbolo de protección.', 3200.00, TRUE, TRUE)
-      `);
+            console.log('🏷️  Creando productos...');
 
-            // Add product options
-            await query(`
-        INSERT INTO product_options (product_id, option_name, option_values, display_order) VALUES
-        (1, 'medida', '["45cm", "50cm", "55cm", "60cm"]', 1),
-        (1, 'kilataje', '["10k", "14k"]', 2),
-        (2, 'medida', '["45cm", "50cm", "55cm", "60cm"]', 1),
-        (2, 'kilataje', '["10k", "14k"]', 2),
-        (3, 'talla', '["6", "7", "8", "9", "10"]', 1),
-        (3, 'kilataje', '["10k", "14k"]', 2),
-        (4, 'kilataje', '["10k", "14k"]', 1),
-        (5, 'medida', '["18cm", "20cm", "22cm"]', 1),
-        (5, 'kilataje', '["10k", "14k"]', 2),
-        (6, 'tamaño', '["Pequeño", "Mediano", "Grande"]', 1),
-        (6, 'kilataje', '["10k", "14k"]', 2)
-      `);
+            // Get category IDs
+            const { rows: cats } = await query('SELECT id, slug FROM categories ORDER BY display_order');
+            const catMap = {};
+            cats.forEach(c => catMap[c.slug] = c.id);
 
-            console.log('   ✅ 6 productos con opciones creados\n');
+            const products = [
+                // Cadenas (4)
+                { cat: 'cadenas', name: 'Cadena Torzal Pavé', slug: 'cadena-torzal-pave', desc: 'Elegante cadena de oro estilo torzal pavé. Acabado brillante premium.', price: 27838.20, img: 'images/products/cadena-torzal.webp' },
+                { cat: 'cadenas', name: 'Cadena Hollow Box', slug: 'cadena-hollow-box', desc: 'Cadena de oro con tejido hollow box. Diseño moderno y versátil.', price: 10374.00, img: 'images/products/cadena-hollow.webp' },
+                { cat: 'cadenas', name: 'Cadena Cubana', slug: 'cadena-cubana', desc: 'Cadena cubana de oro macizo. Estilo urbano y elegante.', price: 35990.00, img: 'images/products/cadena-cubana.webp' },
+                { cat: 'cadenas', name: 'Cadena Cartier', slug: 'cadena-cartier', desc: 'Cadena estilo Cartier en oro. Look clásico y sofisticado.', price: 22500.00, img: 'images/products/cadena-cartier.webp' },
+
+                // Anillos (3)
+                { cat: 'anillos', name: 'Anillo Solitario Diamante', slug: 'anillo-solitario-diamante', desc: 'Anillo solitario con diamante central de alta calidad.', price: 15500.00, img: 'images/products/anillo-solitario.webp' },
+                { cat: 'anillos', name: 'Anillo Banda Oro', slug: 'anillo-banda-oro', desc: 'Anillo banda en oro amarillo pulido. Perfecto como alianza.', price: 6200.00, img: 'images/products/anillo-banda.webp' },
+                { cat: 'anillos', name: 'Anillo Signet', slug: 'anillo-signet', desc: 'Anillo tipo signet en oro con acabado mate. Estilo masculino.', price: 9800.00, img: 'images/products/anillo-signet.webp' },
+
+                // Aretes (3)
+                { cat: 'aretes', name: 'Aretes Huggie Oro', slug: 'aretes-huggie-oro', desc: 'Aretes estilo huggie en oro amarillo. Elegantes y cómodos.', price: 4500.00, img: 'images/products/aretes-huggie.webp' },
+                { cat: 'aretes', name: 'Aretes Argolla', slug: 'aretes-argolla', desc: 'Aretes de argolla en oro. Clásicos y versátiles.', price: 5800.00, img: 'images/products/aretes-argolla.webp' },
+                { cat: 'aretes', name: 'Aretes Diamante', slug: 'aretes-diamante', desc: 'Aretes con incrustación de diamante. Brillo excepcional.', price: 12900.00, img: 'images/products/aretes-diamante.webp' },
+
+                // Pulsos (3)
+                { cat: 'pulsos', name: 'Pulsera Cubana', slug: 'pulsera-cubana', desc: 'Pulsera cubana de oro. Look urbano y moderno.', price: 18900.00, img: 'images/products/pulso-cubano.webp' },
+                { cat: 'pulsos', name: 'Pulsera Cartier', slug: 'pulsera-cartier', desc: 'Pulsera estilo Cartier Love en oro. Icónica y atemporal.', price: 24500.00, img: 'images/products/pulso-cartier.webp' },
+                { cat: 'pulsos', name: 'Pulsera Tennis', slug: 'pulsera-tennis', desc: 'Pulsera tennis con zirconias. Elegancia pura.', price: 16800.00, img: 'images/products/pulso-tennis.webp' },
+
+                // Dijes (3)
+                { cat: 'dijes', name: 'Dije Cruz San Benito', slug: 'dije-cruz-san-benito', desc: 'Dije de cruz San Benito en oro. Símbolo de protección.', price: 3200.00, img: 'images/products/dije-san-benito.webp' },
+                { cat: 'dijes', name: 'Dije Corazón', slug: 'dije-corazon', desc: 'Dije de corazón en oro con acabado brillante.', price: 2800.00, img: 'images/products/dije-corazon.webp' },
+                { cat: 'dijes', name: 'Dije Inicial', slug: 'dije-inicial', desc: 'Dije con inicial personalizada en oro 14k.', price: 3500.00, img: 'images/products/dije-inicial.webp' },
+
+                // Relojes (3)
+                { cat: 'relojes', name: 'Reloj Presidencial', slug: 'reloj-presidencial', desc: 'Reloj estilo presidencial con acabado dorado premium.', price: 45000.00, img: 'images/products/reloj-presidencial.webp' },
+                { cat: 'relojes', name: 'Reloj Day-Date', slug: 'reloj-day-date', desc: 'Reloj Day-Date con calendario. Look ejecutivo.', price: 38500.00, img: 'images/products/reloj-daydate.webp' },
+                { cat: 'relojes', name: 'Reloj Submariner', slug: 'reloj-submariner', desc: 'Reloj estilo submariner. Deportivo y elegante.', price: 42000.00, img: 'images/products/reloj-submariner.webp' },
+
+                // Religiosos (2)
+                { cat: 'religiosos', name: 'Cristo de Oro', slug: 'cristo-de-oro', desc: 'Imagen de Cristo en oro con detalles grabados.', price: 8900.00, img: 'images/products/cristo-oro.webp' },
+                { cat: 'religiosos', name: 'Virgen de Guadalupe', slug: 'virgen-guadalupe', desc: 'Medalla Virgen de Guadalupe en oro. Acabado detallado.', price: 5600.00, img: 'images/products/virgen-guadalupe.webp' },
+
+                // Diamantes (3)
+                { cat: 'diamantes', name: 'Solitario Princess', slug: 'solitario-princess', desc: 'Anillo solitario corte princess con diamante certificado.', price: 52000.00, img: 'images/products/diamante-princess.webp' },
+                { cat: 'diamantes', name: 'Aretes Diamante Natural', slug: 'aretes-diamante-natural', desc: 'Aretes con diamantes naturales de alta pureza.', price: 35000.00, img: 'images/products/diamante-aretes.webp' },
+                { cat: 'diamantes', name: 'Colgante Diamante', slug: 'colgante-diamante', desc: 'Colgante con diamante corte brillante en montura de oro.', price: 28000.00, img: 'images/products/diamante-colgante.webp' },
+            ];
+
+            for (const p of products) {
+                const catId = catMap[p.cat];
+                if (!catId) {
+                    console.log(`   ⚠️ Categoría "${p.cat}" no encontrada, saltando ${p.name}`);
+                    continue;
+                }
+
+                const { rows } = await query(`
+                    INSERT INTO products (category_id, name, slug, description, base_price, images, active, featured)
+                    VALUES ($1, $2, $3, $4, $5, $6, TRUE, $7)
+                    RETURNING id
+                `, [catId, p.name, p.slug, p.desc, p.price, JSON.stringify([p.img]), p.price > 20000]);
+
+                // Add options
+                const productId = rows[0].id;
+                if (['cadenas'].includes(p.cat)) {
+                    await query(`INSERT INTO product_options (product_id, option_name, option_values, display_order) VALUES ($1, 'medida', '["45cm", "50cm", "55cm", "60cm"]', 1), ($1, 'kilataje', '["10k", "14k"]', 2)`, [productId]);
+                } else if (['anillos', 'diamantes'].includes(p.cat) && p.slug.includes('anillo') || p.slug.includes('solitario')) {
+                    await query(`INSERT INTO product_options (product_id, option_name, option_values, display_order) VALUES ($1, 'talla', '["6", "7", "8", "9", "10"]', 1), ($1, 'kilataje', '["10k", "14k"]', 2)`, [productId]);
+                } else if (['pulsos'].includes(p.cat)) {
+                    await query(`INSERT INTO product_options (product_id, option_name, option_values, display_order) VALUES ($1, 'medida', '["18cm", "20cm", "22cm"]', 1), ($1, 'kilataje', '["10k", "14k"]', 2)`, [productId]);
+                } else if (['aretes'].includes(p.cat)) {
+                    await query(`INSERT INTO product_options (product_id, option_name, option_values, display_order) VALUES ($1, 'kilataje', '["10k", "14k"]', 1)`, [productId]);
+                } else if (['dijes', 'religiosos'].includes(p.cat)) {
+                    await query(`INSERT INTO product_options (product_id, option_name, option_values, display_order) VALUES ($1, 'tamaño', '["Pequeño", "Mediano", "Grande"]', 1), ($1, 'kilataje', '["10k", "14k"]', 2)`, [productId]);
+                }
+            }
+
+            console.log(`   ✅ ${products.length} productos creados con opciones\n`);
         } else {
             console.log(`🏷️  Productos ya existen (${existingProds[0].count})\n`);
         }

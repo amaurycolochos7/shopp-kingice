@@ -8,14 +8,389 @@
         content="Conoce King Ice Gold - Tu joyería de confianza con envíos asegurados a todo México.">
     <title>Sobre Nosotros | King Ice Gold</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@100;300;400;500;600;700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/responsive.css">
+
+    <style>
+        /* About Page Specific Styles */
+        .about-hero {
+            position: relative;
+            height: 50vh;
+            min-height: 350px;
+            background: var(--color-bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .about-hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.4;
+        }
+
+        .about-hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(10, 10, 10, 0.3), rgba(10, 10, 10, 0.7));
+        }
+
+        .about-hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: var(--color-text-light);
+        }
+
+        .about-hero-content h1 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            color: var(--color-text-light);
+        }
+
+        .about-hero-content p {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.95rem;
+            letter-spacing: 0.1em;
+            margin-top: var(--spacing-md);
+        }
+
+        .about-story-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3xl);
+            align-items: center;
+            padding: var(--spacing-4xl) 0;
+        }
+
+        .about-story-image {
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+        }
+
+        .about-story-image img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .about-story-image:hover img {
+            transform: scale(1.03);
+        }
+
+        .about-story-text h2 {
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            margin-bottom: var(--spacing-lg);
+            position: relative;
+        }
+
+        .about-story-text h2::after {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 1.5px;
+            background: var(--color-primary);
+            margin-top: var(--spacing-md);
+        }
+
+        .about-story-text p {
+            font-size: 0.92rem;
+            line-height: 1.85;
+            color: var(--color-text-body);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Values Grid */
+        .values-section {
+            background: var(--color-bg-gray);
+            padding: var(--spacing-4xl) 0;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-2xl);
+        }
+
+        .value-card {
+            text-align: center;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            background: var(--color-bg-light);
+            border-radius: var(--border-radius-md);
+            transition: all var(--transition-normal);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+        }
+
+        .value-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .value-card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .value-card h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .value-card p {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            line-height: 1.7;
+        }
+
+        /* Timeline */
+        .timeline-section {
+            padding: var(--spacing-4xl) 0;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 700px;
+            margin: var(--spacing-2xl) auto 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--color-primary), rgba(212, 175, 55, 0.2));
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+            position: relative;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+            text-align: right;
+        }
+
+        .timeline-year {
+            flex: 0 0 auto;
+            width: 80px;
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: var(--color-primary);
+            letter-spacing: 0.05em;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-content h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .timeline-content p {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+
+        .timeline-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            flex-shrink: 0;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.15);
+        }
+
+        /* Gallery */
+        .gallery-section {
+            background: var(--color-bg-dark);
+            padding: var(--spacing-4xl) 0;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--spacing-sm);
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: var(--border-radius-sm);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            filter: brightness(0.85);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+            filter: brightness(1);
+        }
+
+        /* CTA */
+        .about-cta {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #0a0a0a);
+            padding: var(--spacing-4xl) 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .about-cta::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.1), transparent 70%);
+        }
+
+        .about-cta h2 {
+            color: var(--color-text-light);
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            margin-bottom: var(--spacing-md);
+            position: relative;
+        }
+
+        .about-cta p {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: var(--spacing-2xl);
+            position: relative;
+        }
+
+        .about-cta .btn {
+            position: relative;
+        }
+
+        /* Checklist */
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .checklist-icon {
+            color: var(--color-primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .checklist-item strong {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+
+        .checklist-item p {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+
+        /* Why Grid */
+        .why-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3xl);
+            align-items: center;
+        }
+
+        .why-image-container {
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+        }
+
+        .why-image-container img {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+        }
+
+        @media (max-width: 768px) {
+
+            .about-story-section,
+            .why-section {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-xl);
+            }
+
+            .about-story-image img,
+            .why-image-container img {
+                height: 280px;
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .gallery-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                flex-direction: row;
+                text-align: left;
+            }
+
+            .about-hero-content h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -23,7 +398,7 @@
     <div class="top-bar">
         <div class="container top-bar-content">
             <div class="top-bar-links">
-                <a href="#">Servicio al cliente</a>
+                <a href="servicio-cliente.html">Servicio al cliente</a>
             </div>
             <div class="top-bar-message">
                 🔒 Envíos asegurados contra robo y extravío
@@ -41,14 +416,22 @@
                 <span></span>
             </div>
 
-            <a href="index.html" class="logo">KING <span>ICE</span> GOLD</a>
+            <a href="index.html" class="logo"><img src="images/logo-crown.svg" alt="King Ice Gold"></a>
 
             <nav class="nav-main">
                 <a href="collection.html">Colección</a>
+                <a href="boutique.html">Boutique</a>
                 <a href="about.html" class="active">Sobre Nosotros</a>
             </nav>
 
             <div class="header-icons">
+                <a href="#" class="header-icon" id="searchIcon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                </a>
                 <a href="cart.html" class="header-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -69,65 +452,70 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section
-        style="background-color: var(--color-bg-dark); padding: var(--spacing-3xl) 0; text-align: center; color: var(--color-text-light);">
-        <div class="container">
-            <h1 style="font-size: 2.5rem; font-style: italic; letter-spacing: 0.2em;">NUESTRA HISTORIA</h1>
+    <!-- Hero -->
+    <section class="about-hero">
+        <img src="images/about/showroom.webp" alt="Showroom King Ice Gold" class="about-hero-bg">
+        <div class="about-hero-overlay"></div>
+        <div class="about-hero-content">
+            <h1>NUESTRA HISTORIA</h1>
+            <p>JOYERÍA PREMIUM DESDE MÉXICO</p>
         </div>
     </section>
 
-    <!-- About Content -->
+    <!-- Main Content -->
     <main>
         <!-- Story Section -->
         <section class="section">
             <div class="container">
-                <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-                    <h2 style="font-style: italic; margin-bottom: var(--spacing-xl);">King Ice Gold</h2>
-                    <p style="font-size: 1.1rem; line-height: 1.8; color: var(--color-text-muted);">
-                        En <strong style="color: var(--color-primary);">King Ice Gold</strong> nos dedicamos a ofrecer
-                        joyería de la más alta calidad.
-                        Cada pieza de nuestra colección está cuidadosamente seleccionada para garantizar autenticidad,
-                        elegancia y durabilidad.
-                    </p>
-                    <p
-                        style="font-size: 1.1rem; line-height: 1.8; color: var(--color-text-muted); margin-top: var(--spacing-lg);">
-                        Trabajamos exclusivamente con oro de <strong>10 y 14 kilates</strong>, brindando a nuestros
-                        clientes
-                        productos genuinos con certificado de autenticidad. Nuestra misión es que cada persona pueda
-                        lucir joyas de calidad premium sin preocupaciones.
-                    </p>
+                <div class="about-story-section">
+                    <div class="about-story-image">
+                        <img src="images/about/founder.webp" alt="Fundador King Ice Gold">
+                    </div>
+                    <div class="about-story-text">
+                        <h2>KING ICE GOLD</h2>
+                        <p>
+                            En <strong class="text-gold">King Ice Gold</strong> nos dedicamos a ofrecer
+                            joyería de la más alta calidad. Cada pieza de nuestra colección está cuidadosamente
+                            seleccionada para garantizar autenticidad, elegancia y durabilidad.
+                        </p>
+                        <p>
+                            Trabajamos exclusivamente con oro de <strong>10 y 14 kilates</strong>, brindando a nuestros
+                            clientes productos genuinos con certificado de autenticidad. Nuestra misión es que cada
+                            persona pueda lucir joyas de calidad premium sin preocupaciones.
+                        </p>
+                        <p>
+                            Desde nuestros inicios, hemos mantenido un compromiso inquebrantable con la excelencia,
+                            ofreciendo piezas que combinan artesanía tradicional con diseños contemporáneos.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Values Section -->
-        <section class="section" style="background-color: var(--color-bg-gray);">
+        <section class="values-section">
             <div class="container">
-                <h2 class="text-center mb-xl" style="font-style: italic;">NUESTROS VALORES</h2>
-                <div class="grid grid-3">
-                    <div class="text-center" style="padding: var(--spacing-xl);">
-                        <div style="font-size: 3rem; margin-bottom: var(--spacing-md);">💎</div>
-                        <h3 style="font-family: var(--font-body); font-weight: 600; margin-bottom: var(--spacing-md);">
-                            Calidad Premium</h3>
-                        <p class="text-muted" style="font-size: 0.9rem;">
+                <h2 class="text-center mb-xl section-title">NUESTROS VALORES</h2>
+                <div class="values-grid" style="margin-top: var(--spacing-2xl);">
+                    <div class="value-card">
+                        <img src="images/about/watches.webp" alt="Calidad Premium" class="value-card-image">
+                        <h3>Calidad Premium</h3>
+                        <p>
                             Solo trabajamos con oro auténtico de 10k y 14k. Cada pieza incluye certificado de
                             autenticidad.
                         </p>
                     </div>
-                    <div class="text-center" style="padding: var(--spacing-xl);">
-                        <div style="font-size: 3rem; margin-bottom: var(--spacing-md);">🤝</div>
-                        <h3 style="font-family: var(--font-body); font-weight: 600; margin-bottom: var(--spacing-md);">
-                            Confianza</h3>
-                        <p class="text-muted" style="font-size: 0.9rem;">
+                    <div class="value-card">
+                        <img src="images/about/behind-scenes.webp" alt="Confianza" class="value-card-image">
+                        <h3>Confianza</h3>
+                        <p>
                             Tu satisfacción es nuestra prioridad. Transparencia total en cada transacción.
                         </p>
                     </div>
-                    <div class="text-center" style="padding: var(--spacing-xl);">
-                        <div style="font-size: 3rem; margin-bottom: var(--spacing-md);">🔒</div>
-                        <h3 style="font-family: var(--font-body); font-weight: 600; margin-bottom: var(--spacing-md);">
-                            Seguridad</h3>
-                        <p class="text-muted" style="font-size: 0.9rem;">
+                    <div class="value-card">
+                        <img src="images/about/panthere.webp" alt="Seguridad" class="value-card-image">
+                        <h3>Seguridad</h3>
+                        <p>
                             Todos nuestros envíos están asegurados contra robo y extravío. Compra con tranquilidad.
                         </p>
                     </div>
@@ -135,51 +523,84 @@
             </div>
         </section>
 
-        <!-- Why Choose Us -->
-        <section class="section">
+        <!-- Timeline -->
+        <section class="timeline-section">
             <div class="container">
-                <div
-                    style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-3xl); align-items: center;">
-                    <div
-                        style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%); aspect-ratio: 4/3; border-radius: var(--border-radius-lg); display: flex; align-items: center; justify-content: center;">
-                        <span style="font-size: 5rem;">👑</span>
+                <h2 class="text-center section-title">NUESTRA TRAYECTORIA</h2>
+                <div class="timeline" style="margin-top: var(--spacing-3xl);">
+                    <div class="timeline-item">
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>El Inicio</h4>
+                            <p>Nace King Ice Gold con la visión de llevar joyería premium a todo México.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2022</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Expansión Nacional</h4>
+                            <p>Implementamos envíos asegurados a toda la república, con entregas en 4-5 días hábiles.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2024</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Diseños Personalizados</h4>
+                            <p>Lanzamos nuestro servicio de personalización Cartier y diseño a medida.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-year">2026</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h4>Nueva Plataforma</h4>
+                            <p>Renovamos nuestra tienda en línea con la mejor experiencia de compra.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us -->
+        <section class="section" style="background: var(--color-bg-gray);">
+            <div class="container">
+                <div class="why-section">
+                    <div class="why-image-container">
+                        <img src="images/about/pendant.webp" alt="Joyería King Ice Gold">
                     </div>
                     <div>
-                        <h2 style="font-style: italic; margin-bottom: var(--spacing-xl);">¿Por qué elegirnos?</h2>
-                        <ul style="list-style: none; padding: 0;">
-                            <li
-                                style="display: flex; align-items: flex-start; gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
-                                <span style="color: var(--color-primary); font-size: 1.25rem;">✓</span>
+                        <h2 class="section-title" style="text-align: left;">¿POR QUÉ ELEGIRNOS?</h2>
+                        <ul class="checklist" style="margin-top: var(--spacing-2xl);">
+                            <li class="checklist-item">
+                                <span class="checklist-icon">✓</span>
                                 <div>
                                     <strong>Oro Garantizado</strong>
-                                    <p class="text-muted" style="font-size: 0.9rem; margin-top: 4px;">Todas nuestras
-                                        piezas son de oro auténtico con certificado.</p>
+                                    <p>Todas nuestras piezas son de oro auténtico con certificado.</p>
                                 </div>
                             </li>
-                            <li
-                                style="display: flex; align-items: flex-start; gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
-                                <span style="color: var(--color-primary); font-size: 1.25rem;">✓</span>
+                            <li class="checklist-item">
+                                <span class="checklist-icon">✓</span>
                                 <div>
                                     <strong>Envío Asegurado</strong>
-                                    <p class="text-muted" style="font-size: 0.9rem; margin-top: 4px;">Tu paquete viaja
-                                        protegido contra cualquier imprevisto.</p>
+                                    <p>Tu paquete viaja protegido contra cualquier imprevisto.</p>
                                 </div>
                             </li>
-                            <li
-                                style="display: flex; align-items: flex-start; gap: var(--spacing-md); margin-bottom: var(--spacing-lg);">
-                                <span style="color: var(--color-primary); font-size: 1.25rem;">✓</span>
+                            <li class="checklist-item">
+                                <span class="checklist-icon">✓</span>
                                 <div>
                                     <strong>Atención Personalizada</strong>
-                                    <p class="text-muted" style="font-size: 0.9rem; margin-top: 4px;">Te asesoramos por
-                                        WhatsApp para encontrar la pieza perfecta.</p>
+                                    <p>Te asesoramos por WhatsApp para encontrar la pieza perfecta.</p>
                                 </div>
                             </li>
-                            <li style="display: flex; align-items: flex-start; gap: var(--spacing-md);">
-                                <span style="color: var(--color-primary); font-size: 1.25rem;">✓</span>
+                            <li class="checklist-item">
+                                <span class="checklist-icon">✓</span>
                                 <div>
                                     <strong>Pago Fácil</strong>
-                                    <p class="text-muted" style="font-size: 0.9rem; margin-top: 4px;">Deposita
-                                        cómodamente en OXXO y recibe tu joya en casa.</p>
+                                    <p>Deposita cómodamente en OXXO y recibe tu joya en casa.</p>
                                 </div>
                             </li>
                         </ul>
@@ -188,17 +609,37 @@
             </div>
         </section>
 
-        <!-- Contact CTA -->
-        <section class="section"
-            style="background-color: var(--color-bg-dark); color: var(--color-text-light); text-align: center;">
+        <!-- Gallery -->
+        <section class="gallery-section">
             <div class="container">
-                <h2 style="font-style: italic; margin-bottom: var(--spacing-lg);">¿Tienes alguna pregunta?</h2>
-                <p style="color: var(--color-text-muted); max-width: 500px; margin: 0 auto var(--spacing-xl);">
+                <h2 class="text-center section-title" style="color: var(--color-text-light);">GALERÍA</h2>
+                <div class="gallery-grid" style="margin-top: var(--spacing-2xl);">
+                    <div class="gallery-item">
+                        <img src="images/about/history.webp" alt="Historia">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="images/about/history-2015.webp" alt="Historia 2015">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="images/about/history-4.webp" alt="Colección">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="images/about/watches.webp" alt="Relojes">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact CTA -->
+        <section class="about-cta">
+            <div class="container">
+                <h2>¿TIENES ALGUNA PREGUNTA?</h2>
+                <p>
                     Estamos aquí para ayudarte. Contáctanos por WhatsApp y con gusto te atenderemos.
                 </p>
                 <a href="https://wa.me/525512345678?text=Hola,%20tengo%20una%20pregunta" target="_blank"
                     class="btn btn-primary btn-lg">
-                    <span style="margin-right: 8px;">💬</span> Contactar por WhatsApp
+                    CONTACTAR POR WHATSAPP
                 </a>
             </div>
         </section>
@@ -210,7 +651,7 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h4>King Ice Gold</h4>
-                    <p style="color: var(--color-text-muted); font-size: 0.85rem;">
+                    <p class="text-muted" style="font-size: 0.85rem;">
                         Joyería de alta calidad con envíos asegurados a todo México.
                     </p>
                 </div>
@@ -221,9 +662,9 @@
                 <div class="footer-section">
                     <h4>Ayuda</h4>
                     <ul>
-                        <li><a href="#">Preguntas frecuentes</a></li>
-                        <li><a href="#">Envíos y entregas</a></li>
-                        <li><a href="#">Contacto</a></li>
+                        <li><a href="servicio-cliente.html">Servicio al cliente</a></li>
+                        <li><a href="servicio-cliente.html#envios">Envíos y entregas</a></li>
+                        <li><a href="servicio-cliente.html#contacto">Contacto</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -249,6 +690,14 @@
         </svg>
     </a>
 
+    <!-- Scroll to Top -->
+    <button class="scroll-to-top" id="scrollToTop">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m18 15-6-6-6 6" />
+        </svg>
+    </button>
+
     <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
         <div class="mobile-menu-close" id="mobileMenuClose">&times;</div>
@@ -258,14 +707,6 @@
     <script src="js/api.js"></script>
     <script src="js/storage.js"></script>
     <script src="js/main.js"></script>
-
-    <style>
-        @media (max-width: 768px) {
-            section>.container>div[style*="grid-template-columns: 1fr 1fr"] {
-                grid-template-columns: 1fr !important;
-            }
-        }
-    </style>
 </body>
 
 </html>

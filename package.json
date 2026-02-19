@@ -1,0 +1,25 @@
+{
+  "name": "king_ice_gold",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amaurycolochos7/shopp-kingice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/amaurycolochos7/shopp-kingice/issues"
+  },
+  "homepage": "https://github.com/amaurycolochos7/shopp-kingice#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "playwright": "^1.58.2"
+  }
+}

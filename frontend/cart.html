@@ -7,10 +7,12 @@
     <meta name="description" content="Tu carrito de compras - King Ice Gold">
     <title>Carrito | King Ice Gold</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@100;300;400;500;600;700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -40,7 +42,7 @@
                 <span></span>
             </div>
 
-            <a href="index.html" class="logo">KING <span>ICE</span> GOLD</a>
+            <a href="index.html" class="logo"><img src="images/logo-crown.svg" alt="King Ice Gold"></a>
 
             <nav class="nav-main">
                 <a href="collection.html">Colección</a>
@@ -64,7 +66,7 @@
     <!-- Cart Page -->
     <main class="cart-page">
         <div class="container">
-            <h1 style="font-size: 2rem; margin-bottom: var(--spacing-xl); font-style: italic;">TU CARRITO</h1>
+            <h1 class="cart-title">TU CARRITO</h1>
 
             <!-- Empty Cart -->
             <div class="cart-empty" id="cartEmpty" style="display: none;">
@@ -81,7 +83,7 @@
 
             <!-- Cart Content -->
             <div id="cartContent" style="display: none;">
-                <div style="display: grid; grid-template-columns: 1fr 400px; gap: var(--spacing-2xl);">
+                <div class="cart-layout">
                     <!-- Cart Items -->
                     <div>
                         <table class="cart-table">
@@ -287,7 +289,7 @@
 
     <style>
         @media (max-width: 1024px) {
-            #cartContent>div {
+            .cart-layout {
                 grid-template-columns: 1fr !important;
             }
         }

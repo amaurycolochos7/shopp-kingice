@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Servicio al cliente King Ice Gold - Preguntas frecuentes, envíos, pagos y contacto.">
+    <title>Servicio al Cliente | King Ice Gold</title>
+
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@100;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <style>
+        .service-hero {
+            background: var(--color-bg-dark);
+            padding: var(--spacing-4xl) 0;
+            text-align: center;
+        }
+
+        .service-hero h1 {
+            color: var(--color-text-light);
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+        }
+
+        .service-hero p {
+            color: rgba(255, 255, 255, 0.55);
+            margin-top: var(--spacing-md);
+            font-size: 0.9rem;
+        }
+
+        .service-tabs {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-xl) 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            flex-wrap: wrap;
+        }
+
+        .service-tab {
+            padding: 10px 24px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: transparent;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .service-tab:hover,
+        .service-tab.active {
+            background: var(--color-bg-dark);
+            color: var(--color-text-light);
+            border-color: var(--color-bg-dark);
+        }
+
+        .service-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: var(--spacing-3xl) var(--spacing-lg);
+        }
+
+        .faq-section {
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .faq-section h2 {
+            font-size: 1.4rem;
+            font-weight: 400;
+            letter-spacing: 0.1em;
+            margin-bottom: var(--spacing-xl);
+            padding-bottom: var(--spacing-md);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .faq-item {
+            margin-bottom: var(--spacing-lg);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--border-radius-sm);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            cursor: pointer;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: background var(--transition-fast);
+        }
+
+        .faq-question:hover {
+            background: var(--color-bg-gray);
+        }
+
+        .faq-question::after {
+            content: '+';
+            font-size: 1.3rem;
+            font-weight: 300;
+            color: var(--color-primary);
+            transition: transform var(--transition-normal);
+        }
+
+        .faq-item.open .faq-question::after {
+            content: '−';
+        }
+
+        .faq-answer {
+            display: none;
+            padding: 0 var(--spacing-xl) var(--spacing-lg);
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            line-height: 1.8;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .info-card {
+            text-align: center;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--border-radius-md);
+            transition: all var(--transition-normal);
+        }
+
+        .info-card:hover {
+            border-color: var(--color-primary);
+            box-shadow: var(--shadow-gold);
+        }
+
+        .info-card-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto var(--spacing-lg);
+            color: var(--color-primary);
+        }
+
+        .info-card h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .info-card p {
+            font-size: 0.82rem;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+        }
+
+        .contact-section {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e);
+            padding: var(--spacing-4xl) 0;
+            text-align: center;
+        }
+
+        .contact-section h2 {
+            color: var(--color-text-light);
+            font-size: 1.6rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .contact-section p {
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: var(--spacing-2xl);
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-xl);
+            flex-wrap: wrap;
+        }
+
+        .contact-method {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85rem;
+            transition: color var(--transition-normal);
+        }
+
+        .contact-method:hover {
+            color: var(--color-primary);
+        }
+
+        .contact-method svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .service-hero h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-links">
+                <a href="servicio-cliente.html" class="active">Servicio al cliente</a>
+            </div>
+            <div class="top-bar-message">
+                🔒 Envíos asegurados contra robo y extravío
+            </div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <a href="index.html" class="logo"><img src="images/logo-crown.svg" alt="King Ice Gold"></a>
+            <nav class="nav-main">
+                <a href="collection.html">Colección</a>
+                <a href="boutique.html">Boutique</a>
+                <a href="about.html">Sobre Nosotros</a>
+            </nav>
+            <div class="header-icons">
+                <a href="#" class="header-icon" id="searchIcon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.3-4.3"></path>
+                    </svg>
+                </a>
+                <a href="cart.html" class="header-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-count" style="display: none;">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Categories Nav -->
+    <nav class="nav-categories">
+        <div class="container">
+            <ul id="categoriesNav"></ul>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="service-hero">
+        <div class="container">
+            <h1>SERVICIO AL CLIENTE</h1>
+            <p>Estamos aquí para ayudarte en todo momento</p>
+        </div>
+    </section>
+
+    <!-- Tabs -->
+    <div class="container">
+        <div class="service-tabs">
+            <button class="service-tab active" data-tab="general">General</button>
+            <button class="service-tab" data-tab="envios" id="envios">Envíos</button>
+            <button class="service-tab" data-tab="pagos">Pagos</button>
+            <button class="service-tab" data-tab="garantias">Garantías</button>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <main>
+        <div class="service-content">
+            <!-- General -->
+            <div class="faq-section" id="general">
+                <h2>PREGUNTAS FRECUENTES</h2>
+
+                <div class="faq-item open">
+                    <div class="faq-question">¿Todas las joyas son de oro auténtico?</div>
+                    <div class="faq-answer">Sí, todas nuestras piezas están elaboradas en oro auténtico de 10 o 14
+                        kilates. Cada producto incluye un certificado de autenticidad que garantiza la calidad y pureza
+                        del material.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Puedo personalizar una joya?</div>
+                    <div class="faq-answer">¡Por supuesto! Ofrecemos servicio de personalización. Contáctanos por
+                        WhatsApp y te asesoraremos sobre opciones de grabado, medidas especiales y diseños exclusivos.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Cómo cuido mis joyas de oro?</div>
+                    <div class="faq-answer">Recomendamos limpiar tus joyas con un paño suave. Evita el contacto con
+                        productos químicos, perfumes y cremas. Guárdalas en un lugar seco y separadas entre sí para
+                        evitar rayaduras.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Tienen tienda física?</div>
+                    <div class="faq-answer">Atendemos principalmente en línea con envíos a toda la República Mexicana.
+                        Para información sobre showroom, contáctanos directamente por WhatsApp.</div>
+                </div>
+            </div>
+
+            <!-- Envíos -->
+            <div class="faq-section" id="envios-section">
+                <h2>ENVÍOS Y ENTREGAS</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Cuánto tarda en llegar mi pedido?</div>
+                    <div class="faq-answer">El tiempo de entrega es de 4 a 5 días hábiles después de confirmar tu pago.
+                        Recibirás un número de guía para rastrear tu envío en todo momento.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Los envíos están asegurados?</div>
+                    <div class="faq-answer">Sí, todos nuestros envíos incluyen seguro contra robo y extravío sin costo
+                        adicional. Tu joya viaja protegida desde nuestras instalaciones hasta tu puerta.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Hacen envíos a todo México?</div>
+                    <div class="faq-answer">Sí, realizamos envíos a toda la República Mexicana. Utilizamos paqueterías
+                        confiables para garantizar la entrega segura de tu pedido.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Cuál es el costo de envío?</div>
+                    <div class="faq-answer">El costo de envío varía según tu ubicación. En muchos casos ofrecemos envío
+                        gratuito en pedidos que superen un monto mínimo. Consulta al momento de tu compra.</div>
+                </div>
+            </div>
+
+            <!-- Pagos -->
+            <div class="faq-section" id="pagos-section">
+                <h2>MÉTODOS DE PAGO</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Qué métodos de pago aceptan?</div>
+                    <div class="faq-answer">Aceptamos depósitos y transferencias bancarias, pagos en OXXO y
+                        transferencias SPEI. Contáctanos por WhatsApp para recibir los datos de pago.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Puedo pagar a meses?</div>
+                    <div class="faq-answer">Ofrecemos facilidades de pago en ciertas piezas. Contáctanos para discutir
+                        opciones de apartado o pagos parciales según el producto de tu interés.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Cuándo se confirma mi pago?</div>
+                    <div class="faq-answer">Los pagos se confirman generalmente en un plazo de 24 horas hábiles. Una vez
+                        confirmado, recibirás una notificación y comenzamos a preparar tu envío.</div>
+                </div>
+            </div>
+
+            <!-- Garantías -->
+            <div class="faq-section" id="garantias-section">
+                <h2>GARANTÍAS Y DEVOLUCIONES</h2>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Qué garantía tienen las joyas?</div>
+                    <div class="faq-answer">Todas nuestras joyas incluyen garantía de autenticidad de por vida. Si en
+                        algún momento dudas de la calidad, puedes verificarla en cualquier joyería certificada.</div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Aceptan devoluciones?</div>
+                    <div class="faq-answer">Aceptamos devoluciones dentro de los 7 días naturales posteriores a la
+                        entrega, siempre que el producto se encuentre en su empaque original y en perfectas condiciones.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question">¿Qué hago si mi joya llega dañada?</div>
+                    <div class="faq-answer">En el improbable caso de que tu joya llegue dañada, contacta nuestro equipo
+                        inmediatamente por WhatsApp con fotos del daño. Realizaremos el cambio sin costo adicional.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Cards -->
+        <section class="section" style="background: var(--color-bg-gray);">
+            <div class="container">
+                <div class="info-grid">
+                    <div class="info-card">
+                        <div class="info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                                <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+                                <line x1="12" y1="22.08" x2="12" y2="12" />
+                            </svg>
+                        </div>
+                        <h4>Envío Asegurado</h4>
+                        <p>Todos los paquetes viajan protegidos contra robo y extravío.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                <path d="m9 12 2 2 4-4" />
+                            </svg>
+                        </div>
+                        <h4>Oro Certificado</h4>
+                        <p>Cada pieza incluye certificado de autenticidad 10k/14k.</p>
+                    </div>
+                    <div class="info-card">
+                        <div class="info-card-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <polyline points="22,6 12,13 2,6" />
+                            </svg>
+                        </div>
+                        <h4>Atención WhatsApp</h4>
+                        <p>Te asesoramos personalmente de lunes a sábado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact CTA -->
+        <section class="contact-section" id="contacto">
+            <div class="container">
+                <h2>¿NECESITAS AYUDA?</h2>
+                <p>Nuestro equipo está disponible para atenderte por cualquier canal.</p>
+                <div class="contact-methods">
+                    <a href="https://wa.me/525512345678" target="_blank" class="contact-method">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a4.7 4.7 0 00-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                        </svg>
+                        WhatsApp
+                    </a>
+                    <a href="mailto:contacto@kingicegold.com" class="contact-method">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="2" y="4" width="20" height="16" rx="2" />
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                        </svg>
+                        contacto@kingicegold.com
+                    </a>
+                </div>
+                <div style="margin-top: var(--spacing-2xl);">
+                    <a href="https://wa.me/525512345678?text=Hola,%20necesito%20ayuda" target="_blank"
+                        class="btn btn-primary btn-lg">CONTACTAR AHORA</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>King Ice Gold</h4>
+                    <p class="text-muted" style="font-size: 0.85rem;">Joyería de alta calidad con envíos asegurados a
+                        todo México.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Colección</h4>
+                    <ul id="footerCategories"></ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Ayuda</h4>
+                    <ul>
+                        <li><a href="servicio-cliente.html">Servicio al cliente</a></li>
+                        <li><a href="servicio-cliente.html#envios">Envíos y entregas</a></li>
+                        <li><a href="servicio-cliente.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li><a href="mailto:contacto@kingicegold.com">contacto@kingicegold.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    <span id="adminAccess">© 2026 King Ice Gold.</span> Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/525512345678?text=Hola,%20me%20interesa%20una%20joya" target="_blank" class="whatsapp-btn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+    </a>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-close" id="mobileMenuClose">&times;</div>
+        <nav id="mobileMenuNav"></nav>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const item = q.parentElement;
+                const wasOpen = item.classList.contains('open');
+                // Close all
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+                // Toggle clicked
+                if (!wasOpen) item.classList.add('open');
+            });
+        });
+
+        // Tab switching
+        document.querySelectorAll('.service-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.service-tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const target = tab.dataset.tab;
+                document.querySelectorAll('.faq-section').forEach(s => s.style.display = 'none');
+                if (target === 'general') {
+                    document.getElementById('general').style.display = '';
+                } else if (target === 'envios') {
+                    document.getElementById('envios-section').style.display = '';
+                } else if (target === 'pagos') {
+                    document.getElementById('pagos-section').style.display = '';
+                } else if (target === 'garantias') {
+                    document.getElementById('garantias-section').style.display = '';
+                }
+            });
+        });
+
+        // Hash navigation
+        if (window.location.hash === '#envios') {
+            document.querySelector('[data-tab="envios"]').click();
+        } else if (window.location.hash === '#contacto') {
+            document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>

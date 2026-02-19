@@ -7,10 +7,12 @@
     <meta name="description" content="Confirmación de pedido - King Ice Gold">
     <title>Pedido Confirmado | King Ice Gold</title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@100;300;400;500;600;700&display=swap"
         rel="stylesheet">
 
     <link rel="stylesheet" href="css/styles.css">
@@ -19,9 +21,9 @@
 
 <body>
     <!-- Header Simplificado -->
-    <header class="header" style="border-bottom: 1px solid #eee;">
+    <header class="header" style="border-bottom: 1px solid rgba(0,0,0,0.06);">
         <div class="container header-content" style="justify-content: center;">
-            <a href="index.html" class="logo">KING <span>ICE</span> GOLD</a>
+            <a href="index.html" class="logo"><img src="images/logo-crown.svg" alt="King Ice Gold"></a>
         </div>
     </header>
 
@@ -47,8 +49,7 @@
                     <li>Acude a cualquier tienda <strong>OXXO</strong></li>
                     <li>Indica que deseas hacer un <strong>depósito en efectivo</strong></li>
                     <li>Proporciona la siguiente referencia de pago:
-                        <div
-                            style="background: #fff; padding: 15px; margin: 10px 0; border-radius: 8px; text-align: center;">
+                        <div class="confirmation-box" style="text-align: center; margin: 10px 0;">
                             <strong style="font-size: 1.25rem; letter-spacing: 0.1em;"
                                 id="paymentRef">KING-ICE-XXXX</strong>
                         </div>
@@ -57,8 +58,8 @@
                     <li>Guarda tu comprobante de pago</li>
                 </ol>
 
-                <div style="background: rgba(212, 175, 55, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px;">
-                    <p style="margin: 0; font-size: 0.9rem;">
+                <div class="confirmation-note">
+                    <p>
                         💬 <strong>Te contactaremos por WhatsApp</strong> al número que proporcionaste para confirmar tu
                         depósito y darte seguimiento a tu envío.
                     </p>
@@ -66,47 +67,35 @@
             </div>
 
             <!-- Order Summary -->
-            <div style="max-width: 600px; margin: var(--spacing-xl) auto; text-align: left;">
-                <h3
-                    style="font-family: var(--font-body); font-size: 1rem; font-weight: 600; text-transform: uppercase; margin-bottom: var(--spacing-lg);">
-                    Resumen de tu pedido
-                </h3>
+            <div class="confirmation-summary">
+                <h3 class="confirmation-summary-title">Resumen de tu pedido</h3>
 
-                <div id="orderSummary"
-                    style="background: var(--color-bg-gray); padding: var(--spacing-lg); border-radius: var(--border-radius-md);">
+                <div class="confirmation-box" id="orderSummary">
                     <!-- Contenido dinámico -->
                 </div>
 
-                <div
-                    style="margin-top: var(--spacing-lg); padding: var(--spacing-lg); background: var(--color-bg-gray); border-radius: var(--border-radius-md);">
-                    <h4
-                        style="font-family: var(--font-body); font-size: 0.9rem; font-weight: 600; margin-bottom: var(--spacing-md);">
-                        Dirección de envío
-                    </h4>
+                <div class="confirmation-box">
+                    <h4 class="confirmation-summary-title" style="font-size: 0.9rem;">Dirección de envío</h4>
                     <p id="shippingAddress" style="font-size: 0.9rem; color: var(--color-text-muted);"></p>
                 </div>
             </div>
 
             <!-- Actions -->
-            <div style="margin-top: var(--spacing-2xl);">
+            <div class="confirmation-actions">
                 <a href="index.html" class="btn btn-primary">VOLVER AL INICIO</a>
-                <a href="collection.html" class="btn btn-outline"
-                    style="margin-left: var(--spacing-md); border-color: var(--color-text-dark); color: var(--color-text-dark);">
-                    SEGUIR COMPRANDO
-                </a>
+                <a href="collection.html" class="btn btn-secondary">SEGUIR COMPRANDO</a>
             </div>
         </div>
     </main>
 
     <!-- Footer Simple -->
-    <footer
-        style="padding: var(--spacing-xl) 0; background-color: var(--color-bg-gray); margin-top: var(--spacing-3xl);">
+    <footer class="checkout-footer">
         <div class="container text-center">
-            <p style="font-size: 0.8rem; color: var(--color-text-muted);">
+            <p>
                 ¿Tienes dudas? Contáctanos por
                 <a href="https://wa.me/525512345678" style="color: var(--color-primary);">WhatsApp</a>
             </p>
-            <p style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: var(--spacing-sm);">
+            <p style="margin-top: var(--spacing-sm);">
                 © 2026 King Ice Gold. Todos los derechos reservados.
             </p>
         </div>
@@ -123,35 +112,27 @@
             const orderData = sessionStorage.getItem('lastOrder');
 
             if (!orderData) {
-                // Si no hay pedido, redirigir al inicio
                 window.location.href = 'index.html';
                 return;
             }
 
             const order = JSON.parse(orderData);
             renderOrder(order);
-
-            // Limpiar después de mostrar
             sessionStorage.removeItem('lastOrder');
         }
 
         function renderOrder(order) {
-            // Número de pedido
             document.getElementById('orderNumber').textContent = `Pedido ${order.orderNumber}`;
 
-            // Referencia de pago (últimos 4 caracteres del ID)
             const ref = 'KING-ICE-' + order.id.slice(-6).toUpperCase();
             document.getElementById('paymentRef').textContent = ref;
-
-            // Monto a pagar
             document.getElementById('paymentAmount').textContent = KIG.formatPrice(order.total);
 
-            // Resumen del pedido
             const summaryHtml = `
         ${order.items.map(item => {
                 const options = Object.values(item.options || {}).join(', ');
                 return `
-            <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #ddd;">
+            <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.06);">
               <div>
                 <strong>${item.name}</strong>
                 ${options ? `<br><span style="font-size: 0.8rem; color: var(--color-text-muted);">${options}</span>` : ''}
@@ -169,14 +150,13 @@
           <span>Envío</span>
           <span>${KIG.formatPrice(order.shipping)}</span>
         </div>
-        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-top: 2px solid #ddd; font-weight: 600; font-size: 1.1rem;">
+        <div style="display: flex; justify-content: space-between; padding: 12px 0; border-top: 2px solid rgba(0,0,0,0.08); font-weight: 600; font-size: 1.1rem;">
           <span>Total</span>
           <span>${KIG.formatPrice(order.total)}</span>
         </div>
       `;
             document.getElementById('orderSummary').innerHTML = summaryHtml;
 
-            // Dirección de envío
             const addr = order.customer.address;
             document.getElementById('shippingAddress').innerHTML = `
         <strong>${order.customer.name}</strong><br>
