@@ -20,3 +20,5 @@ Thumbs.db
 
 # Docker
 postgres_data/
+
+frontend/video/*.mp4

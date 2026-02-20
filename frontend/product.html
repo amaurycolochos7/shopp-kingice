@@ -222,8 +222,12 @@
         let quantity = 1;
 
         document.addEventListener('DOMContentLoaded', function () {
-            loadProduct();
             setupEventListeners();
+        });
+
+        // Wait for API data to be loaded before trying to look up the product
+        window.addEventListener('kig:ready', function () {
+            loadProduct();
         });
 
         function loadProduct() {

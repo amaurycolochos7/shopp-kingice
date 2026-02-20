@@ -71,6 +71,94 @@
             padding: var(--spacing-3xl);
             color: var(--color-text-muted);
         }
+
+        /* ===== CATEGORY BANNER ===== */
+        .category-banner {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .category-banner-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .category-banner-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    rgba(0, 0, 0, 0.78) 0%,
+                    rgba(0, 0, 0, 0.45) 50%,
+                    rgba(0, 0, 0, 0.15) 100%);
+            z-index: 1;
+        }
+
+        .category-banner-content {
+            position: relative;
+            z-index: 2;
+            padding: 0 60px;
+        }
+
+        .category-banner-title {
+            font-family: var(--font-primary);
+            font-size: 2.4rem;
+            font-weight: 300;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .category-banner-breadcrumb {
+            font-size: 0.72rem;
+            font-weight: 400;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .category-banner-breadcrumb a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .category-banner-breadcrumb a:hover {
+            color: var(--color-primary);
+        }
+
+        .category-banner-breadcrumb span {
+            margin: 0 6px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .category-banner {
+                height: 160px;
+            }
+
+            .category-banner-content {
+                padding: 0 24px;
+            }
+
+            .category-banner-title {
+                font-size: 1.6rem;
+                letter-spacing: 0.15em;
+            }
+        }
     </style>
 </head>
 
@@ -133,9 +221,18 @@
         </div>
     </nav>
 
-    <!-- Collection Header -->
-    <section class="page-header">
-        <h1 id="collectionTitle">COLECCIÓN</h1>
+    <!-- Category Banner -->
+    <section class="category-banner" id="categoryBanner">
+        <img class="category-banner-bg" id="bannerBg" src="images/categories/collection-1.jpg" alt="Colección">
+        <div class="category-banner-overlay"></div>
+        <div class="category-banner-content">
+            <h1 class="category-banner-title" id="collectionTitle">COLECCIÓN</h1>
+            <div class="category-banner-breadcrumb" id="bannerBreadcrumb">
+                <a href="index.html">INICIO</a>
+                <span>›</span>
+                <a href="collection.html">PRODUCTOS</a>
+            </div>
+        </div>
     </section>
 
     <!-- Main Content -->
@@ -340,13 +437,44 @@
             });
         }
 
+        // Map category slugs to their banner images
+        const bannerImages = {
+            'all': 'images/categories/collection-1.jpg',
+            'cadenas': 'images/categories/cadenas.png',
+            'anillos': 'images/categories/anillos.png',
+            'aretes': 'images/categories/aretes.png',
+            'pulsos': 'images/categories/pulsos.png',
+            'dijes': 'images/categories/dijes.png',
+            'relojes': 'images/categories/relojes.png',
+            'diamantes': 'images/categories/diamantes.jpg',
+            'religiosos': 'images/categories/religiosos.png'
+        };
+
         function updateTitle() {
             const title = document.getElementById('collectionTitle');
+            const bannerBg = document.getElementById('bannerBg');
+            const breadcrumb = document.getElementById('bannerBreadcrumb');
+
             if (currentCategory === 'all') {
                 title.textContent = 'COLECCIÓN';
+                bannerBg.src = bannerImages['all'];
+                breadcrumb.innerHTML = `
+                    <a href="index.html">INICIO</a>
+                    <span>›</span>
+                    <a href="collection.html">PRODUCTOS</a>
+                `;
             } else {
                 const collection = KIG.Collections.getBySlug(currentCategory);
-                title.textContent = collection ? collection.name.toUpperCase() : 'COLECCIÓN';
+                const catName = collection ? collection.name.toUpperCase() : 'COLECCIÓN';
+                title.textContent = catName;
+                bannerBg.src = bannerImages[currentCategory] || bannerImages['all'];
+                breadcrumb.innerHTML = `
+                    <a href="index.html">INICIO</a>
+                    <span>›</span>
+                    <a href="collection.html">PRODUCTOS</a>
+                    <span>›</span>
+                    ${catName}
+                `;
             }
         }
 

@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Cadena de Oro Torzal Pavé",
+    "slug": "cadenas"
+  },
+  {
+    "id": 2,
+    "name": "Cadena Tejido Hollow Box",
+    "slug": "cadenas"
+  },
+  {
+    "id": 3,
+    "name": "Anillo Solitario Diamante",
+    "slug": "anillos"
+  },
+  {
+    "id": 4,
+    "name": "Aretes de Oro Huggie",
+    "slug": "aretes"
+  },
+  {
+    "id": 5,
+    "name": "Pulsera Cubana",
+    "slug": "pulsos"
+  },
+  {
+    "id": 6,
+    "name": "Dije Cruz San Benito",
+    "slug": "dijes"
+  }
+]
