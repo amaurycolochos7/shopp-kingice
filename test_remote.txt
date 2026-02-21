@@ -1,0 +1,1 @@
+﻿{"status":"ok","timestamp":"2026-02-21T19:46:59.814Z","service":"King Ice Gold API","version":"1.0.0"}

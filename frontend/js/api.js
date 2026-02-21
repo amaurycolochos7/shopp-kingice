@@ -190,6 +190,58 @@ const API = {
         }
     },
 
+    // ==================== CUSTOMER AUTH ====================
+
+    CustomerAuth: {
+        async register(data) {
+            return API._request('POST', '/customers/register', data);
+        },
+
+        async login(email, password) {
+            const result = await API._request('POST', '/customers/login', { email, password });
+            if (result.success && result.data.token) {
+                localStorage.setItem('kig_customer_token', result.data.token);
+                localStorage.setItem('kig_customer', JSON.stringify(result.data.customer));
+            }
+            return result;
+        },
+
+        logout() {
+            localStorage.removeItem('kig_customer_token');
+            localStorage.removeItem('kig_customer');
+        },
+
+        async getProfile() {
+            const token = localStorage.getItem('kig_customer_token');
+            if (!token) return { success: false, error: 'No autenticado' };
+            const result = await fetch(`${API._baseUrl}/customers/me`, {
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+            });
+            const data = await result.json();
+            if (result.ok) return { success: true, data };
+            return { success: false, error: data.error };
+        },
+
+        isLoggedIn() {
+            const token = localStorage.getItem('kig_customer_token');
+            if (!token) return false;
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                return payload.exp * 1000 > Date.now();
+            } catch {
+                return false;
+            }
+        },
+
+        getCustomer() {
+            try {
+                return JSON.parse(localStorage.getItem('kig_customer'));
+            } catch {
+                return null;
+            }
+        }
+    },
+
     // ==================== HEALTH ====================
 
     async health() {

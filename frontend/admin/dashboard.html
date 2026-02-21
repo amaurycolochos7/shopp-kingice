@@ -17,6 +17,7 @@
 
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/responsive.css">
 </head>
 
 <body>
@@ -97,9 +98,20 @@
             </div>
         </aside>
 
+        <!-- Sidebar Backdrop (mobile) -->
+        <div class="admin-sidebar-backdrop" id="sidebarBackdrop"></div>
+
         <!-- Main Content -->
         <main class="admin-main">
             <header class="admin-header">
+                <button class="admin-sidebar-toggle" id="sidebarToggle" aria-label="Menú">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
                 <h1 class="admin-header-title">Dashboard</h1>
                 <div class="admin-header-actions">
                     <a href="../index.html" target="_blank" class="admin-btn admin-btn-secondary">
@@ -201,28 +213,25 @@
                 </div>
 
                 <!-- Quick Stats -->
-                <div
-                    style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--spacing-lg); margin-top: var(--spacing-lg);">
+                <div class="admin-dashboard-grid">
                     <!-- Products Summary -->
                     <div class="admin-card">
                         <div class="admin-card-header">
                             <h2 class="admin-card-title">Resumen de Productos</h2>
                             <a href="products.html" class="admin-btn admin-btn-secondary">Gestionar</a>
                         </div>
-                        <div style="padding: var(--spacing-lg);">
-                            <div
-                                style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-md);">
-                                <span style="color: var(--admin-text-muted);">Total productos</span>
-                                <span style="color: var(--admin-text);" id="totalProducts">0</span>
+                        <div class="admin-quick-actions">
+                            <div class="admin-summary-row">
+                                <span class="admin-summary-label">Total productos</span>
+                                <span id="totalProducts">0</span>
                             </div>
-                            <div
-                                style="display: flex; justify-content: space-between; margin-bottom: var(--spacing-md);">
-                                <span style="color: var(--admin-text-muted);">Categorías</span>
-                                <span style="color: var(--admin-text);" id="totalCategories">0</span>
+                            <div class="admin-summary-row">
+                                <span class="admin-summary-label">Categorías</span>
+                                <span id="totalCategories">0</span>
                             </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <span style="color: var(--admin-text-muted);">Destacados</span>
-                                <span style="color: var(--admin-text);" id="featuredProducts">0</span>
+                            <div class="admin-summary-row">
+                                <span class="admin-summary-label">Destacados</span>
+                                <span id="featuredProducts">0</span>
                             </div>
                         </div>
                     </div>
@@ -232,18 +241,14 @@
                         <div class="admin-card-header">
                             <h2 class="admin-card-title">Acciones Rápidas</h2>
                         </div>
-                        <div
-                            style="padding: var(--spacing-lg); display: flex; flex-direction: column; gap: var(--spacing-md);">
-                            <a href="products.html?action=new" class="admin-btn admin-btn-primary"
-                                style="justify-content: center;">
+                        <div class="admin-quick-actions">
+                            <a href="products.html?action=new" class="admin-btn admin-btn-primary">
                                 + Agregar Producto
                             </a>
-                            <a href="categories.html?action=new" class="admin-btn admin-btn-secondary"
-                                style="justify-content: center;">
+                            <a href="categories.html?action=new" class="admin-btn admin-btn-secondary">
                                 + Nueva Categoría
                             </a>
-                            <a href="orders.html?filter=pending" class="admin-btn admin-btn-secondary"
-                                style="justify-content: center;">
+                            <a href="orders.html?filter=pending" class="admin-btn admin-btn-secondary">
                                 Ver Pedidos Pendientes
                             </a>
                         </div>
@@ -255,6 +260,7 @@
 
     <script src="../js/api.js"></script>
     <script src="../js/storage.js"></script>
+    <script src="../js/admin-sidebar.js"></script>
     <script>
         document.addEventListener('kig:ready', function () {
             // Verificar autenticación
@@ -330,11 +336,11 @@
 
                     return `
               <tr>
-                <td><a href="orders.html?id=${order.id}" style="font-weight:600; color: var(--color-primary);">${order.order_number}</a></td>
-                <td>${customerName}</td>
-                <td>${KIG.formatPrice(order.total)}</td>
-                <td><span class="badge ${config.class}">${config.label}</span></td>
-                <td>${new Date(orderDate).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
+                <td data-label="Pedido"><a href="orders.html?id=${order.id}" style="font-weight:600; color: var(--color-primary);">${order.order_number}</a></td>
+                <td data-label="Cliente">${customerName}</td>
+                <td data-label="Total">${KIG.formatPrice(order.total)}</td>
+                <td data-label="Estado"><span class="badge ${config.class}">${config.label}</span></td>
+                <td data-label="Fecha">${new Date(orderDate).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
               </tr>
             `;
                 }).join('');

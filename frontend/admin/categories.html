@@ -17,6 +17,7 @@
 
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/responsive.css">
 </head>
 
 <body>
@@ -97,9 +98,20 @@
             </div>
         </aside>
 
+        <!-- Sidebar Backdrop (mobile) -->
+        <div class="admin-sidebar-backdrop" id="sidebarBackdrop"></div>
+
         <!-- Main Content -->
         <main class="admin-main">
             <header class="admin-header">
+                <button class="admin-sidebar-toggle" id="sidebarToggle" aria-label="Menú">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
                 <h1 class="admin-header-title">Categorías</h1>
                 <div class="admin-header-actions">
                     <button class="admin-btn admin-btn-primary" id="addCategoryBtn">
@@ -179,6 +191,7 @@
 
     <script src="../js/api.js"></script>
     <script src="../js/storage.js"></script>
+    <script src="../js/admin-sidebar.js"></script>
     <script>
         let editingCategory = null;
 
@@ -223,11 +236,11 @@
                 const productCount = products.filter(p => p.category === category.slug).length;
                 return `
           <tr>
-            <td style="text-align: center;">${category.order}</td>
-            <td><strong>${category.name}</strong></td>
-            <td style="color: var(--admin-text-muted);">${category.slug}</td>
-            <td>${productCount} productos</td>
-            <td>
+            <td data-label="Orden" style="text-align: center;">${category.order}</td>
+            <td data-label="Nombre"><strong>${category.name}</strong></td>
+            <td data-label="Slug" style="color: var(--admin-text-muted);">${category.slug}</td>
+            <td data-label="Productos">${productCount} productos</td>
+            <td data-label="Estado">
               <span class="badge ${category.active !== false ? 'badge-paid' : 'badge-cancelled'}">
                 ${category.active !== false ? 'Activa' : 'Inactiva'}
               </span>

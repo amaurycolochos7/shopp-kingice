@@ -210,6 +210,26 @@
         let totals = {};
 
         document.addEventListener('DOMContentLoaded', function () {
+            // Check if customer is logged in
+            if (!API.CustomerAuth.isLoggedIn()) {
+                window.location.href = 'cuenta-login.html?redirect=checkout';
+                return;
+            }
+
+            // Auto-fill customer data
+            const customer = API.CustomerAuth.getCustomer();
+            if (customer) {
+                if (customer.name) document.getElementById('name').value = customer.name;
+                if (customer.email) document.getElementById('email').value = customer.email;
+                if (customer.phone) document.getElementById('phone').value = customer.phone;
+                if (customer.street) document.getElementById('street').value = customer.street;
+                if (customer.colony) document.getElementById('colony').value = customer.colony;
+                if (customer.city) document.getElementById('city').value = customer.city;
+                if (customer.state) document.getElementById('state').value = customer.state;
+                if (customer.zip_code) document.getElementById('zip').value = customer.zip_code;
+                if (customer.address_references) document.getElementById('references').value = customer.address_references;
+            }
+
             loadCart();
             setupForm();
         });

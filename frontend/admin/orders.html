@@ -17,6 +17,7 @@
 
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/responsive.css">
 </head>
 
 <body>
@@ -97,12 +98,23 @@
             </div>
         </aside>
 
+        <!-- Sidebar Backdrop (mobile) -->
+        <div class="admin-sidebar-backdrop" id="sidebarBackdrop"></div>
+
         <!-- Main Content -->
         <main class="admin-main">
             <header class="admin-header">
+                <button class="admin-sidebar-toggle" id="sidebarToggle" aria-label="Menú">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
                 <h1 class="admin-header-title">Pedidos</h1>
                 <div class="admin-header-actions">
-                    <select class="admin-form-select" style="width: 180px;" id="statusFilter">
+                    <select class="admin-form-select" id="statusFilter">
                         <option value="all">Todos los estados</option>
                         <option value="pending">Pendientes</option>
                         <option value="paid">Pagados</option>
@@ -158,6 +170,7 @@
 
     <script src="../js/api.js"></script>
     <script src="../js/storage.js"></script>
+    <script src="../js/admin-sidebar.js"></script>
     <script>
         const STATUS_LABELS = {
             sent_to_whatsapp: 'Por Confirmar',
@@ -250,21 +263,21 @@
 
                 return `
         <tr>
-          <td>
+          <td data-label="Pedido">
             <a href="#" onclick="viewOrder('${order.id}'); return false;" style="font-weight:600; color: var(--color-primary);">
               ${orderNum}
             </a>
           </td>
-          <td>
+          <td data-label="Cliente">
             <strong>${customerName}</strong><br>
             <span style="font-size: 0.8rem; color: var(--admin-text-muted);">${customerPhone}</span>
           </td>
-          <td>${itemCount} producto(s)</td>
-          <td>${KIG.formatPrice(order.total)}</td>
-          <td>
+          <td data-label="Productos">${itemCount} producto(s)</td>
+          <td data-label="Total">${KIG.formatPrice(order.total)}</td>
+          <td data-label="Estado">
             <span class="badge ${badgeClass}">${badgeLabel}</span>
           </td>
-          <td>${new Date(orderDate).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
+          <td data-label="Fecha">${new Date(orderDate).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}</td>
           <td>
             <button class="admin-btn admin-btn-icon" onclick="viewOrder('${order.id}')" title="Ver detalles">👁️</button>
           </td>

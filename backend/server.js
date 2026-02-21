@@ -79,12 +79,14 @@ const categoriesRouter = require('./routes/categories');
 const ordersRouter = require('./routes/orders');
 const adminRouter = require('./routes/admin');
 const dashboardRouter = require('./routes/dashboard');
+const customersRouter = require('./routes/customers');
 
 app.use('/api/products', productsRouter);
 app.use('/api/categories', categoriesRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/dashboard', dashboardRouter);
+app.use('/api/customers', customersRouter);
 
 // Health check
 app.get('/api/health', (req, res) => {

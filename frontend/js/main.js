@@ -10,7 +10,6 @@ window.addEventListener('kig:ready', function () {
   initHighlightedProducts();
   initCategoriesShowcase();
   initCategoryCarousel();
-  initMobileMenu();
   initAdminAccess();
   initSearch();
   initScrollReveal();
@@ -20,6 +19,7 @@ window.addEventListener('kig:ready', function () {
 // Fallback: if kig:ready already fired before this script loaded
 document.addEventListener('DOMContentLoaded', function () {
   initHeaderScroll();
+  initMobileMenu();
   initScrollReveal();
   initBeforeAfterSlider();
   initScrollToTop();
@@ -33,7 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
     initHighlightedProducts();
     initCategoriesShowcase();
     initCategoryCarousel();
-    initMobileMenu();
     initAdminAccess();
     initSearch();
     initCarousels();

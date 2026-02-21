@@ -21,6 +21,21 @@ function generateToken(admin) {
 }
 
 /**
+ * Generate a JWT token for a customer
+ */
+function generateCustomerToken(customer) {
+    return jwt.sign(
+        {
+            id: customer.id,
+            email: customer.email,
+            role: 'customer'
+        },
+        JWT_SECRET,
+        { expiresIn: '7d' }
+    );
+}
+
+/**
  * Middleware: Require authentication
  */
 function requireAuth(req, res, next) {
@@ -59,4 +74,31 @@ function requireRole(...roles) {
     };
 }
 
-module.exports = { generateToken, requireAuth, requireRole };
+/**
+ * Middleware: Require customer authentication
+ */
+function requireCustomerAuth(req, res, next) {
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ error: 'Token de autenticación requerido' });
+    }
+
+    const token = authHeader.split(' ')[1];
+
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        if (decoded.role !== 'customer') {
+            return res.status(403).json({ error: 'Acceso denegado' });
+        }
+        req.customer = decoded;
+        next();
+    } catch (err) {
+        if (err.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: 'Sesión expirada, inicia sesión de nuevo' });
+        }
+        return res.status(401).json({ error: 'Token inválido' });
+    }
+}
+
+module.exports = { generateToken, generateCustomerToken, requireAuth, requireCustomerAuth, requireRole };

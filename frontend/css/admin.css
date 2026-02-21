@@ -621,45 +621,4 @@
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* ==================== RESPONSIVE ADMIN ==================== */
-@media (max-width: 1024px) {
-    .admin-stats {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .admin-form-row {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 768px) {
-    .admin-sidebar {
-        transform: translateX(-100%);
-        transition: transform var(--transition-normal);
-    }
-
-    .admin-sidebar.open {
-        transform: translateX(0);
-    }
-
-    .admin-main {
-        margin-left: 0;
-    }
-
-    .admin-stats {
-        grid-template-columns: 1fr;
-    }
-
-    .admin-header {
-        padding: 0 var(--spacing-md);
-    }
-
-    .admin-content {
-        padding: var(--spacing-md);
-    }
-
-    .admin-table {
-        display: block;
-        overflow-x: auto;
-    }
-}
+/* Responsive admin styles are now in responsive.css (mobile-first) */
