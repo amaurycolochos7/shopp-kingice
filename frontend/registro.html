@@ -12,206 +12,290 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@100;300;400;500;600;700&display=swap"
         rel="stylesheet">
-
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/responsive.css">
+
     <style>
-        .auth-page {
-            min-height: 100vh;
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            background: #f5f3ef;
+        }
+
+        /* ====== SPLIT LAYOUT ====== */
+        .login-wrapper {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1510 50%, #0a0a0a 100%);
-            padding: 2rem 1rem;
+            min-height: 100vh;
         }
 
-        .auth-card {
-            background: rgba(20, 20, 20, 0.95);
-            border: 1px solid rgba(212, 175, 55, 0.15);
-            border-radius: 16px;
-            padding: 2.5rem;
-            width: 100%;
-            max-width: 440px;
-            backdrop-filter: blur(20px);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        /* Left: Image panel */
+        .login-image {
+            flex: 1;
+            background: #0a0a0a;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: flex-end;
+            padding: 3rem;
         }
 
-        .auth-logo {
-            text-align: center;
-            margin-bottom: 2rem;
+        .login-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('images/hero-bg.jpg') center/cover no-repeat;
+            opacity: 0.65;
         }
 
-        .auth-logo img {
-            height: 50px;
+        .login-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, transparent 60%);
         }
 
-        .auth-title {
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: 600;
+        .image-text {
+            position: relative;
+            z-index: 1;
             color: #fff;
+        }
+
+        .image-text h2 {
+            font-size: 1.6rem;
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            line-height: 1.4;
             margin-bottom: 0.5rem;
         }
 
-        .auth-subtitle {
-            text-align: center;
-            color: #888;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
+        .image-text p {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 0.04em;
         }
 
-        .auth-form .form-group {
-            margin-bottom: 1.25rem;
+        /* Right: Form panel */
+        .login-form-panel {
+            flex: 0 0 480px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5rem 3rem;
+            background: #fff;
+            overflow-y: auto;
         }
 
-        .auth-form .form-label {
+        .login-inner {
+            width: 100%;
+            max-width: 340px;
+        }
+
+        /* Logo */
+        .login-logo {
+            margin-bottom: 2.5rem;
+        }
+
+        .login-logo a {
             display: block;
-            color: #ccc;
-            font-size: 0.85rem;
-            font-weight: 500;
+        }
+
+        .login-logo img {
+            height: 40px;
+        }
+
+        /* Title */
+        .login-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #111;
             margin-bottom: 0.4rem;
         }
 
-        .auth-form .form-input {
+        .login-subtitle {
+            font-size: 0.85rem;
+            color: #999;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #555;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input {
             width: 100%;
-            padding: 0.75rem 1rem;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 0.95rem;
-            transition: border-color 0.3s, box-shadow 0.3s;
-            font-family: inherit;
+            padding: 0.85rem 1rem;
+            border: 1px solid #ddd;
+            background: #fafafa;
+            color: #111;
+            font-size: 0.92rem;
+            font-family: 'M PLUS 2', sans-serif;
+            transition: border-color 0.2s;
+            border-radius: 0;
+            -webkit-appearance: none;
             box-sizing: border-box;
         }
 
-        .auth-form .form-input:focus {
+        .form-input:focus {
             outline: none;
-            border-color: var(--color-primary, #d4af37);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+            border-color: #111;
+            background: #fff;
         }
 
-        .auth-form .form-input::placeholder {
-            color: #555;
+        .form-input::placeholder {
+            color: #bbb;
         }
 
-        .auth-form .form-error {
-            color: #ff4444;
-            font-size: 0.8rem;
-            margin-top: 0.3rem;
-            min-height: 1.2em;
+        .form-error {
+            color: #c0392b;
+            font-size: 0.75rem;
+            margin-top: 0.35rem;
+            min-height: 1em;
         }
 
-        .auth-btn {
+        /* Button */
+        .login-btn {
             width: 100%;
-            padding: 0.85rem;
-            background: linear-gradient(135deg, #d4af37, #b8942e);
-            color: #0a0a0a;
+            padding: 0.95rem;
+            background: #111;
+            color: #fff;
             border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 700;
+            font-family: 'M PLUS 2', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s;
-            font-family: inherit;
-            letter-spacing: 0.5px;
+            transition: background 0.2s;
             margin-top: 0.5rem;
         }
 
-        .auth-btn:hover {
-            background: linear-gradient(135deg, #e5c04a, #c9a533);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.35);
+        .login-btn:hover {
+            background: #333;
         }
 
-        .auth-btn:disabled {
-            opacity: 0.6;
+        .login-btn:disabled {
+            background: #999;
             cursor: not-allowed;
-            transform: none;
         }
 
-        .auth-footer {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #888;
-            font-size: 0.85rem;
-        }
-
-        .auth-footer a {
-            color: var(--color-primary, #d4af37);
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .auth-footer a:hover {
-            text-decoration: underline;
-        }
-
+        /* Alert */
         .auth-alert {
             padding: 0.75rem 1rem;
-            border-radius: 10px;
-            font-size: 0.85rem;
-            margin-bottom: 1rem;
+            font-size: 0.82rem;
+            margin-bottom: 1.5rem;
             display: none;
+            border-radius: 2px;
         }
 
         .auth-alert.success {
-            background: rgba(40, 167, 69, 0.15);
-            border: 1px solid rgba(40, 167, 69, 0.3);
-            color: #5fdb7e;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
             display: block;
         }
 
         .auth-alert.error {
-            background: rgba(220, 53, 69, 0.15);
-            border: 1px solid rgba(220, 53, 69, 0.3);
-            color: #ff6b7a;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
             display: block;
         }
 
-        .auth-divider {
-            display: flex;
-            align-items: center;
-            margin: 1.5rem 0;
-            color: #555;
-            font-size: 0.8rem;
-        }
-
-        .auth-divider::before,
-        .auth-divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: rgba(255, 255, 255, 0.08);
-        }
-
-        .auth-divider span {
-            padding: 0 1rem;
-        }
-
-        .auth-back {
-            display: block;
+        /* Footer */
+        .login-links {
+            margin-top: 1.8rem;
             text-align: center;
-            margin-top: 1rem;
-            color: #666;
-            font-size: 0.8rem;
-            text-decoration: none;
         }
 
-        .auth-back:hover {
+        .login-links p {
+            font-size: 0.82rem;
             color: #999;
         }
 
+        .login-links a {
+            color: #111;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .login-links a:hover {
+            text-decoration: underline;
+        }
+
+        .login-back {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: #bbb;
+            text-decoration: none;
+            letter-spacing: 0.02em;
+        }
+
+        .login-back:hover {
+            color: #666;
+        }
+
+        /* Password toggle */
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper .form-input {
+            padding-right: 3rem;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            color: #999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .toggle-password:hover {
+            color: #555;
+        }
+
+        .toggle-password svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Loader */
         .loader-inline {
             display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(10, 10, 10, 0.3);
-            border-top-color: #0a0a0a;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
             border-radius: 50%;
             animation: spin 0.6s linear infinite;
             vertical-align: middle;
-            margin-right: 6px;
+            margin-right: 8px;
         }
 
         @keyframes spin {
@@ -219,61 +303,162 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 900px) {
+            .login-form-panel {
+                flex: 0 0 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-wrapper {
+                flex-direction: column;
+            }
+
+            .login-image {
+                flex: none;
+                height: 200px;
+                padding: 1.5rem;
+                align-items: flex-end;
+            }
+
+            .image-text h2 {
+                font-size: 1.2rem;
+            }
+
+            .login-form-panel {
+                flex: 1;
+                padding: 2rem 1.5rem;
+            }
+
+            .login-inner {
+                max-width: 100%;
+            }
+
+            .login-logo {
+                margin-bottom: 1.5rem;
+            }
+
+            .login-title {
+                font-size: 1.3rem;
+            }
+
+            .login-subtitle {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .login-form-panel {
+                padding: 1.5rem 1.2rem;
+            }
+
+            .login-image {
+                height: 160px;
+            }
+        }
     </style>
 </head>
 
 <body>
-    <div class="auth-page">
-        <div class="auth-card">
-            <div class="auth-logo">
-                <a href="index.html"><img src="images/logo-crown.svg" alt="King Ice Gold"></a>
+    <div class="login-wrapper">
+        <!-- Left: Brand image -->
+        <div class="login-image">
+            <div class="image-text">
+                <h2>Únete a la familia King Ice Gold</h2>
+                <p>Acceso exclusivo · Ofertas especiales · Envío prioritario</p>
             </div>
+        </div>
 
-            <h1 class="auth-title">Crear Cuenta</h1>
-            <p class="auth-subtitle">Regístrate para comprar más rápido</p>
+        <!-- Right: Registration form -->
+        <div class="login-form-panel">
+            <div class="login-inner">
 
-            <div class="auth-alert" id="alertMsg"></div>
-
-            <form class="auth-form" id="registerForm">
-                <div class="form-group">
-                    <label class="form-label" for="name">Nombre completo</label>
-                    <input type="text" class="form-input" id="name" name="name" placeholder="Juan Pérez García">
+                <div class="login-logo">
+                    <a href="index.html"><img src="images/logo-crown.svg" alt="King Ice Gold"></a>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="email">Correo electrónico *</label>
-                    <input type="email" class="form-input" id="email" name="email" required placeholder="tu@email.com">
-                    <div class="form-error" id="emailError"></div>
+                <h1 class="login-title">Crear cuenta</h1>
+                <p class="login-subtitle">Regístrate para comprar más rápido</p>
+
+                <div class="auth-alert" id="alertMsg"></div>
+
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label class="form-label" for="name">Nombre completo</label>
+                        <input type="text" class="form-input" id="name" name="name" placeholder="Juan Pérez García">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="email">Correo electrónico *</label>
+                        <input type="email" class="form-input" id="email" name="email" required
+                            placeholder="tu@email.com">
+                        <div class="form-error" id="emailError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Teléfono (WhatsApp) *</label>
+                        <input type="tel" class="form-input" id="phone" name="phone" required placeholder="3332457214"
+                            inputmode="numeric" maxlength="10" pattern="[0-9]*">
+                        <div class="form-error" id="phoneError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="password">Contraseña *</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-input" id="password" name="password" required
+                                placeholder="Mínimo 8 caracteres" minlength="8">
+                            <button type="button" class="toggle-password" data-target="password"
+                                aria-label="Mostrar contraseña">
+                                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" style="display:none">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="form-error" id="passwordError"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="confirmPassword">Confirmar contraseña *</label>
+                        <div class="password-wrapper">
+                            <input type="password" class="form-input" id="confirmPassword" name="confirmPassword"
+                                required placeholder="Repite tu contraseña">
+                            <button type="button" class="toggle-password" data-target="confirmPassword"
+                                aria-label="Mostrar contraseña">
+                                <svg class="eye-open" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" style="display:none">
+                                    <path
+                                        d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                                    <line x1="1" y1="1" x2="23" y2="23" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="form-error" id="confirmPasswordError"></div>
+                    </div>
+
+                    <button type="submit" class="login-btn" id="submitBtn">Crear Mi Cuenta</button>
+                </form>
+
+                <div class="login-links">
+                    <p>¿Ya tienes cuenta? <a href="cuenta-login.html">Iniciar sesión</a></p>
+                    <a href="index.html" class="login-back">← Volver a la tienda</a>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label" for="phone">Teléfono (WhatsApp) *</label>
-                    <input type="tel" class="form-input" id="phone" name="phone" required placeholder="55 1234 5678">
-                    <div class="form-error" id="phoneError"></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="password">Contraseña *</label>
-                    <input type="password" class="form-input" id="password" name="password" required
-                        placeholder="Mínimo 6 caracteres" minlength="6">
-                    <div class="form-error" id="passwordError"></div>
-                </div>
-
-                <div class="form-group">
-                    <label class="form-label" for="confirmPassword">Confirmar contraseña *</label>
-                    <input type="password" class="form-input" id="confirmPassword" name="confirmPassword" required
-                        placeholder="Repite tu contraseña">
-                    <div class="form-error" id="confirmPasswordError"></div>
-                </div>
-
-                <button type="submit" class="auth-btn" id="submitBtn">CREAR MI CUENTA</button>
-            </form>
-
-            <div class="auth-footer">
-                ¿Ya tienes cuenta? <a href="cuenta-login.html">Inicia sesión</a>
             </div>
-
-            <a href="index.html" class="auth-back">← Volver a la tienda</a>
         </div>
     </div>
 
@@ -320,12 +505,12 @@
                     } else {
                         showAlert('error', result.error || 'Error al crear la cuenta');
                         submitBtn.disabled = false;
-                        submitBtn.textContent = 'CREAR MI CUENTA';
+                        submitBtn.textContent = 'Crear Mi Cuenta';
                     }
                 } catch (err) {
                     showAlert('error', 'Error de conexión. Intenta de nuevo.');
                     submitBtn.disabled = false;
-                    submitBtn.textContent = 'CREAR MI CUENTA';
+                    submitBtn.textContent = 'Crear Mi Cuenta';
                 }
             });
 
@@ -342,13 +527,13 @@
                     valid = false;
                 }
 
-                if (phone.length < 10) {
-                    showError('phoneError', 'Ingresa un teléfono de 10 dígitos');
+                if (phone.length !== 10) {
+                    showError('phoneError', 'Ingresa exactamente 10 dígitos');
                     valid = false;
                 }
 
-                if (password.length < 6) {
-                    showError('passwordError', 'Mínimo 6 caracteres');
+                if (password.length < 8) {
+                    showError('passwordError', 'Mínimo 8 caracteres');
                     valid = false;
                 }
 
@@ -375,6 +560,29 @@
                 alertMsg.textContent = msg;
                 alertMsg.style.display = 'block';
             }
+
+            // Phone: only digits, max 10
+            document.getElementById('phone').addEventListener('input', function () {
+                this.value = this.value.replace(/\D/g, '').slice(0, 10);
+            });
+
+            // Toggle password visibility
+            document.querySelectorAll('.toggle-password').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const input = document.getElementById(this.dataset.target);
+                    const eyeOpen = this.querySelector('.eye-open');
+                    const eyeClosed = this.querySelector('.eye-closed');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        eyeOpen.style.display = 'none';
+                        eyeClosed.style.display = 'block';
+                    } else {
+                        input.type = 'password';
+                        eyeOpen.style.display = 'block';
+                        eyeClosed.style.display = 'none';
+                    }
+                });
+            });
         });
     </script>
 </body>

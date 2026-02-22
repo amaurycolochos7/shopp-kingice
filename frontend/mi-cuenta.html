@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Mi Cuenta - Panel de cliente King Ice Gold">
+    <title>Mi Cuenta | King Ice Gold</title>
+
+    <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@100;300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/responsive.css">
+
+    <style>
+        .account-page {
+            min-height: 60vh;
+            padding: var(--spacing-3xl) 0;
+        }
+
+        /* Welcome Banner */
+        .account-welcome {
+            background: linear-gradient(135deg, #0a0a0a, #1a1a2e, #0a0a0a);
+            border-radius: var(--border-radius-md);
+            padding: var(--spacing-3xl) var(--spacing-2xl);
+            margin-bottom: var(--spacing-3xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .account-welcome::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at top right, rgba(212, 175, 55, 0.15), transparent 60%);
+        }
+
+        .account-welcome h1 {
+            color: var(--color-text-light);
+            font-size: 1.8rem;
+            font-weight: 300;
+            letter-spacing: 0.12em;
+            position: relative;
+        }
+
+        .account-welcome p {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.88rem;
+            margin-top: var(--spacing-sm);
+            position: relative;
+        }
+
+        .account-welcome .btn-logout {
+            position: absolute;
+            top: var(--spacing-2xl);
+            right: var(--spacing-2xl);
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 8px 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        .account-welcome .btn-logout:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        /* Section Tabs */
+        .account-tabs {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-2xl);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+            padding-bottom: var(--spacing-md);
+        }
+
+        .account-tab {
+            padding: 10px 24px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .account-tab:hover,
+        .account-tab.active {
+            background: var(--color-bg-dark);
+            color: var(--color-text-light);
+            border-color: var(--color-bg-dark);
+        }
+
+        /* Orders List */
+        .orders-list {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .order-card {
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: var(--border-radius-md);
+            overflow: hidden;
+            transition: box-shadow 0.3s;
+        }
+
+        .order-card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: var(--color-bg-gray);
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .order-number {
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+        }
+
+        .order-date {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+        }
+
+        .order-status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: rgba(255, 193, 7, 0.12);
+            color: #f59e0b;
+        }
+
+        .status-confirmed {
+            background: rgba(59, 130, 246, 0.12);
+            color: #3b82f6;
+        }
+
+        .status-shipped {
+            background: rgba(139, 92, 246, 0.12);
+            color: #8b5cf6;
+        }
+
+        .status-delivered {
+            background: rgba(34, 197, 94, 0.12);
+            color: #22c55e;
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+        }
+
+        .order-card-body {
+            padding: var(--spacing-lg) var(--spacing-xl);
+        }
+
+        .order-items-list {
+            list-style: none;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .order-items-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: var(--spacing-sm) 0;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+        }
+
+        .order-items-list li:last-child {
+            border-bottom: none;
+        }
+
+        .item-name {
+            color: var(--color-text-body);
+        }
+
+        .item-options {
+            font-size: 0.78rem;
+            color: var(--color-text-muted);
+        }
+
+        .item-price {
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .order-total-row {
+            display: flex;
+            justify-content: space-between;
+            padding-top: var(--spacing-md);
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        /* Tracking Box */
+        .tracking-box {
+            margin-top: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.06), rgba(59, 130, 246, 0.06));
+            border: 1px solid rgba(139, 92, 246, 0.15);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .tracking-box h4 {
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #8b5cf6;
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tracking-number {
+            font-family: monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-dark);
+            letter-spacing: 0.05em;
+        }
+
+        .tracking-link {
+            display: inline-block;
+            margin-top: var(--spacing-sm);
+            font-size: 0.8rem;
+            color: #8b5cf6;
+            text-decoration: underline;
+        }
+
+        /* Profile Section */
+        .profile-section {
+            display: none;
+        }
+
+        .profile-section.active {
+            display: block;
+        }
+
+        .profile-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+        }
+
+        .profile-field {
+            padding: var(--spacing-lg);
+            background: var(--color-bg-gray);
+            border-radius: var(--border-radius-sm);
+        }
+
+        .profile-field label {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .profile-field input,
+        .profile-field select {
+            width: 100%;
+            padding: 0.7rem 0.8rem;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: var(--color-text-dark);
+            font-size: 0.9rem;
+            font-family: 'M PLUS 2', sans-serif;
+            border-radius: 3px;
+            transition: border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        .profile-field input:focus,
+        .profile-field select:focus {
+            outline: none;
+            border-color: #111;
+        }
+
+        .profile-field input[readonly] {
+            background: #f0f0f0;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .profile-actions {
+            margin-top: var(--spacing-xl);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+        }
+
+        .btn-save-profile {
+            padding: 12px 36px;
+            background: #111;
+            color: #fff;
+            border: none;
+            font-family: 'M PLUS 2', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-save-profile:hover {
+            background: #333;
+        }
+
+        .btn-save-profile:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .profile-alert {
+            padding: 0.65rem 1rem;
+            font-size: 0.82rem;
+            border-radius: 3px;
+            display: none;
+        }
+
+        .profile-alert.success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+            display: block;
+        }
+
+        .profile-alert.error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            display: block;
+        }
+
+        /* Empty State */
+        .orders-empty {
+            text-align: center;
+            padding: var(--spacing-4xl) 0;
+        }
+
+        .orders-empty svg {
+            width: 64px;
+            height: 64px;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .orders-empty h3 {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .orders-empty p {
+            color: var(--color-text-muted);
+            font-size: 0.88rem;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        /* Loading */
+        .orders-loading {
+            text-align: center;
+            padding: var(--spacing-4xl) 0;
+            color: var(--color-text-muted);
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 2px solid rgba(0, 0, 0, 0.1);
+            border-top-color: var(--color-primary);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto var(--spacing-lg);
+        }
+
+        /* Order Progress */
+        .order-progress {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-top: var(--spacing-lg);
+            padding: var(--spacing-md) 0;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .progress-step::before {
+            content: '';
+            position: absolute;
+            top: 12px;
+            left: -50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        .progress-step:first-child::before {
+            display: none;
+        }
+
+        .progress-step.completed::before {
+            background: var(--color-primary);
+        }
+
+        .progress-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.08);
+            margin: 0 auto var(--spacing-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+            font-size: 0.6rem;
+            color: transparent;
+        }
+
+        .progress-step.completed .progress-dot {
+            background: var(--color-primary);
+            color: #fff;
+        }
+
+        .progress-step.current .progress-dot {
+            background: var(--color-primary);
+            color: #fff;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+        }
+
+        .progress-label {
+            font-size: 0.68rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .progress-step.completed .progress-label,
+        .progress-step.current .progress-label {
+            color: var(--color-text-dark);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .account-welcome {
+                padding: var(--spacing-xl);
+            }
+
+            .account-welcome h1 {
+                font-size: 1.3rem;
+            }
+
+            .account-welcome .btn-logout {
+                position: static;
+                margin-top: var(--spacing-md);
+            }
+
+            .profile-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-card-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .progress-label {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-content">
+            <div class="top-bar-links">
+                <a href="servicio-cliente.html">Servicio al cliente</a>
+            </div>
+            <div class="top-bar-message">
+                🔒 Envíos asegurados contra robo y extravío
+            </div>
+            <div></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <a href="index.html" class="logo"><img src="images/logo-crown.svg" alt="King Ice Gold"></a>
+            <nav class="nav-main">
+                <a href="collection.html">Colección</a>
+                <a href="boutique.html">Boutique</a>
+                <a href="about.html">Sobre Nosotros</a>
+            </nav>
+            <div class="header-icons">
+                <a href="mi-cuenta.html" class="header-icon" id="accountIcon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </a>
+                <a href="cart.html" class="header-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <span class="cart-count" style="display: none;">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Account Page -->
+    <main class="account-page">
+        <div class="container">
+            <!-- Welcome Banner -->
+            <div class="account-welcome">
+                <h1 id="welcomeName">MI CUENTA</h1>
+                <p id="welcomeEmail">Cargando...</p>
+                <button class="btn-logout" onclick="handleLogout()">Cerrar Sesión</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="account-tabs">
+                <button class="account-tab active" data-tab="orders" onclick="switchTab('orders')">Mis Pedidos</button>
+                <button class="account-tab" data-tab="profile" onclick="switchTab('profile')">Mi Perfil</button>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="ordersSection">
+                <div class="orders-loading" id="ordersLoading">
+                    <div class="spinner"></div>
+                    <p>Cargando tus pedidos...</p>
+                </div>
+                <div class="orders-list" id="ordersList" style="display: none;"></div>
+                <div class="orders-empty" id="ordersEmpty" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path>
+                        <path d="M3 6h18"></path>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    <h3>Aún no tienes pedidos</h3>
+                    <p>Cuando realices tu primera compra, tus pedidos aparecerán aquí.</p>
+                    <a href="collection.html" class="btn btn-dark">EXPLORAR COLECCIÓN</a>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profileSection" class="profile-section">
+                <form id="profileForm">
+                    <div class="profile-grid">
+                        <div class="profile-field">
+                            <label for="pName">Nombre</label>
+                            <input type="text" id="pName" placeholder="Tu nombre completo">
+                        </div>
+                        <div class="profile-field">
+                            <label for="pEmail">Correo Electrónico</label>
+                            <input type="email" id="pEmail" readonly>
+                        </div>
+                        <div class="profile-field">
+                            <label for="pPhone">Teléfono</label>
+                            <input type="tel" id="pPhone" placeholder="3332457214" inputmode="numeric" maxlength="10"
+                                pattern="[0-9]*">
+                        </div>
+                        <div class="profile-field">
+                            <label for="pStreet">Calle y número</label>
+                            <input type="text" id="pStreet" placeholder="Av. Insurgentes Sur #123">
+                        </div>
+                        <div class="profile-field">
+                            <label for="pColony">Colonia</label>
+                            <input type="text" id="pColony" placeholder="Del Valle">
+                        </div>
+                        <div class="profile-field">
+                            <label for="pCity">Ciudad</label>
+                            <input type="text" id="pCity" placeholder="Guadalajara">
+                        </div>
+                        <div class="profile-field">
+                            <label for="pState">Estado</label>
+                            <select id="pState">
+                                <option value="">Seleccionar...</option>
+                                <option value="Aguascalientes">Aguascalientes</option>
+                                <option value="Baja California">Baja California</option>
+                                <option value="Baja California Sur">Baja California Sur</option>
+                                <option value="Campeche">Campeche</option>
+                                <option value="Chiapas">Chiapas</option>
+                                <option value="Chihuahua">Chihuahua</option>
+                                <option value="Ciudad de México">Ciudad de México</option>
+                                <option value="Coahuila">Coahuila</option>
+                                <option value="Colima">Colima</option>
+                                <option value="Durango">Durango</option>
+                                <option value="Estado de México">Estado de México</option>
+                                <option value="Guanajuato">Guanajuato</option>
+                                <option value="Guerrero">Guerrero</option>
+                                <option value="Hidalgo">Hidalgo</option>
+                                <option value="Jalisco">Jalisco</option>
+                                <option value="Michoacán">Michoacán</option>
+                                <option value="Morelos">Morelos</option>
+                                <option value="Nayarit">Nayarit</option>
+                                <option value="Nuevo León">Nuevo León</option>
+                                <option value="Oaxaca">Oaxaca</option>
+                                <option value="Puebla">Puebla</option>
+                                <option value="Querétaro">Querétaro</option>
+                                <option value="Quintana Roo">Quintana Roo</option>
+                                <option value="San Luis Potosí">San Luis Potosí</option>
+                                <option value="Sinaloa">Sinaloa</option>
+                                <option value="Sonora">Sonora</option>
+                                <option value="Tabasco">Tabasco</option>
+                                <option value="Tamaulipas">Tamaulipas</option>
+                                <option value="Tlaxcala">Tlaxcala</option>
+                                <option value="Veracruz">Veracruz</option>
+                                <option value="Yucatán">Yucatán</option>
+                                <option value="Zacatecas">Zacatecas</option>
+                            </select>
+                        </div>
+                        <div class="profile-field">
+                            <label for="pZip">Código Postal</label>
+                            <input type="text" id="pZip" placeholder="44100" maxlength="5">
+                        </div>
+                        <div class="profile-field" style="grid-column: 1 / -1;">
+                            <label for="pReferences">Referencias adicionales</label>
+                            <input type="text" id="pReferences" placeholder="Entre calles, color de casa, etc.">
+                        </div>
+                    </div>
+                    <div class="profile-actions">
+                        <button type="submit" class="btn-save-profile" id="saveProfileBtn">Guardar Cambios</button>
+                        <div class="profile-alert" id="profileAlert"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>King Ice Gold</h4>
+                    <p class="text-muted" style="font-size: 0.85rem;">Joyería de alta calidad con envíos asegurados a
+                        todo México.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Colección</h4>
+                    <ul id="footerCategories"></ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Ayuda</h4>
+                    <ul>
+                        <li><a href="servicio-cliente.html">Servicio al cliente</a></li>
+                        <li><a href="servicio-cliente.html#envios">Envíos y entregas</a></li>
+                        <li><a href="servicio-cliente.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li><a href="mailto:Store.kingicegold@gmail.com">Store.kingicegold@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">
+                    <span id="adminAccess">© 2026 King Ice Gold.</span> Todos los derechos reservados.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/523332457214?text=Hola,%20me%20interesa%20una%20joya" target="_blank" class="whatsapp-btn">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+                d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg>
+    </a>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-menu-close" id="mobileMenuClose">&times;</div>
+        <nav id="mobileMenuNav"></nav>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Auth guard
+        if (!API.CustomerAuth.isLoggedIn()) {
+            window.location.href = 'cuenta-login.html';
+        }
+
+        const STATUS_MAP = {
+            'pending': { label: 'Pendiente', class: 'status-pending' },
+            'sent_to_whatsapp': { label: 'En Revisión', class: 'status-pending' },
+            'confirmed': { label: 'Confirmado', class: 'status-confirmed' },
+            'shipped': { label: 'Enviado', class: 'status-shipped' },
+            'delivered': { label: 'Entregado', class: 'status-delivered' },
+            'cancelled': { label: 'Cancelado', class: 'status-cancelled' }
+        };
+
+        const STATUS_ORDER = ['sent_to_whatsapp', 'confirmed', 'shipped', 'delivered'];
+
+        document.addEventListener('DOMContentLoaded', initAccount);
+
+        function initAccount() {
+            loadProfile();
+            loadOrders();
+        }
+
+        function loadProfile() {
+            const customer = API.CustomerAuth.getCustomer();
+            if (!customer) return;
+
+            document.getElementById('welcomeName').textContent = `HOLA, ${(customer.name || 'CLIENTE').toUpperCase()}`;
+            document.getElementById('welcomeEmail').textContent = customer.email;
+
+            // Populate form inputs
+            document.getElementById('pName').value = customer.name || '';
+            document.getElementById('pEmail').value = customer.email || '';
+            document.getElementById('pPhone').value = customer.phone || '';
+            document.getElementById('pStreet').value = customer.street || '';
+            document.getElementById('pColony').value = customer.colony || '';
+            document.getElementById('pCity').value = customer.city || '';
+            document.getElementById('pState').value = customer.state || '';
+            document.getElementById('pZip').value = customer.zip_code || '';
+            document.getElementById('pReferences').value = customer.address_references || '';
+
+            // Phone: only digits, max 10
+            document.getElementById('pPhone').addEventListener('input', function () {
+                this.value = this.value.replace(/\D/g, '').slice(0, 10);
+            });
+
+            // ZIP: only digits, max 5
+            document.getElementById('pZip').addEventListener('input', function () {
+                this.value = this.value.replace(/\D/g, '').slice(0, 5);
+            });
+
+            // Profile save handler
+            document.getElementById('profileForm').addEventListener('submit', saveProfile);
+        }
+
+        async function saveProfile(e) {
+            e.preventDefault();
+            const btn = document.getElementById('saveProfileBtn');
+            const alert = document.getElementById('profileAlert');
+
+            alert.className = 'profile-alert';
+            alert.style.display = 'none';
+
+            const phone = document.getElementById('pPhone').value.replace(/\D/g, '');
+            if (phone && phone.length !== 10) {
+                alert.className = 'profile-alert error';
+                alert.textContent = 'El teléfono debe tener exactamente 10 dígitos';
+                alert.style.display = 'block';
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = 'Guardando...';
+
+            const profileData = {
+                name: document.getElementById('pName').value.trim(),
+                phone: phone,
+                street: document.getElementById('pStreet').value.trim(),
+                colony: document.getElementById('pColony').value.trim(),
+                city: document.getElementById('pCity').value.trim(),
+                state: document.getElementById('pState').value,
+                zip_code: document.getElementById('pZip').value.trim(),
+                address_references: document.getElementById('pReferences').value.trim()
+            };
+
+            const result = await API.CustomerAuth.updateProfile(profileData);
+
+            if (result.success) {
+                alert.className = 'profile-alert success';
+                alert.textContent = '✓ Datos actualizados correctamente';
+                // Update welcome banner name
+                const name = result.data.customer.name || 'CLIENTE';
+                document.getElementById('welcomeName').textContent = `HOLA, ${name.toUpperCase()}`;
+            } else {
+                alert.className = 'profile-alert error';
+                alert.textContent = result.error || 'Error al guardar los datos';
+            }
+
+            alert.style.display = 'block';
+            btn.disabled = false;
+            btn.textContent = 'Guardar Cambios';
+
+            // Auto-hide success after 4s
+            if (result.success) {
+                setTimeout(() => {
+                    alert.style.display = 'none';
+                }, 4000);
+            }
+        }
+
+        async function loadOrders() {
+            const loading = document.getElementById('ordersLoading');
+            const list = document.getElementById('ordersList');
+            const empty = document.getElementById('ordersEmpty');
+
+            const result = await API.CustomerAuth.getMyOrders();
+
+            loading.style.display = 'none';
+
+            if (!result.success || !result.data.orders || result.data.orders.length === 0) {
+                empty.style.display = 'block';
+                return;
+            }
+
+            list.style.display = 'flex';
+            list.innerHTML = result.data.orders.map(order => renderOrderCard(order)).join('');
+        }
+
+        function renderOrderCard(order) {
+            const status = STATUS_MAP[order.status] || STATUS_MAP['pending'];
+            const date = new Date(order.created_at).toLocaleDateString('es-MX', {
+                day: '2-digit', month: 'long', year: 'numeric'
+            });
+
+            let itemsHtml = '';
+            if (order.items && order.items.length > 0) {
+                itemsHtml = `<ul class="order-items-list">
+                    ${order.items.map(item => {
+                    const opts = item.selected_options
+                        ? Object.entries(typeof item.selected_options === 'string' ? JSON.parse(item.selected_options) : item.selected_options)
+                            .map(([k, v]) => `${k}: ${v}`).join(' · ')
+                        : '';
+                    return `<li>
+                            <div>
+                                <span class="item-name">${item.product_name} × ${item.quantity}</span>
+                                ${opts ? `<br><span class="item-options">${opts}</span>` : ''}
+                            </div>
+                            <span class="item-price">$${parseFloat(item.subtotal).toLocaleString('es-MX', { minimumFractionDigits: 2 })}</span>
+                        </li>`;
+                }).join('')}
+                </ul>`;
+            }
+
+            const trackingHtml = order.tracking_number ? `
+                <div class="tracking-box">
+                    <h4>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="1" y="3" width="15" height="13"></rect>
+                            <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                            <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                            <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                        </svg>
+                        Número de Guía
+                    </h4>
+                    <span class="tracking-number">${order.tracking_number}</span>
+                    <br>
+                    <a href="https://www.google.com/search?q=rastrear+guia+${encodeURIComponent(order.tracking_number)}"
+                       target="_blank" class="tracking-link">Rastrear envío →</a>
+                </div>
+            ` : '';
+
+            // Progress bar
+            const currentIndex = STATUS_ORDER.indexOf(order.status);
+            const progressHtml = `
+                <div class="order-progress">
+                    ${STATUS_ORDER.map((s, i) => {
+                let cls = '';
+                if (i < currentIndex) cls = 'completed';
+                else if (i === currentIndex) cls = 'completed current';
+                return `<div class="progress-step ${cls}">
+                            <div class="progress-dot">✓</div>
+                            <div class="progress-label">${STATUS_MAP[s].label}</div>
+                        </div>`;
+            }).join('')}
+                </div>
+            `;
+
+            return `
+                <div class="order-card">
+                    <div class="order-card-header">
+                        <div>
+                            <span class="order-number">${order.order_number}</span>
+                            <span class="order-date" style="margin-left: 12px;">${date}</span>
+                        </div>
+                        <span class="order-status-badge ${status.class}">${status.label}</span>
+                    </div>
+                    <div class="order-card-body">
+                        ${itemsHtml}
+                        <div class="order-total-row">
+                            <span>Total</span>
+                            <span>$${parseFloat(order.total).toLocaleString('es-MX', { minimumFractionDigits: 2 })}</span>
+                        </div>
+                        ${order.status !== 'cancelled' ? progressHtml : ''}
+                        ${trackingHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.account-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+
+            document.getElementById('ordersSection').style.display = tab === 'orders' ? '' : 'none';
+            document.getElementById('profileSection').style.display = tab === 'profile' ? 'block' : 'none';
+            if (tab === 'profile') {
+                document.getElementById('profileSection').classList.add('active');
+            } else {
+                document.getElementById('profileSection').classList.remove('active');
+            }
+        }
+
+        function handleLogout() {
+            API.CustomerAuth.logout();
+            window.location.href = 'cuenta-login.html';
+        }
+    </script>
+</body>
+
+</html>

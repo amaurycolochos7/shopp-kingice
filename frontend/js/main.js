@@ -597,6 +597,17 @@ function initNewsletter() {
 window.showToast = showToast;
 window.flyToCart = flyToCart;
 
+// ==================== ACCOUNT ICON ====================
+function initAccountIcon() {
+  const icon = document.getElementById('accountIcon');
+  if (!icon) return;
+  if (typeof API !== 'undefined' && API.CustomerAuth && API.CustomerAuth.isLoggedIn()) {
+    icon.href = 'mi-cuenta.html';
+  }
+}
+// Run immediately
+initAccountIcon();
+
 // ==================== GOLDEN PARTICLES ====================
 
 function initParticles() {

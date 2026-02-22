@@ -46,7 +46,7 @@
                             <div class="form-group">
                                 <label class="form-label" for="phone">Teléfono (WhatsApp) *</label>
                                 <input type="tel" class="form-input" id="phone" name="phone" required
-                                    placeholder="55 1234 5678">
+                                    placeholder="3332457214" inputmode="numeric" maxlength="10" pattern="[0-9]*">
                                 <div class="form-error" id="phoneError"></div>
                             </div>
                         </div>
@@ -397,7 +397,7 @@ Quedo atento(a) para confirmar disponibilidad y cuenta de pago.`;
                     KIG.Cart.clear();
 
                     // Redirect to WhatsApp
-                    const phone = '5213324749328'; // Replace with real admin number if different
+                    const phone = '523332457214';
                     const url = `https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(finalMessage)}`;
 
                     window.location.href = url;
@@ -435,9 +435,9 @@ Quedo atento(a) para confirmar disponibilidad y cuenta de pago.`;
             const phoneError = document.getElementById('phoneError');
             const phoneClean = phone.value.replace(/\D/g, '');
 
-            if (phoneClean.length < 10) {
+            if (phoneClean.length !== 10) {
                 phone.classList.add('error');
-                phoneError.textContent = 'Ingresa un teléfono de 10 dígitos';
+                phoneError.textContent = 'Ingresa exactamente 10 dígitos';
                 isValid = false;
             } else {
                 phone.classList.remove('error');
@@ -459,6 +459,13 @@ Quedo atento(a) para confirmar disponibilidad y cuenta de pago.`;
 
             return isValid;
         }
+
+        // Phone: only digits, max 10
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('phone').addEventListener('input', function () {
+                this.value = this.value.replace(/\D/g, '').slice(0, 10);
+            });
+        });
     </script>
 </body>
 

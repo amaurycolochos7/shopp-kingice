@@ -239,6 +239,38 @@ const API = {
             } catch {
                 return null;
             }
+        },
+
+        async getMyOrders() {
+            const token = localStorage.getItem('kig_customer_token');
+            if (!token) return { success: false, error: 'No autenticado' };
+            const result = await fetch(`${API._baseUrl}/customers/me/orders`, {
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+            });
+            const data = await result.json();
+            if (result.ok) return { success: true, data };
+            return { success: false, error: data.error };
+        },
+
+        async updateProfile(profileData) {
+            const token = localStorage.getItem('kig_customer_token');
+            if (!token) return { success: false, error: 'No autenticado' };
+            try {
+                const result = await fetch(`${API._baseUrl}/customers/me`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify(profileData)
+                });
+                const data = await result.json();
+                if (result.ok) {
+                    // Update localStorage with fresh data
+                    localStorage.setItem('kig_customer', JSON.stringify(data.customer));
+                    return { success: true, data };
+                }
+                return { success: false, error: data.error };
+            } catch (err) {
+                return { success: false, error: 'Error de conexión' };
+            }
         }
     },
 

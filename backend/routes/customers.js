@@ -16,8 +16,8 @@ router.post('/register', async (req, res, next) => {
             return res.status(400).json({ error: 'Email, teléfono y contraseña son requeridos' });
         }
 
-        if (password.length < 6) {
-            return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
+        if (password.length < 8) {
+            return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
         }
 
         // Email format validation
@@ -130,6 +130,69 @@ router.get('/me', requireCustomerAuth, async (req, res, next) => {
         }
 
         res.json({ customer: rows[0] });
+    } catch (err) {
+        next(err);
+    }
+});
+
+// PUT /api/customers/me — Update customer profile
+router.put('/me', requireCustomerAuth, async (req, res, next) => {
+    try {
+        const { name, phone, street, colony, city, state, zip_code, address_references } = req.body;
+
+        // Validate phone if provided
+        if (phone && !/^\d{10}$/.test(phone)) {
+            return res.status(400).json({ error: 'El teléfono debe tener exactamente 10 dígitos' });
+        }
+
+        const { rows } = await query(
+            `UPDATE customers 
+             SET name = COALESCE($1, name),
+                 phone = COALESCE($2, phone),
+                 street = COALESCE($3, street),
+                 colony = COALESCE($4, colony),
+                 city = COALESCE($5, city),
+                 state = COALESCE($6, state),
+                 zip_code = COALESCE($7, zip_code),
+                 address_references = COALESCE($8, address_references)
+             WHERE id = $9
+             RETURNING id, name, email, phone, street, colony, city, state, zip_code, address_references`,
+            [name || null, phone || null, street || null, colony || null, city || null, state || null, zip_code || null, address_references || null, req.customer.id]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Cliente no encontrado' });
+        }
+
+        res.json({ customer: rows[0] });
+    } catch (err) {
+        next(err);
+    }
+});
+
+// GET /api/customers/me/orders — Get customer's orders with items
+router.get('/me/orders', requireCustomerAuth, async (req, res, next) => {
+    try {
+        const { rows: orders } = await query(`
+            SELECT o.id, o.order_number, o.subtotal, o.shipping_cost, o.discount, o.total,
+                   o.status, o.payment_method, o.tracking_number, o.notes,
+                   o.shipped_at, o.delivered_at, o.created_at, o.updated_at
+            FROM orders o
+            WHERE o.customer_id = $1
+            ORDER BY o.created_at DESC
+        `, [req.customer.id]);
+
+        // Fetch items for each order
+        for (const order of orders) {
+            const { rows: items } = await query(`
+                SELECT product_name, product_sku, selected_options, quantity, unit_price, subtotal
+                FROM order_items
+                WHERE order_id = $1
+            `, [order.id]);
+            order.items = items;
+        }
+
+        res.json({ orders });
     } catch (err) {
         next(err);
     }
