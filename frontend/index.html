@@ -17,6 +17,10 @@
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+2:wght@100;300;400;500;600;700&display=swap"
     rel="stylesheet">
 
+  <!-- Preload critical assets -->
+  <link rel="preload" href="images/hero/hero-bg.webp" as="image" type="image/webp">
+  <link rel="preload" href="css/styles.css" as="style">
+
   <!-- Styles -->
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/responsive.css">
@@ -155,19 +159,19 @@
   <section class="section category-cards-section reveal">
     <div class="category-cards-grid">
       <a href="#" class="category-card-item">
-        <img src="images/products/cadenas/cadena-3.webp" alt="Cadenas">
+        <img src="images/products/cadenas/cadena-3.webp" alt="Cadenas" loading="lazy">
         <span>CADENAS</span>
       </a>
       <a href="#" class="category-card-item">
-        <img src="images/products/dijes/dije-1.webp" alt="Dijes">
+        <img src="images/products/dijes/dije-1.webp" alt="Dijes" loading="lazy">
         <span>DIJES</span>
       </a>
       <a href="#" class="category-card-item">
-        <img src="images/products/pulsos/pulso-1.jpg" alt="Pulsos">
+        <img src="images/products/pulsos/pulso-1.jpg" alt="Pulsos" loading="lazy">
         <span>PULSOS</span>
       </a>
       <a href="#" class="category-card-item">
-        <img src="images/products/anillos/anillo-1.webp" alt="Anillos">
+        <img src="images/products/anillos/anillo-1.webp" alt="Anillos" loading="lazy">
         <span>ANILLOS</span>
       </a>
     </div>
@@ -181,7 +185,7 @@
         <!-- Product 1 -->
         <div class="bestseller-card">
           <a href="#" class="bestseller-img-link">
-            <img src="images/products/cadenas/cadena-1.webp" alt="Cadena de Oro Tejido Espiga">
+            <img src="images/products/cadenas/cadena-1.webp" alt="Cadena de Oro Tejido Espiga" loading="lazy">
           </a>
           <div class="bestseller-info">
             <h3 class="bestseller-name">CADENA DE ORO TEJIDO ESPIGA – ORO AMARILLO 10K/14K</h3>
@@ -197,7 +201,7 @@
         <!-- Product 2 -->
         <div class="bestseller-card">
           <a href="#" class="bestseller-img-link">
-            <img src="images/products/cadenas/cadena-2.webp" alt="Cadena Torzal (Rope) Fina">
+            <img src="images/products/cadenas/cadena-2.webp" alt="Cadena Torzal (Rope) Fina" loading="lazy">
           </a>
           <div class="bestseller-info">
             <h3 class="bestseller-name">CADENA TORZAL (ROPE) FINA – ORO AMARILLO 10K/14K</h3>
@@ -311,7 +315,7 @@
           </div>
         </a>
         <a href="collection.html?category=diamantes" class="collection-block">
-          <div class="collection-block-bg"><img src="images/categories/diamantes.jpg" alt="Diamantes" loading="lazy">
+          <div class="collection-block-bg"><img src="images/categories/diamantes.webp" alt="Diamantes" loading="lazy">
           </div>
           <div class="collection-block-content">
             <h3>DIAMANTES</h3>

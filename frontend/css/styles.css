@@ -1933,9 +1933,9 @@ h6 {
   width: 100%;
   height: 100%;
   background-size: cover;
-  background-position: center top;
+  background-position: center 35%;
   background-repeat: no-repeat;
-  opacity: 0.85;
+  opacity: 0.92;
 }
 
 .hero-kenburns {
@@ -3370,7 +3370,7 @@ h6 {
   height: 650px;
   margin: 0 auto;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 /* Center logo overlay */

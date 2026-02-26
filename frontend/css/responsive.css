@@ -119,9 +119,14 @@ h4 {
 
 /* — Hero — */
 .hero {
-    height: 55vh;
-    min-height: 380px;
+    height: 75vh;
+    min-height: 480px;
     padding-bottom: 50px;
+}
+
+.hero-bg-image {
+    background-position: center 15%;
+    background-size: cover;
 }
 
 .hero-title {
@@ -254,7 +259,8 @@ h4 {
 
 /* — Sphere — */
 .globe-scene {
-    height: 350px;
+    height: 400px;
+    overflow: visible;
 }
 
 .product-sphere {
@@ -471,8 +477,12 @@ h4 {
     }
 
     .hero {
-        height: 60vh;
-        min-height: 400px;
+        height: 78vh;
+        min-height: 480px;
+    }
+
+    .hero-bg-image {
+        background-position: center 18%;
     }
 
     .video-banner {

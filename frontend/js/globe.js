@@ -45,7 +45,8 @@
     var height = container.clientHeight;
 
     var camera = new THREE.PerspectiveCamera(40, width / height, 1, 2000);
-    camera.position.z = 850;
+    var isMobile = width < 600;
+    camera.position.z = isMobile ? 1100 : 850;
 
     var renderer = new THREE.CSS3DRenderer();
     renderer.setSize(width, height);
@@ -135,6 +136,7 @@
         var w = container.clientWidth;
         var h = container.clientHeight;
         camera.aspect = w / h;
+        camera.position.z = w < 600 ? 1100 : 850;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);
     });
