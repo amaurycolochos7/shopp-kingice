@@ -6,18 +6,16 @@ services:
   # =====================================================
   # PostgreSQL Database
   # =====================================================
-  db:
+  king-ice-gold-db:
     image: postgres:16-alpine
     restart: always
     environment:
       POSTGRES_DB: kingicegold
       POSTGRES_USER: kingice
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-kingice2026}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-KingIce2026Prod!}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./database/supabase_schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-    ports:
-      - "5432:5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U kingice -d kingicegold"]
       interval: 10s
@@ -36,12 +34,12 @@ services:
       dockerfile: Dockerfile
     restart: always
     depends_on:
-      db:
+      king-ice-gold-db:
         condition: service_healthy
     environment:
       PORT: 4000
       NODE_ENV: production
-      DATABASE_URL: postgresql://kingice:${DB_PASSWORD:-kingice2026}@db:5432/kingicegold
+      DATABASE_URL: postgresql://kingice:${DB_PASSWORD:-KingIce2026Prod!}@king-ice-gold-db:5432/kingicegold
       JWT_SECRET: ${JWT_SECRET:-kingice-change-this-in-production}
       JWT_EXPIRES_IN: 24h
       FRONTEND_URL: ${FRONTEND_URL:-https://kingicegold.com.mx}
