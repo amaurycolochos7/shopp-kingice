@@ -1,8 +1,6 @@
 # =====================================================
 # KING ICE GOLD - Docker Compose para Dokploy
 # =====================================================
-# Despliega: PostgreSQL + Backend API
-# =====================================================
 
 services:
   # =====================================================
@@ -25,13 +23,16 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - king-ice-gold-internal
 
   # =====================================================
-  # Backend API (Node.js + Express)
+  # Backend API + Frontend (Node.js + Express)
+  # Usa el Dockerfile raíz que incluye el frontend estático
   # =====================================================
   backend:
     build:
-      context: ./backend
+      context: .
       dockerfile: Dockerfile
     restart: always
     depends_on:
@@ -43,9 +44,18 @@ services:
       DATABASE_URL: postgresql://kingice:${DB_PASSWORD:-kingice2026}@db:5432/kingicegold
       JWT_SECRET: ${JWT_SECRET:-kingice-change-this-in-production}
       JWT_EXPIRES_IN: 24h
-      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+      FRONTEND_URL: ${FRONTEND_URL:-https://kingicegold.com.mx}
     ports:
       - "4000:4000"
+    networks:
+      - king-ice-gold-internal
+      - dokploy-network
+
+networks:
+  king-ice-gold-internal:
+    driver: bridge
+  dokploy-network:
+    external: true
 
 volumes:
   postgres_data:
