@@ -129,15 +129,25 @@ app.get('/api/debug-config', async (req, res) => {
   });
 });
 
+// Admin redirects — /admin and /admin/ → login page
+app.get(['/admin', '/admin/'], (req, res) => {
+  res.redirect('/admin/login.html');
+});
+
 // =====================================================
-// FRONTEND FALLBACK — SPA-style routing
+// FRONTEND FALLBACK — Multi-page routing
 // =====================================================
 app.get('*', (req, res) => {
-  // If the request is for an API route that doesn't exist, return 404 JSON
   if (req.path.startsWith('/api/')) {
     return res.status(404).json({ error: 'Ruta no encontrada' });
   }
-  // Otherwise serve the frontend
+  // Try to serve the exact HTML file, fall back to index.html
+  const fs = require('fs');
+  const requestedFile = path.join(frontendPath, req.path);
+  const htmlFile = requestedFile.endsWith('/') ? requestedFile + 'index.html' : requestedFile;
+  if (fs.existsSync(htmlFile) && htmlFile.endsWith('.html')) {
+    return res.sendFile(htmlFile);
+  }
   res.sendFile(path.join(frontendPath, 'index.html'));
 });
 
